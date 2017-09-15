@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main_client"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="16dp"
+    android:paddingLeft="64dp"
+    android:paddingRight="64dp"
+    android:paddingTop="16dp"
+    android:background="@color/bg_login"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:text="@string/see_proyects"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:background="@color/btn_login_bg"
+        android:textColor="@color/btn_login"
+        android:id="@+id/client_btn_catalog" />
+
+    <Button
+        android:text="@string/create_new_proyect"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:background="@color/btn_login_bg"
+        android:textColor="@color/btn_login"
+        android:id="@+id/client_btn_history" />
+
+</LinearLayout>

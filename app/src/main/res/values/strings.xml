@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Solar</string>
+    <string name="title_activity_login">Login</string>
+
+    <!-- activity_login  -->
+    <string name="user_text_hint">Email</string>
+    <string name="password_text_hint">Password</string>
+    <string name="login_button_text">Log in</string>
+    <string name="register_button_text">Register</string>
+
+    <!-- activity_register -->
+    <string name="name_user_hint_textbox">Name</string>
+    <string name="lastname_user_hint_textbox">Last Name</string>
+    <string name="mail_user_hint_textbox">E-mail</string>
+    <string name="confirm_password_text_hint">Confirm Password</string>
+    <string name="btn_add_user">Add User</string>
+
+    <!-- activity_proyects -->
+    <string name="see_proyects">See Proyects</string>
+    <string name="create_new_proyect">Create New Proyect</string>
 </resources>
