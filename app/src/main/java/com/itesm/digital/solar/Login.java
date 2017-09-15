@@ -26,7 +26,7 @@ public class Login extends AppCompatActivity {
         btn_access.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (user.toString() == "hola" && password.toString() == "hola") {
+                if (user.getText().toString().equals("hola")  && password.getText().toString().equals("hola")) {
                     Intent mainIntent = new Intent().setClass(Login.this, Proyects.class);
                     startActivity(mainIntent);
                     Toast.makeText(getApplicationContext(), "Access Granted", Toast.LENGTH_SHORT).show();
