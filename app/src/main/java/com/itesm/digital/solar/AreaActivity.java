@@ -37,7 +37,10 @@ public class AreaActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng csf = new LatLng(19.358572, -99.259516);
         mMap.addMarker(new MarkerOptions().position(csf).title("Marker in CSF"));
+        //mMap.setMinZoomPreference(6.0f);
+        //mMap.setMaxZoomPreference(14.0f);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(csf));
+        mMap.animateCamera(CameraUpdateFactory.zoomIn());
 
         // Instantiates a new Polyline object and adds points to define a rectangle
         PolygonOptions rectOptions = new PolygonOptions()
