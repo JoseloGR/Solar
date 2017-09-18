@@ -19,7 +19,7 @@
         android:layout_marginTop="20dip"
         android:background="@color/btn_login_bg"
         android:textColor="@color/btn_login"
-        android:id="@+id/client_btn_catalog" />
+        android:id="@+id/projects" />
 
     <Button
         android:text="@string/create_new_proyect"
@@ -28,6 +28,6 @@
         android:layout_marginTop="20dip"
         android:background="@color/btn_login_bg"
         android:textColor="@color/btn_login"
-        android:id="@+id/client_btn_history" />
+        android:id="@+id/generate_project" />
 
 </LinearLayout>

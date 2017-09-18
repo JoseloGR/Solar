@@ -28,6 +28,7 @@ public class Register extends AppCompatActivity {
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //verifica si ambas contraseñas son las mismas
                 if(password.getText().toString().equals(repassword.getText().toString()) ) {
                     Toast.makeText(getApplicationContext(), "Check your mail", Toast.LENGTH_SHORT).show();
                     Intent mainIntent = new Intent().setClass(Register.this, Login.class);

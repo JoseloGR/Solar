@@ -18,4 +18,8 @@
     <!-- activity_proyects -->
     <string name="see_proyects">See Proyects</string>
     <string name="create_new_proyect">Create New Proyect</string>
+
+    <!-- activity_create_project -->
+    <string name="address_project">Address</string>
+    <string name="create">Create</string>
 </resources>
