@@ -25,6 +25,14 @@ public class ChooseAddress extends AppCompatActivity{
             }
         });
 
+        btn_show_general_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent().setClass(ChooseAddress.this, MapsActivity.class);
+                startActivity(mainIntent);
+            }
+        });
+
     }
 
 }

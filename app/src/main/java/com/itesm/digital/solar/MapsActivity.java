@@ -17,7 +17,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_maps2);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -40,7 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng ITESM_CSF = new LatLng(19.359611, -99.257616);
-        mMap.addMarker(new MarkerOptions().position(ITESM_CSF).title("Marcador en CSF"));
+        //mMap.addMarker(new MarkerOptions().position(ITESM_CSF).title("Marcador en CSF"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ITESM_CSF));
     }
 }
