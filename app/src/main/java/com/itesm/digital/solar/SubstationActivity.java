@@ -1,7 +1,11 @@
 package com.itesm.digital.solar;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -14,7 +18,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class SubstationActivity extends FragmentActivity implements
+public class SubstationActivity extends AppCompatActivity implements
         OnMapReadyCallback,
         GoogleMap.OnMapLongClickListener,
         GoogleMap.OnMarkerDragListener,
@@ -23,11 +27,25 @@ public class SubstationActivity extends FragmentActivity implements
     private GoogleMap mMap;
     private LatLng locationTerrain, locationSE;
     Marker subStationMarker;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_substation);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onResetMap();
+                Snackbar.make(view, "Subestaciones borradas", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -61,14 +79,14 @@ public class SubstationActivity extends FragmentActivity implements
     @Override
     public void onMapLongClick(LatLng latLng) {
         Toast.makeText(SubstationActivity.this,
-                "onMapLongClick:\n" + latLng.latitude + " : " + latLng.longitude,
+                "Ubicación:\n" + latLng.latitude + " : " + latLng.longitude,
                 Toast.LENGTH_LONG).show();
 
         if(locationSE.latitude==0) {
             //Add marker
             subStationMarker = mMap.addMarker(new MarkerOptions()
                     .position(latLng)
-                    .title("Substación eléctrica")
+                    .title("Subestación eléctrica")
                     .draggable(true)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
             locationSE = new LatLng(latLng.latitude,latLng.longitude);
@@ -92,9 +110,18 @@ public class SubstationActivity extends FragmentActivity implements
     public boolean onMarkerClick(final Marker marker) {
 
         if (marker.getPosition()==locationSE){
-            mMap.clear();
+            fab.setVisibility(View.VISIBLE);
         }
 
         return false;
+    }
+
+    private void onResetMap() {
+        locationSE = new LatLng(0, 0);
+        mMap.clear();
+        mMap.addMarker(new MarkerOptions()
+                .position(locationTerrain)
+                .title("Ubicación área")
+                .snippet("Área seleccionada a evaluar"));
     }
 }
