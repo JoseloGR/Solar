@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="dji-sdk-4.3.0">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.android/build-cache/24d25ee1dc7a885da83da97ac261cee3114de4ac/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/24d25ee1dc7a885da83da97ac261cee3114de4ac/output/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

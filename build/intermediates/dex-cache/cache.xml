@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/pabmacias28/AndroidStudioProjects/DownloadPhoto/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="153e1a28037eb15df8766a0519bd59ce33197387">
+        <dex dex="/home/pabmacias28/AndroidStudioProjects/DownloadPhoto/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_1b90ff0cb2ad15ebf9c80194cc9dd01b3cbfeba6/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/pabmacias28/AndroidStudioProjects/DownloadPhoto/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/home/pabmacias28/AndroidStudioProjects/DownloadPhoto/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_209354c869db7d40dcbd6542f66c259ceb0f2a7d/classes.dex" />
+    </item>
+
+</items>
