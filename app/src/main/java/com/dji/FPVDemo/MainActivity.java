@@ -27,6 +27,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -60,7 +61,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
     protected TextureView mVideoSurface = null;
     private Button mCaptureBtn, mShootPhotoModeBtn, mRecordVideoModeBtn;
     private ToggleButton mRecordBtn;
-    private TextView recordingTime;
+    private TextView recordingTime, datePhoto;
 
     private Handler handler;
 
@@ -169,7 +170,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
         Log.e(TAG, "onResume");
         super.onResume();
         initPreviewer();
-        initMediaManager();
+        //initMediaManager();
         onProductChange();
 
         if(mVideoSurface == null) {
@@ -408,7 +409,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
         switch (v.getId()) {
             case R.id.btn_capture:{
                 captureAction();
-                downloadFileByIndex(0);
+                //downloadFileByIndex(0);
                 break;
             }
             case R.id.btn_shoot_photo_mode:{
@@ -482,7 +483,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
         });
     }
 
-    private void initMediaManager() {
+    /*private void initMediaManager() {
         if (FPVDemoApplication.getProductInstance() == null) {
             mediaFileList.clear();
             //mListAdapter.notifyDataSetChanged();
@@ -510,7 +511,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                         DJILog.e(TAG, "Camera support video playback!");
                     } else {
                         setResultToToast("Camera does not support video playback!");
-                    }*/
+                    }
                     //scheduler = mediaManager.getScheduler();
                 }
 
@@ -519,7 +520,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                 setResultToToast("Media Download Mode not Supported");
             }
         }
-    }
+    }*/
 
     /*private void getFileList() {
         mediaManager = FPVDemoApplication.getCameraInstance().getMediaManager();
@@ -601,6 +602,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                                         public void onResult(DJIError djiError) {
                                             if (djiError == null) {
                                                 showToast("take photo: success");
+                                                downloadFileByIndex(0);
                                                 //media.fetchFileData(file, "fotoDron", new DownloadHandler<String>());
                                             } else {
                                                 showToast(djiError.getDescription());
@@ -610,6 +612,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                                 }
                             }, 2000);
                             //media.fetchFileData(file, "fotoDron", new DownloadHandler<String>());
+
                         }
                     }
             });
@@ -651,8 +654,48 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
             }
         });*/
 
+        if (FPVDemoApplication.getProductInstance() == null) {
+            mediaFileList.clear();
+            //mListAdapter.notifyDataSetChanged();
+            DJILog.e(TAG, "Product disconnected");
+            return;
+        } else {
+            setResultToToast("Product found");
+            if (null != FPVDemoApplication.getCameraInstance() && FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                mediaManager = FPVDemoApplication.getCameraInstance().getMediaManager();
+                if (null != mediaManager) {
+                    //mediaManager.addUpdateFileListStateListener(this.updateFileListStateListener);
+                    //mediaManager.addMediaUpdatedVideoPlaybackStateListener(this.updatedVideoPlaybackStateListener);
+                    FPVDemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError error) {
+                            if (error == null) {
+                                //DJILog.e(TAG, "Set cameraMode success");
+                                setResultToToast("Set cameraMode success");
+                                //showProgressDialog();
+                                //getFileList();
+                            } else {
+                                setResultToToast("Set cameraMode failed");
+                                setResultToToast(error.getDescription());
+                            }
+                        }
+                    });
+                    /*if (mMediaManager.isVideoPlaybackSupported()) {
+                        DJILog.e(TAG, "Camera support video playback!");
+                    } else {
+                        setResultToToast("Camera does not support video playback!");
+                    }*/
+                    //scheduler = mediaManager.getScheduler();
+                }
+
+            } else if (null != FPVDemoApplication.getCameraInstance()
+                    && !FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                setResultToToast("Media Download Mode not Supported");
+            }
+        }
+
         mediaFileList = mediaManager.getFileListSnapshot();
-        Collections.sort(mediaFileList, new Comparator<MediaFile>() {
+        /*Collections.sort(mediaFileList, new Comparator<MediaFile>() {
             @Override
             public int compare(MediaFile lhs, MediaFile rhs) {
                 if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
@@ -662,9 +705,19 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                 }
                 return 0;
             }
-        });
+        });*/
 
-        mediaFileList.get(index).fetchFileData(file, null, new DownloadListener<String>() {
+        try {
+            mediaFileList.get(index).getDateCreated();
+            setResultToToast("Funciona");
+        } catch (IndexOutOfBoundsException e) {
+            setResultToToast(e.getMessage());
+        }
+
+        //datePhoto.setText(mediaFileList.get(index).getDateCreated());
+        //datePhoto.setVisibility(View.VISIBLE);
+
+        /*mediaFileList.get(index).fetchFileData(file, null, new DownloadListener<String>() {
             @Override
             public void onFailure(DJIError error) {
                 //HideDownloadProgressDialog();
@@ -697,7 +750,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                 setResultToToast("Download File Success" + ":" + filePath);
                 currentProgress = -1;
             }
-        });
+        });*/
     }
 
     // Method for starting recording
