@@ -408,7 +408,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
         switch (v.getId()) {
             case R.id.btn_capture:{
                 captureAction();
-                downloadFileByIndex(1);
+                downloadFileByIndex(0);
                 break;
             }
             case R.id.btn_shoot_photo_mode:{
