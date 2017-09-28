@@ -20,11 +20,11 @@ import dji.sdk.sdkmanager.DJISDKManager;
 
 public class FPVDemoApplication extends Application{
 
-    public static final String FLAG_CONNECTION_CHANGE = "fpv_tutorial_connection_change";
+    public static final String FLAG_CONNECTION_CHANGE = "mediaManager_demo_connection_change";
 
     private static BaseProduct mProduct;
 
-    public Handler mHandler;
+    private Handler mHandler;
 
     /**
      * This function is used to get the instance of DJIBaseProduct.
@@ -37,12 +37,9 @@ public class FPVDemoApplication extends Application{
         return mProduct;
     }
 
-    public static boolean isAircraftConnected() {
-        return getProductInstance() != null && getProductInstance() instanceof Aircraft;
-    }
-
-    public static boolean isHandHeldConnected() {
-        return getProductInstance() != null && getProductInstance() instanceof HandHeld;
+    public static synchronized Aircraft getAircraftInstance() {
+        if (!isAircraftConnected()) return null;
+        return (Aircraft) getProductInstance();
     }
 
     public static synchronized Camera getCameraInstance() {
@@ -59,6 +56,28 @@ public class FPVDemoApplication extends Application{
         }
 
         return camera;
+    }
+
+    public static boolean isAircraftConnected() {
+        return getProductInstance() != null && getProductInstance() instanceof Aircraft;
+    }
+
+    public static boolean isHandHeldConnected() {
+        return getProductInstance() != null && getProductInstance() instanceof HandHeld;
+    }
+
+    public static boolean isProductModuleAvailable() {
+        return (null != FPVDemoApplication.getProductInstance());
+    }
+
+    public static boolean isCameraModuleAvailable() {
+        return isProductModuleAvailable() &&
+                (null != FPVDemoApplication.getProductInstance().getCamera());
+    }
+
+    public static boolean isPlaybackAvailable() {
+        return isCameraModuleAvailable() &&
+                (null != FPVDemoApplication.getProductInstance().getCamera().getPlaybackManager());
     }
 
     @Override
@@ -81,14 +100,14 @@ public class FPVDemoApplication extends Application{
      * When starting SDK services, an instance of interface DJISDKManager.DJISDKManagerCallback will be used to listen to
      * the SDK Registration result and the product changing.
      */
+
     private DJISDKManager.SDKManagerCallback mDJISDKManagerCallback = new DJISDKManager.SDKManagerCallback() {
 
         //Listens to the SDK registration result
         @Override
         public void onRegister(DJIError error) {
-
             if(error == DJISDKError.REGISTRATION_SUCCESS) {
-
+                DJISDKManager.getInstance().startConnectionToProduct();
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
@@ -96,11 +115,7 @@ public class FPVDemoApplication extends Application{
                         Toast.makeText(getApplicationContext(), "Register Success", Toast.LENGTH_LONG).show();
                     }
                 });
-
-                DJISDKManager.getInstance().startConnectionToProduct();
-
             } else {
-
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
 

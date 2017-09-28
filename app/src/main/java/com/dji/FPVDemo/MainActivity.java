@@ -69,15 +69,16 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
     //private View lastClickView;
     //private FileListAdapter mListAdapter;
 
-    final File file = new File(Environment.getExternalStorageDirectory().getPath() + "/hola2/");
+    final File destDir = new File(Environment.getExternalStorageDirectory().getPath() + "/hola2/");
 
     private MediaManager mediaManager;
+    //private FileListAdapter mListAdapter;
     private List<MediaFile> mediaFileList = new ArrayList<MediaFile>();
     //private ProgressDialog mDownloadDialog;
     //private ProgressDialog mLoadingDialog;
     private int currentProgress = -1;
     //private FetchMediaTaskScheduler scheduler;
-    //private MediaManager.FileListState currentFileListState = MediaManager.FileListState.UNKNOWN;
+    private MediaManager.FileListState currentFileListState = MediaManager.FileListState.UNKNOWN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +88,7 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
 
         handler = new Handler();
 
-        file.mkdir();
-
-        initUI();
+        //file.mkdir();
 
         // The callback for receiving the raw H264 video data for camera live view
         mReceivedVideoDataCallBack = new VideoFeeder.VideoDataCallback() {
@@ -141,6 +140,8 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
             });
 
         }
+
+        initUI();
 
     }
 
@@ -227,6 +228,10 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
 
     private void initUI() {
         // init mVideoSurface
+
+        //mListAdapter = new FileListAdapter();
+        //listView.setAdapter(mListAdapter);
+
         mVideoSurface = (TextureView)findViewById(R.id.video_previewer_surface);
 
         recordingTime = (TextView) findViewById(R.id.timer);
@@ -259,26 +264,6 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                 }
             }
         });
-
-        /*mDownloadDialog = new ProgressDialog(MainActivity.this);
-        mDownloadDialog.setTitle("Downloading file");
-        mDownloadDialog.setIcon(android.R.drawable.ic_dialog_info);
-        mDownloadDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        mDownloadDialog.setCanceledOnTouchOutside(false);
-        mDownloadDialog.setCancelable(true);
-        mDownloadDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                if (mediaManager != null) {
-                    mediaManager.exitMediaDownloading();
-                }
-            }
-        });
-
-        mLoadingDialog = new ProgressDialog(MainActivity.this);
-        mLoadingDialog.setMessage("Please wait");
-        mLoadingDialog.setCanceledOnTouchOutside(false);
-        mLoadingDialog.setCancelable(false);*/
     }
 
     private void initPreviewer() {
@@ -341,75 +326,27 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
         });
     }
 
-    /*private class ItemHolder extends RecyclerView.ViewHolder {
-        ImageView thumbnail_img;
-        TextView file_name;
-        TextView file_type;
-        TextView file_size;
-        TextView file_time;
-
-        public ItemHolder(View itemView) {
-            super(itemView);
-            this.thumbnail_img = (ImageView) itemView.findViewById(R.id.filethumbnail);
-            this.file_name = (TextView) itemView.findViewById(R.id.filename);
-            this.file_type = (TextView) itemView.findViewById(R.id.filetype);
-            this.file_size = (TextView) itemView.findViewById(R.id.fileSize);
-            this.file_time = (TextView) itemView.findViewById(R.id.filetime);
-        }
-    }*/
-
-    /*private class FileListAdapter {
-        @Override
-        public int getItemCount() {
-            if (mediaFileList != null) {
-                return mediaFileList.size();
-            }
-            return 0;
-        }
-
-        @Override
-        public ItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.media_info_item, parent, false);
-            return new ItemHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(ItemHolder mItemHolder, final int index) {
-
-            final MediaFile mediaFile = mediaFileList.get(index);
-            if (mediaFile != null) {
-                if (mediaFile.getMediaType() != MediaFile.MediaType.MOV && mediaFile.getMediaType() != MediaFile.MediaType.MP4) {
-                    mItemHolder.file_time.setVisibility(View.GONE);
-                } else {
-                    mItemHolder.file_time.setVisibility(View.VISIBLE);
-                    mItemHolder.file_time.setText(mediaFile.getDurationInSeconds() + " s");
-                }
-                mItemHolder.file_name.setText(mediaFile.getFileName());
-                mItemHolder.file_type.setText(mediaFile.getMediaType().name());
-                mItemHolder.file_size.setText(mediaFile.getFileSize() + " Bytes");
-                mItemHolder.thumbnail_img.setImageBitmap(mediaFile.getThumbnail());
-                mItemHolder.thumbnail_img.setOnClickListener(ImgOnClickListener);
-                mItemHolder.thumbnail_img.setTag(mediaFile);
-                mItemHolder.itemView.setTag(index);
-
-                if (lastClickViewIndex == index) {
-                    mItemHolder.itemView.setSelected(true);
-                } else {
-                    mItemHolder.itemView.setSelected(false);
-                }
-                mItemHolder.itemView.setOnClickListener(itemViewOnClickListener);
-
-            }
-        }
-    }*/
-
     @Override
     public void onClick(View v) {
 
         switch (v.getId()) {
             case R.id.btn_capture:{
                 captureAction();
-                //downloadFileByIndex(0);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initMediaManager();
+                    }
+                }, 5000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadFileByIndex(0);
+                    }
+                }, 10000);
+
                 break;
             }
             case R.id.btn_shoot_photo_mode:{
@@ -440,40 +377,8 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                     }
                 }
             });
-            }
-    }
-
-    /*private void showProgressDialog() {
-        if (mLoadingDialog != null) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mLoadingDialog.show();
-                }
-            });
         }
     }
-
-    private void ShowDownloadProgressDialog() {
-        if (mDownloadDialog != null) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mDownloadDialog.incrementProgressBy(-mDownloadDialog.getProgress());
-                    mDownloadDialog.show();
-                }
-            });
-        }
-    }
-
-    private void HideDownloadProgressDialog() {
-
-        if (null != mDownloadDialog && mDownloadDialog.isShowing()) {
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    mDownloadDialog.dismiss();
-                }
-            });
-        }
-    }*/
 
     private void setResultToToast(final String result) {
         runOnUiThread(new Runnable() {
@@ -483,108 +388,8 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
         });
     }
 
-    /*private void initMediaManager() {
-        if (FPVDemoApplication.getProductInstance() == null) {
-            mediaFileList.clear();
-            //mListAdapter.notifyDataSetChanged();
-            DJILog.e(TAG, "Product disconnected");
-            return;
-        } else {
-            if (null != FPVDemoApplication.getCameraInstance() && FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
-                mediaManager = FPVDemoApplication.getCameraInstance().getMediaManager();
-                if (null != mediaManager) {
-                    //mediaManager.addUpdateFileListStateListener(this.updateFileListStateListener);
-                    //mediaManager.addMediaUpdatedVideoPlaybackStateListener(this.updatedVideoPlaybackStateListener);
-                    FPVDemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, new CommonCallbacks.CompletionCallback() {
-                        @Override
-                        public void onResult(DJIError error) {
-                            if (error == null) {
-                                DJILog.e(TAG, "Set cameraMode success");
-                                //showProgressDialog();
-                                //getFileList();
-                            } else {
-                                setResultToToast("Set cameraMode failed");
-                            }
-                        }
-                    });
-                    /*if (mMediaManager.isVideoPlaybackSupported()) {
-                        DJILog.e(TAG, "Camera support video playback!");
-                    } else {
-                        setResultToToast("Camera does not support video playback!");
-                    }
-                    //scheduler = mediaManager.getScheduler();
-                }
-
-            } else if (null != FPVDemoApplication.getCameraInstance()
-                    && !FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
-                setResultToToast("Media Download Mode not Supported");
-            }
-        }
-    }*/
-
-    /*private void getFileList() {
-        mediaManager = FPVDemoApplication.getCameraInstance().getMediaManager();
-        if (mediaManager != null) {
-
-            if ((currentFileListState == MediaManager.FileListState.SYNCING) || (currentFileListState == MediaManager.FileListState.DELETING)){
-                DJILog.e(TAG, "Media Manager is busy.");
-            }else{
-                mediaManager.refreshFileList(new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(DJIError error) {
-                        if (null == error) {
-                            hideProgressDialog();
-
-                            //Reset data
-                            if (currentFileListState != MediaManager.FileListState.INCOMPLETE) {
-                                mediaFileList.clear();
-                                lastClickViewIndex = -1;
-                                lastClickView = null;
-                            }
-
-                            mediaFileList = mediaManager.getFileListSnapshot();
-                            Collections.sort(mediaFileList, new Comparator<MediaFile>() {
-                                @Override
-                                public int compare(MediaFile lhs, MediaFile rhs) {
-                                    if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
-                                        return 1;
-                                    } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
-                                        return -1;
-                                    }
-                                    return 0;
-                                }
-                            });
-                            scheduler.resume(new CommonCallbacks.CompletionCallback() {
-                                @Override
-                                public void onResult(DJIError error) {
-                                    if (error == null) {
-                                        getThumbnails();
-                                        getPreviews();
-                                    }
-                                }
-                            });
-                        } else {
-                            hideProgressDialog();
-                            setResultToToast("Get Media File List Failed:" + error.getDescription());
-                        }
-                    }
-                });
-            }
-        }
-    }*/
-
-    /*private MediaManager.FileListStateListener updateFileListStateListener = new MediaManager.FileListStateListener() {
-        @Override
-        public void onFileListStateChange(MediaManager.FileListState state) {
-            currentFileListState = state;
-        }
-    };*/
-
     // Method for taking photo
     private void captureAction(){
-
-        //file = new File(Environment.getExternalStorageDirectory().getPath() + "/Dji_Sdk_Test/");
-        //file = new File(getFilesDir(), "hola");
 
         final Camera camera = FPVDemoApplication.getCameraInstance();
         if (camera != null) {
@@ -594,23 +399,23 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                     @Override
                     public void onResult(DJIError djiError) {
                         if (null == djiError) {
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
+                            //handler.postDelayed(new Runnable() {
+                                //@Override
+                                //public void run() {
                                     camera.startShootPhoto(new CommonCallbacks.CompletionCallback() {
                                         @Override
                                         public void onResult(DJIError djiError) {
                                             if (djiError == null) {
                                                 showToast("take photo: success");
-                                                downloadFileByIndex(0);
+                                                //downloadFileByIndex(0);
                                                 //media.fetchFileData(file, "fotoDron", new DownloadHandler<String>());
                                             } else {
                                                 showToast(djiError.getDescription());
                                             }
                                         }
                                     });
-                                }
-                            }, 2000);
+                                //}
+                           // }, 2000);
                             //media.fetchFileData(file, "fotoDron", new DownloadHandler<String>());
 
                         }
@@ -620,137 +425,6 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
             //downloadFileByIndex(0);
         }
         //media.fetchFileData(file, "fotoDron", new DownloadHandler<String>());
-    }
-
-    private void downloadFileByIndex(final int index){
-        /*if ((mediaFileList.get(index).getMediaType() == MediaFile.MediaType.PANORAMA)
-                || (mediaFileList.get(index).getMediaType() == MediaFile.MediaType.SHALLOW_FOCUS)) {
-            return;
-        }*/
-
-        //String[] array = {"WRITE_EXTERNAL_STORAGE", "READ_EXTERNAL_STORAGE"};
-
-        //requestPermissions(array, 28);
-
-        //int a = checkPermission(array[0], "com.dji.FPVDemo");
-
-        //int b = checkPermission(array[0], 28, 2);
-
-        //int[] permissions = {a, checkPermission (array[1], "com.dji.FPVDemo")}
-
-        //onRequestPermissionsResult(28, array, permissions);
-
-        /*Camera camera = FPVDemoApplication.getCameraInstance();
-
-        camera.setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(DJIError error) {
-
-                if (error == null) {
-                    showToast("Switch Camera Mode Succeeded");
-                } else {
-                    showToast(error.getDescription());
-                }
-            }
-        });*/
-
-        if (FPVDemoApplication.getProductInstance() == null) {
-            mediaFileList.clear();
-            //mListAdapter.notifyDataSetChanged();
-            DJILog.e(TAG, "Product disconnected");
-            return;
-        } else {
-            setResultToToast("Product found");
-            if (null != FPVDemoApplication.getCameraInstance() && FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
-                mediaManager = FPVDemoApplication.getCameraInstance().getMediaManager();
-                if (null != mediaManager) {
-                    //mediaManager.addUpdateFileListStateListener(this.updateFileListStateListener);
-                    //mediaManager.addMediaUpdatedVideoPlaybackStateListener(this.updatedVideoPlaybackStateListener);
-                    FPVDemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, new CommonCallbacks.CompletionCallback() {
-                        @Override
-                        public void onResult(DJIError error) {
-                            if (error == null) {
-                                //DJILog.e(TAG, "Set cameraMode success");
-                                setResultToToast("Set cameraMode success");
-                                //showProgressDialog();
-                                //getFileList();
-                            } else {
-                                setResultToToast("Set cameraMode failed");
-                                setResultToToast(error.getDescription());
-                            }
-                        }
-                    });
-                    /*if (mMediaManager.isVideoPlaybackSupported()) {
-                        DJILog.e(TAG, "Camera support video playback!");
-                    } else {
-                        setResultToToast("Camera does not support video playback!");
-                    }*/
-                    //scheduler = mediaManager.getScheduler();
-                }
-
-            } else if (null != FPVDemoApplication.getCameraInstance()
-                    && !FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
-                setResultToToast("Media Download Mode not Supported");
-            }
-        }
-
-        mediaFileList = mediaManager.getFileListSnapshot();
-        /*Collections.sort(mediaFileList, new Comparator<MediaFile>() {
-            @Override
-            public int compare(MediaFile lhs, MediaFile rhs) {
-                if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
-                    return 1;
-                } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
-                    return -1;
-                }
-                return 0;
-            }
-        });*/
-
-        try {
-            mediaFileList.get(index).getDateCreated();
-            setResultToToast("Funciona");
-        } catch (IndexOutOfBoundsException e) {
-            setResultToToast(e.getMessage());
-        }
-
-        //datePhoto.setText(mediaFileList.get(index).getDateCreated());
-        //datePhoto.setVisibility(View.VISIBLE);
-
-        /*mediaFileList.get(index).fetchFileData(file, null, new DownloadListener<String>() {
-            @Override
-            public void onFailure(DJIError error) {
-                //HideDownloadProgressDialog();
-                setResultToToast("Download File Failed" + error.getDescription());
-                currentProgress = -1;
-            }
-
-            @Override
-            public void onProgress(long total, long current) {
-            }
-
-            @Override
-            public void onRateUpdate(long total, long current, long persize) {
-                int tmpProgress = (int) (1.0 * current / total * 100);
-                if (tmpProgress != currentProgress) {
-                    //mDownloadDialog.setProgress(tmpProgress);
-                    currentProgress = tmpProgress;
-                }
-            }
-
-            @Override
-            public void onStart() {
-                currentProgress = -1;
-                //ShowDownloadProgressDialog();
-            }
-
-            @Override
-            public void onSuccess(String filePath) {
-                //HideDownloadProgressDialog();
-                setResultToToast("Download File Success" + ":" + filePath);
-                currentProgress = -1;
-            }
-        });*/
     }
 
     // Method for starting recording
@@ -789,6 +463,154 @@ public class MainActivity extends Activity implements SurfaceTextureListener,OnC
                     }
                 }
             }); // Execute the stopRecordVideo API
+        }
+
+    }
+
+    private void initMediaManager() {
+        if (FPVDemoApplication.getProductInstance() == null) {
+            mediaFileList.clear();
+            //mListAdapter.notifyDataSetChanged();
+            DJILog.e(TAG, "Product disconnected");
+            return;
+        } else {
+            if (null != FPVDemoApplication.getCameraInstance() && FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                mediaManager = FPVDemoApplication.getCameraInstance().getMediaManager();
+                if (null != mediaManager) {
+                    mediaManager.addUpdateFileListStateListener(this.updateFileListStateListener);
+                    //mediaManager.addMediaUpdatedVideoPlaybackStateListener(this.updatedVideoPlaybackStateListener);
+                    FPVDemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError error) {
+                            if (error == null) {
+                                DJILog.e(TAG, "Set cameraMode success");
+                                //showProgressDialog();
+                                getFileList();
+                            } else {
+                                setResultToToast("Set cameraMode failed");
+                            }
+                        }
+                    });
+                    if (mediaManager.isVideoPlaybackSupported()) {
+                        DJILog.e(TAG, "Camera support video playback!");
+                    } else {
+                        setResultToToast("Camera does not support video playback!");
+                    }
+                    //scheduler = mediaManager.getScheduler();
+                }
+
+            } else if (null != FPVDemoApplication.getCameraInstance()
+                    && !FPVDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                setResultToToast("Media Download Mode not Supported");
+            }
+        }
+        return;
+    }
+
+    private void getFileList() {
+        mediaManager = FPVDemoApplication.getCameraInstance().getMediaManager();
+        if (mediaManager != null) {
+
+            if ((currentFileListState == MediaManager.FileListState.SYNCING) || (currentFileListState == MediaManager.FileListState.DELETING)){
+                DJILog.e(TAG, "Media Manager is busy.");
+            }else{
+                mediaManager.refreshFileList(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(DJIError error) {
+                        if (null == error) {
+                            //hideProgressDialog();
+
+                            //Reset data
+                            if (currentFileListState != MediaManager.FileListState.INCOMPLETE) {
+                                mediaFileList.clear();
+                                //lastClickViewIndex = -1;
+                                //lastClickView = null;
+                            }
+
+                            mediaFileList = mediaManager.getFileListSnapshot();
+                            Collections.sort(mediaFileList, new Comparator<MediaFile>() {
+                                @Override
+                                public int compare(MediaFile lhs, MediaFile rhs) {
+                                    if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
+                                        return 1;
+                                    } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
+                                        return -1;
+                                    }
+                                    return 0;
+                                }
+                            });
+                            /*scheduler.resume(new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError error) {
+                                    if (error == null) {
+                                        //getThumbnails();
+                                        //getPreviews();
+                                    }
+                                }
+                            });*/
+                        } else {
+                            //hideProgressDialog();
+                            setResultToToast("Get Media File List Failed:" + error.getDescription());
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private MediaManager.FileListStateListener updateFileListStateListener = new MediaManager.FileListStateListener() {
+        @Override
+        public void onFileListStateChange(MediaManager.FileListState state) {
+            currentFileListState = state;
+        }
+    };
+
+    private void downloadFileByIndex(final int index){
+        /*if ((mediaFileList.get(index).getMediaType() == MediaFile.MediaType.PANORAMA)
+                || (mediaFileList.get(index).getMediaType() == MediaFile.MediaType.SHALLOW_FOCUS)) {
+            return;
+        }*/
+
+        try {
+            mediaFileList.get(index).fetchFileData(destDir, null, new DownloadListener<String>() {
+                @Override
+                public void onFailure(DJIError error) {
+                    //HideDownloadProgressDialog();
+                    setResultToToast("Download File Failed" + error.getDescription());
+                    currentProgress = -1;
+                }
+
+                @Override
+                public void onProgress(long total, long current) {
+                }
+
+                @Override
+                public void onRateUpdate(long total, long current, long persize) {
+                    int tmpProgress = (int) (1.0 * current / total * 100);
+                    if (tmpProgress != currentProgress) {
+                        //mDownloadDialog.setProgress(tmpProgress);
+                        currentProgress = tmpProgress;
+                    }
+                }
+
+                @Override
+                public void onStart() {
+                    currentProgress = -1;
+                    //ShowDownloadProgressDialog();
+                }
+
+                @Override
+                public void onSuccess(String filePath) {
+                    //HideDownloadProgressDialog();
+                    setResultToToast("Download File Success" + ":" + filePath);
+                    currentProgress = -1;
+                }
+            });
+
+            switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+
+        } catch(IndexOutOfBoundsException e) {
+            setResultToToast(e.getMessage());
         }
 
     }
