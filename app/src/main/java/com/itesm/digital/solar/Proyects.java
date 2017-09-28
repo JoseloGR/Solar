@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -46,5 +47,27 @@ public class Proyects extends AppCompatActivity {
         ACTIVE_USERNAME = prefs.getString("User", null);
         ID_USER = prefs.getString("IdUser", null);
         TOKEN = prefs.getString("Token", null);
+
+        Thread timerThread = new Thread(){
+            public void run(){
+                try{
+                    sleep(3000);
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }finally{
+
+                    SharedPreferences userProfile = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+
+                    if(userProfile.contains("Token")){
+                        Intent i = new Intent(Proyects.this, SubstationActivity.class);
+                        startActivity(i);
+                    }else{
+                        Log.d("STATUS","OK");
+                    }
+
+                }
+            }
+        };
+        timerThread.start();
     }
 }
