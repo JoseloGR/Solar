@@ -21,4 +21,19 @@ public class ResponseLogin {
     @Expose
     private String userId;
 
+    public String getId() {
+        return id;
+    }
+
+    public String getTtl() {
+        return ttl;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
 }

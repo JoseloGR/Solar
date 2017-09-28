@@ -36,4 +36,16 @@
     <string name="pick_place">Choose a place</string>
     <string name="title_activity_substation">Subestación eléctrica</string>
 
+    <string name="progress_dialog">Iniciar Sesión</string>
+    <string name="please_wait">Conectando con el servidor, por favor espere un momento...</string>
+
+    <string name="error_field_required">Este campo es requerido</string>
+    <string name="error_user_username">Este nombre de usuario no se encuentra disponible</string>
+    <string name="error_user_pass">Esta contraseña es muy corta, debe contener mínimo 6 caracteres</string>
+    <string name="error_user_pass_confirm">Las contraseñas no son iguales</string>
+    <string name="error_user_email">Ingresa una correo válido</string>
+    <string name="error_user_phone">Ingresa un teléfono válido</string>
+    <string name="error_user_pass_empty">Ingrese su contraseña</string>
+
+
 </resources>
