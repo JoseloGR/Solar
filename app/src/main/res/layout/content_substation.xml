@@ -20,10 +20,11 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@color/colorGreen"
-            android:text="Continuar"
+            android:text="ENVIAR"
             android:textColor="@color/colorAccent"
             android:textSize="24sp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:onClick="uploadProject"/>
 
     </RelativeLayout>
 
