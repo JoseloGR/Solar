@@ -15,4 +15,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/substation"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar subestación"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="447dp"
+        android:onClick="goSubstation"/>
+
 </android.support.constraint.ConstraintLayout>
