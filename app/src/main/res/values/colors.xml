@@ -2,12 +2,13 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
     <color name="bg_login">#EAAB3D</color>
     <color name="white">#ffffff</color>
     <color name="input_login">#222222</color>
     <color name="input_login_hint">#999999</color>
     <color name="btn_login">#EAAB3D</color>
     <color name="btn_login_bg">#eceef1</color>
+    <color name="colorAccent">#FFF</color>
+    <color name="colorGreen">#13CE66</color>
+
 </resources>
