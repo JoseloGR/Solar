@@ -2,49 +2,49 @@ package com.itesm.digital.solar.Models;
 
 public class RequestProject {
 
-    private String name;
-    private String address;
-    private String cost;
-    private String date;
-    private String surface;
+    private String Name;
+    private String Address;
+    private Integer Cost;
+    private String Date;
+    private Integer Surface;
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        Name = name;
     }
 
     public String getAddress() {
-        return address;
+        return Address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        Address = address;
     }
 
-    public String getCost() {
-        return cost;
+    public Integer getCost() {
+        return Cost;
     }
 
-    public void setCost(String cost) {
-        this.cost = cost;
+    public void setCost(Integer cost) {
+        Cost = cost;
     }
 
     public String getDate() {
-        return date;
+        return Date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        Date = date;
     }
 
-    public String getSurface() {
-        return surface;
+    public Integer getSurface() {
+        return Surface;
     }
 
-    public void setSurface(String surface) {
-        this.surface = surface;
+    public void setSurface(Integer surface) {
+        Surface = surface;
     }
 }

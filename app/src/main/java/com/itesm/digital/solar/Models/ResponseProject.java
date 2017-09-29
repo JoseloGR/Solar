@@ -5,19 +5,51 @@ import com.google.gson.annotations.SerializedName;
 
 public class ResponseProject {
 
-    @SerializedName("statusCode")
+    @SerializedName("Name")
     @Expose
-    private String statusCode;
+    private String Name;
 
-    @SerializedName("message")
+    @SerializedName("Address")
     @Expose
-    private String message;
+    private String Address;
 
-    public String getStatusCode() {
-        return statusCode;
+    @SerializedName("Cost")
+    @Expose
+    private Integer Cost;
+
+    @SerializedName("Date")
+    @Expose
+    private String Date;
+
+    @SerializedName("Surface")
+    @Expose
+    private Integer Surface;
+
+    @SerializedName("Id")
+    @Expose
+    private Integer Id;
+
+    public String getName() {
+        return Name;
     }
 
-    public String getMessage() {
-        return message;
+    public String getAddress() {
+        return Address;
+    }
+
+    public Integer getCost() {
+        return Cost;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public Integer getSurface() {
+        return Surface;
+    }
+
+    public Integer getId() {
+        return Id;
     }
 }

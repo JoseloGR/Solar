@@ -1,6 +1,8 @@
 package com.itesm.digital.solar;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,7 @@ public class CreateProject extends AppCompatActivity {
         setContentView(R.layout.activity_create_project);
 
         name = (EditText) findViewById(R.id.name_project);
+        address = (EditText) findViewById(R.id.cost_kwh_project);
 
         Button btn_create = (Button) findViewById(R.id.create_project); //relaciona el objeto con el boton de create
 
@@ -25,6 +28,14 @@ public class CreateProject extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //lleva a la pantalla de registro
+
+                SharedPreferences tokenUser = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = tokenUser.edit();
+
+                editor.putString("Name", name.getText().toString());
+                editor.putString("Cost", address.getText().toString());
+                editor.apply();
+
                 Intent mainIntent = new Intent().setClass(CreateProject.this, ChooseAddress.class);
                 startActivity(mainIntent);
             }

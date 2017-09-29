@@ -58,7 +58,7 @@ public class SubstationActivity extends AppCompatActivity implements
     MaterialDialog dialog;
 
     public SharedPreferences prefs;
-    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="";
+    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +113,8 @@ public class SubstationActivity extends AppCompatActivity implements
         ACTIVE_USERNAME = prefs.getString("User", null);
         ID_USER = prefs.getString("IdUser", null);
         TOKEN = prefs.getString("Token", null);
+        NAME = prefs.getString("Name", null);
+        COST = prefs.getString("Cost", null);
 
     }
 
@@ -210,11 +212,11 @@ public class SubstationActivity extends AppCompatActivity implements
         projectInterface = retrofit.create(RequestInterface.class);
 
         RequestProject projectRegister = new RequestProject();
-        projectRegister.setName("Proyecto Dummy");
+        projectRegister.setName(NAME);
         projectRegister.setAddress("Dirección complementaria");
-        projectRegister.setCost("10");
+        projectRegister.setCost(10);//Integer.valueOf(COST));
         projectRegister.setDate("2017-09-28T17:14:26.378Z");
-        projectRegister.setSurface(locationSE.toString());
+        projectRegister.setSurface(20);//locationSE.toString());
 
         Call<ResponseProject> responseRegister = projectInterface.RegisterProject(projectRegister);
 
@@ -224,7 +226,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 dialog.dismiss();
                 int statusCode = response.code();
                 ResponseProject responseBody = response.body();
-                if (statusCode==201){
+                if (statusCode==201 || statusCode==200){
                     showMessage("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
                 else{
