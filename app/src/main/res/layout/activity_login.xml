@@ -5,7 +5,7 @@
     android:id="@+id/linear"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/bg_login"
+    android:background="@color/accent"
     android:gravity="center"
     android:orientation="vertical">
 

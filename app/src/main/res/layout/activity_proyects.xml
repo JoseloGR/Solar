@@ -8,7 +8,7 @@
     android:paddingLeft="64dp"
     android:paddingRight="64dp"
     android:paddingTop="16dp"
-    android:background="@color/bg_login"
+    android:background="@color/accent"
     android:gravity="center"
     android:orientation="vertical">
 

@@ -141,8 +141,7 @@ public class Login extends AppCompatActivity {
                 showProgress(false);
 
                 if(statusCode != 200) {
-                    if(statusCode==400)
-                        showMessage("Iniciar sesión", "Verifica tu nombre de usuario y contraseña");
+                    showMessage("Iniciar sesión", "Verifica tu nombre de usuario y contraseña");
 
                 }
                 else if(statusCode==200){

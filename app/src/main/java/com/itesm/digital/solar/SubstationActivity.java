@@ -1,6 +1,7 @@
 package com.itesm.digital.solar;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -48,10 +50,12 @@ public class SubstationActivity extends AppCompatActivity implements
     Marker subStationMarker;
     FloatingActionButton fab;
     RequestInterface projectInterface;
-    public String TOKEN = "token_dummy";
 
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
+
+    public SharedPreferences prefs;
+    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +91,11 @@ public class SubstationActivity extends AppCompatActivity implements
                 .progress(true, 0);
 
         dialog = builder.build();
+
+        prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+        ACTIVE_USERNAME = prefs.getString("User", null);
+        ID_USER = prefs.getString("IdUser", null);
+        TOKEN = prefs.getString("Token", null);
 
     }
 
@@ -169,7 +178,7 @@ public class SubstationActivity extends AppCompatActivity implements
                     public okhttp3.Response intercept(Chain chain) throws IOException {
                         Request authed = chain.request()
                                 .newBuilder()
-                                .addHeader("Authorization","Token "+ TOKEN)
+                                .addHeader("Authorization","Bearer "+ TOKEN)
                                 .build();
                         return chain.proceed(authed);
                     }
@@ -201,8 +210,10 @@ public class SubstationActivity extends AppCompatActivity implements
                 if (statusCode==201){
                     showMessage("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
-                else
+                else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    Log.d("PROJECT",response.toString());
+                }
 
             }
 
@@ -240,6 +251,7 @@ public class SubstationActivity extends AppCompatActivity implements
     public void uploadProject(View v){
 
         if(isOnline()){
+            dialog.show();
             SendDataProject();
         }else{
             showMessage("Error en la comunicación", "Asegúrate de tener conexión a internet");
