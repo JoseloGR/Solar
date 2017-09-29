@@ -2,8 +2,8 @@ package com.itesm.digital.solar;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,12 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 
@@ -29,9 +29,13 @@ import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
 
-public class MapsActivity extends FragmentActivity implements AdapterView.OnItemSelectedListener, OnMapReadyCallback {
+public class ShowMapByAddress extends FragmentActivity implements AdapterView.OnItemSelectedListener, OnMapReadyCallback {
 
     private GoogleMap mMap;
+
+    private double latitude;
+    private double longitude;
+
     private boolean firstPoint = true;
     private boolean deletePolygon = false;
     private boolean startAnother = false;
@@ -44,6 +48,20 @@ public class MapsActivity extends FragmentActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                latitude = 0;
+                longitude = 0;
+            } else {
+                latitude = extras.getDouble("latitude");
+                longitude = extras.getDouble("longitude");
+            }
+        } else {
+            latitude = (double) savedInstanceState.getSerializable("latitude");
+            longitude = (double) savedInstanceState.getSerializable("longitude");
+        }
 
         mSpinner = (Spinner) findViewById(R.id.layers_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -74,10 +92,12 @@ public class MapsActivity extends FragmentActivity implements AdapterView.OnItem
 
         updateMapType();
 
-        // Add a marker in Sydney and move the camera
-        LatLng ITESM_CSF = new LatLng(19.359611, -99.257616);
-        //mMap.addMarker(new MarkerOptions().position(ITESM_CSF).title("Marcador en CSF"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ITESM_CSF));
+        LatLng origin = new LatLng(latitude, longitude);
+        CameraUpdate panToOrigin = CameraUpdateFactory.newLatLng(origin);
+        mMap.moveCamera(panToOrigin);
+
+        // set zoom level with animation
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 400, null);
 
         // Instantiates a new Polyline object and adds points to define a rectangle
         PolygonOptions rectOptions = new PolygonOptions()
@@ -252,6 +272,7 @@ public class MapsActivity extends FragmentActivity implements AdapterView.OnItem
                 }
             }
         });
+
     }
 
     private boolean checkReady() {
@@ -284,7 +305,7 @@ public class MapsActivity extends FragmentActivity implements AdapterView.OnItem
         if (!checkReady()) {
             return;
         }
-        Intent mainIntent = new Intent().setClass(MapsActivity.this, SubstationActivity.class);
+        Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SubstationActivity.class);
         startActivity(mainIntent);
     }
 

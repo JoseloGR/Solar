@@ -1,7 +1,9 @@
 package com.itesm.digital.solar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +15,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,14 +37,25 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
  */
 public class MapsActivityCurrentPlace extends AppCompatActivity
-        implements OnMapReadyCallback {
+        implements AdapterView.OnItemSelectedListener, OnMapReadyCallback {
 
     private static final String TAG = MapsActivityCurrentPlace.class.getSimpleName();
     private GoogleMap mMap;
@@ -73,6 +90,14 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
 
+    private boolean firstPoint = true;
+    private boolean deletePolygon = false;
+    private boolean startAnother = false;
+
+    private List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
+
+    private Spinner mSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,6 +119,13 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+        mSpinner = (Spinner) findViewById(R.id.layers_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+                this, R.array.layers_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpinner.setAdapter(adapter);
+        mSpinner.setOnItemSelectedListener(this);
 
         // Build the map.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -146,6 +178,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     public void onMapReady(GoogleMap map) {
         mMap = map;
 
+        updateMapType();
+
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -180,6 +214,180 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
+
+        // Instantiates a new Polyline object and adds points to define a rectangle
+        PolygonOptions rectOptions = new PolygonOptions()
+                .add(new LatLng(0, 0),
+                        new LatLng(0, 0)).fillColor(Color.BLUE);
+
+        // Get back the mutable Polygon
+        final Polygon polygon = mMap.addPolygon(rectOptions);
+        final Polygon polygon2 = mMap.addPolygon(rectOptions);
+        final Polygon polygon3 = mMap.addPolygon(rectOptions);
+        final Polygon polygon4 = mMap.addPolygon(rectOptions);
+
+        mMap.setOnMapClickListener( new GoogleMap.OnMapClickListener(){
+            @Override
+            public void onMapClick(LatLng latLng) {
+                if(listPolygons.size() == 0) {
+                    List<LatLng> path = polygon.getPoints();
+                    if (startAnother) {
+                        Log.d("size ", Integer.toString(path.size()));
+                        if(path.size() < 4){
+                            Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            listPolygons.add(polygon.getPoints());
+                            firstPoint = true;
+                        }
+                        startAnother = false;
+                    }
+                    else if (firstPoint) {   //check the first
+                        path.remove(0);
+                        path.remove(0);
+                        path.add(latLng);
+                        path.add(latLng);
+                        firstPoint = false;
+                    }
+                    else if (deletePolygon) {
+                        int size = path.size();
+                        for (int i = 0; i < size; i++) {
+                            path.remove(0);
+                        }
+                        path.add(latLng);
+                        path.add(latLng);
+                        deletePolygon = false;
+                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
+                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
+                        path.remove(path.size() - 1);
+                        path.add(latLng);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
+                    }
+                    polygon.setPoints(path);
+                    Log.d("path + ", path.toString());
+                }
+                if(listPolygons.size() == 1) {
+                    List<LatLng> path = polygon2.getPoints();
+                    if (startAnother) {
+                        Log.d("size ", Integer.toString(path.size()));
+                        if(path.size() < 4){
+                            Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            listPolygons.add(polygon2.getPoints());
+                            firstPoint = true;
+                        }
+                        startAnother = false;
+                    }
+                    else if (firstPoint) {   //check the first
+                        path.remove(0);
+                        path.remove(0);
+                        path.add(latLng);
+                        path.add(latLng);
+                        firstPoint = false;
+                    }
+                    else if (deletePolygon) {
+                        int size = path.size();
+                        for (int i = 0; i < size; i++) {
+                            path.remove(0);
+                        }
+                        path.add(latLng);
+                        path.add(latLng);
+                        deletePolygon = false;
+                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
+                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
+                        path.remove(path.size() - 1);
+                        path.add(latLng);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
+                    }
+                    polygon2.setPoints(path);
+                    Log.d("path + ", path.toString());
+                }
+                if(listPolygons.size() == 2) {
+                    List<LatLng> path = polygon3.getPoints();
+                    if (startAnother) {
+                        Log.d("size ", Integer.toString(path.size()));
+                        if(path.size() < 4){
+                            Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            listPolygons.add(polygon3.getPoints());
+                            firstPoint = true;
+                        }
+                        startAnother = false;
+                    }
+                    else if (firstPoint) {   //check the first
+                        path.remove(0);
+                        path.remove(0);
+                        path.add(latLng);
+                        path.add(latLng);
+                        firstPoint = false;
+                    }
+                    else if (deletePolygon) {
+                        int size = path.size();
+                        for (int i = 0; i < size; i++) {
+                            path.remove(0);
+                        }
+                        path.add(latLng);
+                        path.add(latLng);
+                        deletePolygon = false;
+                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
+                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
+                        path.remove(path.size() - 1);
+                        path.add(latLng);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
+                    }
+                    polygon3.setPoints(path);
+                    Log.d("path + ", path.toString());
+                }
+                if(listPolygons.size() == 3) {
+                    List<LatLng> path = polygon4.getPoints();
+                    if (startAnother) {
+                        Toast.makeText(getApplicationContext(), "You can't add more areas", Toast.LENGTH_SHORT).show();
+                        startAnother = false;
+                    }
+                    else if (firstPoint) {   //check the first
+                        path.remove(0);
+                        path.remove(0);
+                        path.add(latLng);
+                        path.add(latLng);
+                        firstPoint = false;
+                    }
+                    else if (deletePolygon) {
+                        int size = path.size();
+                        for (int i = 0; i < size; i++) {
+                            path.remove(0);
+                        }
+                        path.add(latLng);
+                        path.add(latLng);
+                        deletePolygon = false;
+                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
+                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
+                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
+                        path.remove(path.size() - 1);
+                        path.add(latLng);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
+                    }
+                    polygon4.setPoints(path);
+                    Log.d("path + ", path.toString());
+                }
+            }
+        });
     }
 
     /**
@@ -391,5 +599,74 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    private boolean checkReady() {
+        if (mMap == null) {
+            Toast.makeText(this, "Map not ready", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    /** Called when the Clear button is clicked. */
+    public void onClearMap(View view) {
+        if (!checkReady()) {
+            return;
+        }
+        //mMap.clear();
+        deletePolygon = true;
+    }
+
+    /** Called when the draw button is clicked. */
+    public void drawAnother(View view) {
+        if (!checkReady()) {
+            return;
+        }
+        startAnother = true;
+    }
+
+    /** Called when the send button is clicked. */
+    public void send(View view) {
+        if (!checkReady()) {
+            return;
+        }
+        Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
+        startActivity(mainIntent);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        updateMapType();
+    }
+
+    private void updateMapType() {
+        // No toast because this can also be called by the Android framework in onResume() at which
+        // point mMap may not be ready yet.
+        if (mMap == null) {
+            return;
+        }
+
+        String layerName = ((String) mSpinner.getSelectedItem());
+        if (layerName.equals(getString(R.string.normal))) {
+            mMap.setMapType(MAP_TYPE_NORMAL);
+        } else if (layerName.equals(getString(R.string.hybrid))) {
+            mMap.setMapType(MAP_TYPE_HYBRID);
+
+
+        } else if (layerName.equals(getString(R.string.satellite))) {
+            mMap.setMapType(MAP_TYPE_SATELLITE);
+        } else if (layerName.equals(getString(R.string.terrain))) {
+            mMap.setMapType(MAP_TYPE_TERRAIN);
+        } else if (layerName.equals(getString(R.string.none_map))) {
+            mMap.setMapType(MAP_TYPE_NONE);
+        } else {
+            Log.i("LDA", "Error setting layer with name " + layerName);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Do nothing.
     }
 }

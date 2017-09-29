@@ -37,10 +37,11 @@
         <activity android:name=".Proyects" />
         <activity android:name=".SelectSubstation" />
         <activity android:name=".MapsActivityCurrentPlace" />
+        <activity android:name=".ShowMapByAddress" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyDX2nPn5wpZo2cal_hjMHn3VdfxebA-r6w" />
 
         <activity
             android:name=".SubstationActivity"
