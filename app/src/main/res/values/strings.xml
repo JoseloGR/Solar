@@ -10,6 +10,7 @@
 
     <!-- activity_register -->
     <string name="name_user_hint_textbox">Name</string>
+    <string name="name_cost_hint_textbox">Cost kW/h</string>
     <string name="lastname_user_hint_textbox">Last Name</string>
     <string name="mail_user_hint_textbox">E-mail</string>
     <string name="confirm_password_text_hint">Confirm Password</string>
@@ -22,6 +23,7 @@
     <!-- activity_create_project -->
     <string name="address_project">Address</string>
     <string name="create">Create</string>
+    <string name="continue_project">Continue</string>
     <string name="choose_way_to_introduce_address">Choose way to introduce address</string>
     <string name="select_current_position">Select current position</string>
     <string name="introduce_address">Introduce address</string>

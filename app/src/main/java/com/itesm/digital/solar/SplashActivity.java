@@ -52,7 +52,7 @@ public class SplashActivity extends Activity {
                     makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
             startActivity(i, options.toBundle());
         }else{
-            Intent i = new Intent(SplashActivity.this, Login.class);
+            Intent i = new Intent(SplashActivity.this, Proyects.class);
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
             startActivity(i, options.toBundle());
