@@ -102,7 +102,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
         // Instantiates a new Polyline object and adds points to define a rectangle
         PolygonOptions rectOptions = new PolygonOptions()
                 .add(new LatLng(0, 0),
-                        new LatLng(0, 0)).fillColor(Color.BLUE);
+                        new LatLng(0, 0)).fillColor(Color.rgb(255, 204, 128)).strokeWidth(4);
 
         // Get back the mutable Polygon
         final Polygon polygon = mMap.addPolygon(rectOptions);
