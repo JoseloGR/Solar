@@ -306,6 +306,8 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
             return;
         }
         Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SubstationActivity.class);
+        mainIntent.putExtra("latitude", latitude);
+        mainIntent.putExtra("longitude", longitude);
         startActivity(mainIntent);
     }
 

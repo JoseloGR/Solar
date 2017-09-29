@@ -61,6 +61,9 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
 
+    private double latitude;
+    private double longitude;
+
     // The entry points to the Places API.
     private GeoDataClient mGeoDataClient;
     private PlaceDetectionClient mPlaceDetectionClient;
@@ -410,6 +413,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            latitude = mLastKnownLocation.getLatitude();
+                            longitude = mLastKnownLocation.getLongitude();
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
@@ -632,6 +637,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
+        mainIntent.putExtra("latitude", latitude);
+        mainIntent.putExtra("longitude", longitude);
         startActivity(mainIntent);
     }
 

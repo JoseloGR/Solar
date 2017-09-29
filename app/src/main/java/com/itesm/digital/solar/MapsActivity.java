@@ -36,6 +36,9 @@ public class MapsActivity extends FragmentActivity implements AdapterView.OnItem
     private boolean deletePolygon = false;
     private boolean startAnother = false;
 
+    private double latitude = 0;
+    private double longitude = 0;
+
     private List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
 
     private Spinner mSpinner;
@@ -97,6 +100,10 @@ public class MapsActivity extends FragmentActivity implements AdapterView.OnItem
                     List<LatLng> path = polygon.getPoints();
                     if (startAnother) {
                         Log.d("size ", Integer.toString(path.size()));
+                        if(latitude == 0){
+                            latitude = path.get(0).latitude;
+                            longitude = path.get(0).longitude;
+                        }
                         if(path.size() < 4){
                             Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
                         }
@@ -285,6 +292,8 @@ public class MapsActivity extends FragmentActivity implements AdapterView.OnItem
             return;
         }
         Intent mainIntent = new Intent().setClass(MapsActivity.this, SubstationActivity.class);
+        mainIntent.putExtra("latitude", latitude);
+        mainIntent.putExtra("longitude", longitude);
         startActivity(mainIntent);
     }
 

@@ -45,6 +45,9 @@ public class SubstationActivity extends AppCompatActivity implements
         GoogleMap.OnMarkerDragListener,
         GoogleMap.OnMarkerClickListener {
 
+    private double latitude;
+    private double longitude;
+
     private GoogleMap mMap;
     private LatLng locationTerrain, locationSE;
     Marker subStationMarker;
@@ -63,6 +66,20 @@ public class SubstationActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_substation);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                latitude = 0;
+                longitude = 0;
+            } else {
+                latitude = extras.getDouble("latitude");
+                longitude = extras.getDouble("longitude");
+            }
+        } else {
+            latitude = (double) savedInstanceState.getSerializable("latitude");
+            longitude = (double) savedInstanceState.getSerializable("longitude");
+        }
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -105,7 +122,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
         mMap.setOnMapLongClickListener(this);
 
-        locationTerrain = new LatLng(19.359611, -99.257616);
+        locationTerrain = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions()
                 .position(locationTerrain)
                 .title("Ubicación área")
