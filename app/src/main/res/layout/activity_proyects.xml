@@ -12,6 +12,13 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/solar_logo"
+        android:transitionName="logo"/>
+
     <Button
         android:text="@string/see_proyects"
         android:layout_width="fill_parent"

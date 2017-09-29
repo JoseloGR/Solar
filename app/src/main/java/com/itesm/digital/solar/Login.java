@@ -3,12 +3,15 @@ package com.itesm.digital.solar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -28,6 +31,7 @@ public class Login extends AppCompatActivity {
 
     private EditText user;    //guarda el usuario a ingresar
     private EditText password;  //guarda la contraseña introducida por el usuario
+    ImageView ivLogo;
 
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
@@ -44,6 +48,8 @@ public class Login extends AppCompatActivity {
 
         Button btn_access = (Button) findViewById(R.id.login_button);  //relaciona el objeto con el boton
         Button btn_register = (Button) findViewById(R.id.register_button);
+
+        ivLogo = (ImageView) findViewById(R.id.logo_solar);
 
         btn_access.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,9 +162,7 @@ public class Login extends AppCompatActivity {
 
                     password.setText("");
 
-                    Intent intent = new Intent(Login.this, Proyects.class);
-                    startActivity(intent);
-                    finish();
+                    OnLoginResult();
                 }
             }
 
@@ -168,6 +172,14 @@ public class Login extends AppCompatActivity {
                 showMessage("Iniciar sesión", "Tuvimos un problema con el servidor, intentalo de nuevo por favor");
             }
         });
+    }
+
+    private void OnLoginResult(){
+        Intent intent = new Intent(Login.this, Proyects.class);
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
+        startActivity(intent, options.toBundle());
+        finish();
     }
 
     private void showProgress(boolean show) {

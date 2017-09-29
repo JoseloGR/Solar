@@ -4,14 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
+import android.view.View;
+import android.widget.ImageView;
 
 public class SplashActivity extends Activity {
+
+    ImageView ivLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        ivLogo = (ImageView) findViewById(R.id.iv_solar);
 
         Thread timerThread = new Thread(){
             public void run(){
@@ -20,17 +29,7 @@ public class SplashActivity extends Activity {
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
-
-                    SharedPreferences userProfile = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
-
-                    if(userProfile.contains("Token")){
-                        Intent i = new Intent(SplashActivity.this, Proyects.class);
-                        startActivity(i);
-                    }else{
-                        Intent i = new Intent(SplashActivity.this, Login.class);
-                        startActivity(i);
-                    }
-
+                    GoHome();
                 }
             }
         };
@@ -41,5 +40,23 @@ public class SplashActivity extends Activity {
     protected void onPause() {
         super.onPause();
         finish();
+    }
+
+    private void GoHome(){
+        SharedPreferences userProfile = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+
+        if(userProfile.contains("Token")){
+            Intent i = new Intent(SplashActivity.this, Proyects.class);
+            // Pass data object in the bundle and populate details activity.
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
+            startActivity(i, options.toBundle());
+        }else{
+            Intent i = new Intent(SplashActivity.this, Login.class);
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
+            startActivity(i, options.toBundle());
+        }
+
     }
 }

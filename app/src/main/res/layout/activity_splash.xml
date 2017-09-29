@@ -8,9 +8,11 @@
     tools:context=".SplashActivity">
 
     <ImageView
+        android:id="@+id/iv_solar"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_centerInParent="true"
-        android:background="@drawable/solar_logo"/>
+        android:background="@drawable/solar_logo"
+        android:transitionName="logo"/>
 
 </RelativeLayout>
