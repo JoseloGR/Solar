@@ -4,9 +4,9 @@ public class RequestProject {
 
     private String Name;
     private String Address;
-    private Integer Cost;
+    private String Cost;
     private String Date;
-    private Integer Surface;
+    private String Surface;
 
     public String getName() {
         return Name;
@@ -24,11 +24,11 @@ public class RequestProject {
         Address = address;
     }
 
-    public Integer getCost() {
+    public String getCost() {
         return Cost;
     }
 
-    public void setCost(Integer cost) {
+    public void setCost(String cost) {
         Cost = cost;
     }
 
@@ -40,11 +40,11 @@ public class RequestProject {
         Date = date;
     }
 
-    public Integer getSurface() {
+    public String getSurface() {
         return Surface;
     }
 
-    public void setSurface(Integer surface) {
+    public void setSurface(String surface) {
         Surface = surface;
     }
 }

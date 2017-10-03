@@ -25,7 +25,7 @@ public interface RequestInterface {
     Call<ProfileResponse> getDataUser(@Path("username") String username);
     */
 
-    @POST("Projects/")
+    @POST("Projects")
     Call<ResponseProject> RegisterProject(@Body RequestProject orderRequest);
 
 }

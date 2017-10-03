@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -58,7 +59,8 @@ public class SubstationActivity extends AppCompatActivity implements
     MaterialDialog dialog;
 
     public SharedPreferences prefs;
-    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="";
+    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-03T20:28:07.174Z",SURFACE="30";
+    public int COST_VALUE=10, AREA_VALUE=20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,8 @@ public class SubstationActivity extends AppCompatActivity implements
         TOKEN = prefs.getString("Token", null);
         NAME = prefs.getString("Name", null);
         COST = prefs.getString("Cost", null);
+
+        Log.d("TOKEN", TOKEN);
 
     }
 
@@ -212,11 +216,12 @@ public class SubstationActivity extends AppCompatActivity implements
         projectInterface = retrofit.create(RequestInterface.class);
 
         RequestProject projectRegister = new RequestProject();
-        projectRegister.setName(NAME);
-        projectRegister.setAddress("Dirección complementaria");
-        projectRegister.setCost(10);//Integer.valueOf(COST));
-        projectRegister.setDate("2017-09-28T17:14:26.378Z");
-        projectRegister.setSurface(20);//locationSE.toString());
+        projectRegister.setName(Base64.encodeToString(NAME.getBytes(), Base64.NO_WRAP));
+        projectRegister.setAddress(Base64.encodeToString(ADDRESS.getBytes(), Base64.NO_WRAP));
+        projectRegister.setCost(Base64.encodeToString(COST.getBytes(), Base64.NO_WRAP));//Integer.valueOf(COST));
+        projectRegister.setDate(Base64.encodeToString(DATE.getBytes(), Base64.NO_WRAP));
+        projectRegister.setSurface(Base64.encodeToString(SURFACE.getBytes(), Base64.NO_WRAP));//locationSE.toString());
+        //Base64.encodeToString(NAME.getBytes(), Base64.NO_WRAP)
 
         Call<ResponseProject> responseRegister = projectInterface.RegisterProject(projectRegister);
 
