@@ -98,8 +98,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private boolean firstPoint = true;
     private boolean deletePolygon = false;
     private boolean startAnother = false;
+    private boolean sendEnabled = false;
 
     private List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
+    private List<LatLng> last = new ArrayList<LatLng>();
 
     private Spinner mSpinner;
 
@@ -268,6 +270,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
                         path.remove(path.size() - 1);
                         path.add(latLng);
+                        if (path.size() >= 3){
+                            sendEnabled = true;
+                            last = path;
+                        }
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
@@ -309,6 +315,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
                         path.remove(path.size() - 1);
                         path.add(latLng);
+                        if (path.size() >= 3){
+                            sendEnabled = true;
+                            last = path;
+                        }
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
@@ -350,6 +360,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
                         path.remove(path.size() - 1);
                         path.add(latLng);
+                        if (path.size() >= 3){
+                            sendEnabled = true;
+                            last = path;
+                        }
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
@@ -384,6 +398,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
                         path.remove(path.size() - 1);
                         path.add(latLng);
+                        if (path.size() >= 3){
+                            sendEnabled = true;
+                            last = path;
+                        }
                     }
                     else{
                         Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
@@ -638,10 +656,17 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         if (!checkReady()) {
             return;
         }
-        Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
-        mainIntent.putExtra("latitude", latitude);
-        mainIntent.putExtra("longitude", longitude);
-        startActivity(mainIntent);
+        if(sendEnabled){
+            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
+            mainIntent.putExtra("latitude", latitude);
+            mainIntent.putExtra("longitude", longitude);
+            listPolygons.add(last);
+            Log.d("list polygon + ", Integer.toString(listPolygons.size()));
+            startActivity(mainIntent);
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "You need to complete area", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
