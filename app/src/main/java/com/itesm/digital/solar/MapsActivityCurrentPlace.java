@@ -100,7 +100,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private boolean startAnother = false;
     private boolean sendEnabled = false;
 
-    private List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
+    public static List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
     private List<LatLng> last = new ArrayList<LatLng>();
 
     private Spinner mSpinner;
@@ -657,11 +657,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         if(sendEnabled){
-            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
+            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SelectStartPointDron.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);
             listPolygons.add(last);
-            Log.d("list polygon + ", Integer.toString(listPolygons.size()));
+            Log.d("final + ", last.toString());
             startActivity(mainIntent);
         }
         else{
