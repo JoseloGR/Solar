@@ -1,5 +1,6 @@
 package com.itesm.digital.solar;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 import java.util.List;
 
@@ -147,6 +150,16 @@ public class SelectStartPointDron extends AppCompatActivity
         });
 
         setCenter();
+
+        // Instantiates a new Polyline object and adds points to define a rectangle
+        PolygonOptions rectOptions = new PolygonOptions()
+                .add(new LatLng(0, 0),
+                        new LatLng(0, 0)).fillColor(Color.rgb(255, 204, 128)).strokeWidth(4);
+
+        // Get back the mutable Polygon
+        final Polygon polygon = mMap.addPolygon(rectOptions);
+        //Sets the points of this polygon
+        polygon.setPoints(MapsActivityCurrentPlace.listPolygons.get(0));
     }
 
     @Override
