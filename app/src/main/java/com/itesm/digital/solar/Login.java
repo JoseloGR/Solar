@@ -39,15 +39,7 @@ public class Login extends AppCompatActivity {
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
 
-    private static String token;
-
-    Retrofit.Builder builderR = new Retrofit.Builder()
-            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
-            .addConverterFactory(GsonConverterFactory.create());
-
-    Retrofit retrofit = builderR.build();
-
-    RequestInterface loginInterface = retrofit.create(RequestInterface.class);
+    RequestInterface loginInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,9 +65,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //lleva a la pantalla de registro
-                //Intent mainIntent = new Intent().setClass(Login.this, Register.class);
-                //startActivity(mainIntent);
-                SaveProjectDummy();
+                Intent mainIntent = new Intent().setClass(Login.this, Register.class);
+                startActivity(mainIntent);
             }
         });
 
@@ -172,10 +163,9 @@ public class Login extends AppCompatActivity {
                     editor.putString("User", user.getText().toString());
                     editor.apply();
 
-                    token = responseBody.getId();
                     password.setText("");
 
-                    //OnLoginResult();
+                    OnLoginResult();
                 }
             }
 
@@ -213,40 +203,4 @@ public class Login extends AppCompatActivity {
                 .show();
     }
 
-    private void SaveProjectDummy(){
-        String NAME="Solar", ADDRESS="TEc CSF", DATE="2017-10-12T05:56:15.454Z",COST="100",SURFACE="20",ID_USER="1";
-
-        RequestProject projectRegister = new RequestProject();
-        projectRegister.setName(NAME);
-        projectRegister.setAddress(ADDRESS);
-        projectRegister.setCost(COST);
-        projectRegister.setDate(DATE);
-        projectRegister.setSurface(SURFACE);
-        projectRegister.setUserId(ID_USER);
-
-        Call<ResponseProject> responseLogin = loginInterface.RegisterProject(token, projectRegister);
-
-        responseLogin.enqueue(new Callback<ResponseProject>() {
-            @Override
-            public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
-                int statusCode = response.code();
-                ResponseProject responseBody = response.body();
-                showProgress(false);
-
-                if(statusCode != 200) {
-                    Log.d("PROJECT",response.toString());
-                }
-                else if(statusCode==200){
-                    showMessage("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
-                    Log.d("SUCCESS",response.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseProject> call, Throwable t) {
-                showProgress(false);
-                showMessage("Iniciar sesión", "Tuvimos un problema con el servidor, intentalo de nuevo por favor");
-            }
-        });
-    }
 }
