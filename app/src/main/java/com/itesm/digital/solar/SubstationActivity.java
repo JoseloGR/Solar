@@ -59,7 +59,7 @@ public class SubstationActivity extends AppCompatActivity implements
     MaterialDialog dialog;
 
     public SharedPreferences prefs;
-    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-03T20:28:07.174Z",SURFACE="30";
+    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
     public int COST_VALUE=10, AREA_VALUE=20;
 
     @Override
@@ -118,7 +118,7 @@ public class SubstationActivity extends AppCompatActivity implements
         NAME = prefs.getString("Name", null);
         COST = prefs.getString("Cost", null);
 
-        Log.d("TOKEN", TOKEN);
+        Log.d("TOKEN SUB", TOKEN);
 
     }
 
@@ -195,24 +195,25 @@ public class SubstationActivity extends AppCompatActivity implements
 
     private void SendDataProject(){
 
+        /*
         OkHttpClient clientOk = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
                     @Override
                     public okhttp3.Response intercept(Chain chain) throws IOException {
                         Request authed = chain.request()
                                 .newBuilder()
-                                .addHeader("Authorization","Bearer "+ TOKEN)
+                                .addHeader("Authorization","Bearer "+TOKEN);
                                 .build();
                         return chain.proceed(authed);
                     }
-                }).build();
+                }).build();*/
 
-        Retrofit retrofit = new Retrofit.Builder()
+        Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(clientOk)
-                .build();
+                .addConverterFactory(GsonConverterFactory.create());
+                //.client(clientOk).build();
 
+        Retrofit retrofit = builder.build();
         projectInterface = retrofit.create(RequestInterface.class);
 
         RequestProject projectRegister = new RequestProject();
@@ -221,9 +222,10 @@ public class SubstationActivity extends AppCompatActivity implements
         projectRegister.setCost(Base64.encodeToString(COST.getBytes(), Base64.NO_WRAP));//Integer.valueOf(COST));
         projectRegister.setDate(Base64.encodeToString(DATE.getBytes(), Base64.NO_WRAP));
         projectRegister.setSurface(Base64.encodeToString(SURFACE.getBytes(), Base64.NO_WRAP));//locationSE.toString());
+        projectRegister.setUserId(Base64.encodeToString(ID_USER.getBytes(), Base64.NO_WRAP));
         //Base64.encodeToString(NAME.getBytes(), Base64.NO_WRAP)
 
-        Call<ResponseProject> responseRegister = projectInterface.RegisterProject(projectRegister);
+        Call<ResponseProject> responseRegister = projectInterface.RegisterProject("Bearer "+TOKEN, projectRegister);
 
         responseRegister.enqueue(new Callback<ResponseProject>() {
             @Override
@@ -244,6 +246,7 @@ public class SubstationActivity extends AppCompatActivity implements
             @Override
             public void onFailure(Call<ResponseProject> call, Throwable t) {
                 dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
                 showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
             }
         });

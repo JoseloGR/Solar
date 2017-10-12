@@ -8,6 +8,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +18,9 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.RequestLogin;
+import com.itesm.digital.solar.Models.RequestProject;
 import com.itesm.digital.solar.Models.ResponseLogin;
+import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 import com.itesm.digital.solar.Utils.Validations;
 
@@ -36,7 +39,15 @@ public class Login extends AppCompatActivity {
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
 
-    RequestInterface loginInterface;
+    private static String token;
+
+    Retrofit.Builder builderR = new Retrofit.Builder()
+            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
+            .addConverterFactory(GsonConverterFactory.create());
+
+    Retrofit retrofit = builderR.build();
+
+    RequestInterface loginInterface = retrofit.create(RequestInterface.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +73,9 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //lleva a la pantalla de registro
-                Intent mainIntent = new Intent().setClass(Login.this, Register.class);
-                startActivity(mainIntent);
+                //Intent mainIntent = new Intent().setClass(Login.this, Register.class);
+                //startActivity(mainIntent);
+                SaveProjectDummy();
             }
         });
 
@@ -160,9 +172,10 @@ public class Login extends AppCompatActivity {
                     editor.putString("User", user.getText().toString());
                     editor.apply();
 
+                    token = responseBody.getId();
                     password.setText("");
 
-                    OnLoginResult();
+                    //OnLoginResult();
                 }
             }
 
@@ -198,5 +211,42 @@ public class Login extends AppCompatActivity {
                 .content(message)
                 .positiveText("Ok")
                 .show();
+    }
+
+    private void SaveProjectDummy(){
+        String NAME="Solar", ADDRESS="TEc CSF", DATE="2017-10-12T05:56:15.454Z",COST="100",SURFACE="20",ID_USER="1";
+
+        RequestProject projectRegister = new RequestProject();
+        projectRegister.setName(NAME);
+        projectRegister.setAddress(ADDRESS);
+        projectRegister.setCost(COST);
+        projectRegister.setDate(DATE);
+        projectRegister.setSurface(SURFACE);
+        projectRegister.setUserId(ID_USER);
+
+        Call<ResponseProject> responseLogin = loginInterface.RegisterProject(token, projectRegister);
+
+        responseLogin.enqueue(new Callback<ResponseProject>() {
+            @Override
+            public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
+                int statusCode = response.code();
+                ResponseProject responseBody = response.body();
+                showProgress(false);
+
+                if(statusCode != 200) {
+                    Log.d("PROJECT",response.toString());
+                }
+                else if(statusCode==200){
+                    showMessage("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    Log.d("SUCCESS",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseProject> call, Throwable t) {
+                showProgress(false);
+                showMessage("Iniciar sesión", "Tuvimos un problema con el servidor, intentalo de nuevo por favor");
+            }
+        });
     }
 }

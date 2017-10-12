@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.itesm.digital.solar"
         minSdkVersion 21
@@ -25,15 +25,17 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.android.gms:play-services:11.4.0'
     compile 'com.google.android.gms:play-services-location:11.4.0'
     compile 'com.google.android.gms:play-services-maps:11.4.0'
     compile 'com.jakewharton:butterknife:8.0.0'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:design:25.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.afollestad.material-dialogs:core:0.9.0.1'
+    compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.strongloop:loopback-android:1.+'
     testCompile 'junit:junit:4.12'
 }
