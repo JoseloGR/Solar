@@ -46,7 +46,8 @@
             android:name=".SubstationActivity"
             android:label="@string/title_activity_substation" />
         <activity android:name=".Login" />
-        <activity android:name=".SelectStartPointDron"></activity>
+        <activity android:name=".SelectStartPointDron" />
+        <activity android:name=".CreateRoute"></activity>
     </application>
 
 </manifest>
