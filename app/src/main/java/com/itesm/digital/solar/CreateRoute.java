@@ -91,6 +91,9 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
 
     private Spinner mSpinner;
 
+    //set if the user is near of the area selected
+    private boolean nearArea = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,6 +221,75 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         final Polygon polygon = mMap.addPolygon(rectOptions);
         //Sets the points of this polygon
         polygon.setPoints(MapsActivityCurrentPlace.listPolygons.get(0));
+
+        createRoute(10, MapsActivityCurrentPlace.listPolygons.get(0));
+    }
+
+    private Location findLongitudeDron(List<LatLng> listVertices, double height){
+        Location firstLocationDron = new Location("");
+        Location vertix = new Location("");
+        double length;
+        double width;
+        double longitudeDron;
+        double latitudeDron;
+        double pending;
+        double b;
+
+        vertix.setLongitude(listVertices.get(0).longitude);
+        vertix.setLatitude(listVertices.get(0).latitude);
+        firstLocationDron.setLongitude(listVertices.get(0).longitude);
+        firstLocationDron.setLatitude(listVertices.get(0).latitude);
+        longitudeDron = listVertices.get(0).longitude;
+        latitudeDron = listVertices.get(0).latitude;
+
+        length = 1.8 * height;
+        width = 1.37 * height;
+
+        pending = (listVertices.get(1).longitude - listVertices.get(0).longitude) / (listVertices.get(1).latitude - listVertices.get(0).latitude);
+        b = (-pending * listVertices.get(0).latitude) + listVertices.get(0).longitude;
+        //longitudeDron = (pending * listVertices.get(0).latitude) + b;
+
+        while(vertix.distanceTo(firstLocationDron) <= (width / 2)){
+            if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
+                latitudeDron -= 0.00001;
+            }
+            else{
+                latitudeDron += 0.00001;
+            }
+            longitudeDron = (pending * latitudeDron) + b;
+            firstLocationDron.setLongitude(longitudeDron);
+            firstLocationDron.setLatitude(latitudeDron);
+            Log.v("Position dron", firstLocationDron.toString());
+        }
+
+        while(vertix.distanceTo(firstLocationDron) <= (width / 2)){
+            if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
+                latitudeDron -= 0.00001;
+            }
+            else{
+                latitudeDron += 0.00001;
+            }
+            longitudeDron = (pending * latitudeDron) + b;
+            firstLocationDron.setLongitude(longitudeDron);
+            firstLocationDron.setLatitude(latitudeDron);
+            Log.v("Position dron", firstLocationDron.toString());
+        }
+
+        /*while(vertix.distanceTo(firstLocationDron) <= (length / 2) + (width / 2)){
+            if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
+                latitudeDron -= 0.00001;
+            }
+            else{
+                latitudeDron += 0.00001;
+            }
+            firstLocationDron.setLatitude(latitudeDron);
+            Log.v("Latitude dron", firstLocationDron.toString());
+        }*/
+        return firstLocationDron;
+    }
+
+    private void createRoute(double height, List<LatLng> listVertices){
+        Log.v("Distancia", String.valueOf(findLongitudeDron(listVertices, height)));
     }
 
     private LatLng setCenter(){
@@ -519,5 +591,23 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing.
+    }
+
+    private void verifyCercany(){
+        //verify if the distance between actual location and area selected is too big
+        Location vertices = new Location("");
+        int numberVertices = MapsActivityCurrentPlace.listPolygons.get(0).size();
+        float distance = 0;
+        for(int i = 0; i < numberVertices; i++) {
+            vertices.setLatitude(MapsActivityCurrentPlace.listPolygons.get(0).get(i).latitude);
+            vertices.setLongitude(MapsActivityCurrentPlace.listPolygons.get(0).get(i).longitude);
+            //distance = mLastKnownLocation.distanceTo(vertices);
+            //Log.v("Localizacion", String.valueOf(actualLatitude) + " " + String.valueOf(actualLongitude));
+            //Log.v("Distancia", "Punto " +  String.valueOf(i + 1) + " distancia " + String.valueOf(distance));
+            /*if(distance < 1.0000000E7){
+                nearArea = true;
+                Log.v("Area cerca", String.valueOf(nearArea));
+            }*/
+        }
     }
 }
