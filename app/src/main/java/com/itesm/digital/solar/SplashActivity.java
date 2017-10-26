@@ -34,6 +34,8 @@ public class SplashActivity extends Activity {
             }
         };
         timerThread.start();
+
+
     }
 
     @Override
