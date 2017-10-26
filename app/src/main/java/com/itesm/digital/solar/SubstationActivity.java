@@ -276,6 +276,16 @@ public class SubstationActivity extends AppCompatActivity implements
         }
     }
 
+    public void uploadProject2(View v){
+
+        if(isOnline()){
+            dialog.show();
+            SendDataProject();
+        }else{
+            showMessage("Error en la comunicación", "Asegúrate de tener conexión a internet");
+        }
+    }
+
     public void SuccessProject(String title, String message){
         new MaterialDialog.Builder(this)
                 .title(title)
