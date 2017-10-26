@@ -7,6 +7,7 @@ public class RequestProject {
     private String Cost;
     private String Date;
     private String Surface;
+    private String userId;
 
     public String getName() {
         return Name;
@@ -46,5 +47,13 @@ public class RequestProject {
 
     public void setSurface(String surface) {
         Surface = surface;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

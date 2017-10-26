@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +19,9 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.RequestLogin;
+import com.itesm.digital.solar.Models.RequestProject;
 import com.itesm.digital.solar.Models.ResponseLogin;
+import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 import com.itesm.digital.solar.Utils.Validations;
 
@@ -37,6 +41,16 @@ public class Login extends AppCompatActivity {
     MaterialDialog dialog;
 
     RequestInterface loginInterface;
+
+    Retrofit.Builder builderR = new Retrofit.Builder()
+            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
+            .addConverterFactory(GsonConverterFactory.create());
+
+    Retrofit retrofit = builderR.build();
+
+    RequestInterface connectInterface = retrofit.create(RequestInterface.class);
+
+    String TOKEN="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +78,7 @@ public class Login extends AppCompatActivity {
                 //lleva a la pantalla de registro
                 Intent mainIntent = new Intent().setClass(Login.this, Register.class);
                 startActivity(mainIntent);
+                //SendDataProject();
             }
         });
 
@@ -161,7 +176,7 @@ public class Login extends AppCompatActivity {
                     editor.apply();
 
                     password.setText("");
-
+                    TOKEN = responseBody.getId();
                     OnLoginResult();
                 }
             }
@@ -199,4 +214,47 @@ public class Login extends AppCompatActivity {
                 .positiveText("Ok")
                 .show();
     }
+
+    public void SendDataProject(){
+        String DATE="2017-10-12T17:22:31.316Z", NAME="Solar", ADDRESS="CSF TEC", COST="10", SURFACE="10", ID_USER="1";
+
+
+        RequestProject projectRegister = new RequestProject();
+        projectRegister.setName(NAME);
+        projectRegister.setAddress(ADDRESS);
+        projectRegister.setCost(COST);
+        projectRegister.setDate(DATE);
+        projectRegister.setSurface(SURFACE);
+        projectRegister.setUserId(ID_USER);
+
+        Call<ResponseProject> responseRegister = connectInterface.RegisterProject(TOKEN, projectRegister);
+
+        responseRegister.enqueue(new Callback<ResponseProject>() {
+            @Override
+            public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
+                dialog.dismiss();
+                int statusCode = response.code();
+                ResponseProject responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    Log.d("SUCCESS",response.toString());
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    Log.d("PROJECT",response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseProject> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
+
+
+    }
+
 }

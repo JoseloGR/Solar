@@ -6,8 +6,11 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -61,8 +65,16 @@ public class SubstationActivity extends AppCompatActivity implements
     MaterialDialog dialog;
 
     public SharedPreferences prefs;
-    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-03T20:28:07.174Z",SURFACE="30";
+    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
     public int COST_VALUE=10, AREA_VALUE=20;
+
+    Retrofit.Builder builderR = new Retrofit.Builder()
+            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
+            .addConverterFactory(GsonConverterFactory.create());
+
+    Retrofit retrofit = builderR.build();
+
+    RequestInterface connectInterface = retrofit.create(RequestInterface.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +134,7 @@ public class SubstationActivity extends AppCompatActivity implements
         NAME = prefs.getString("Name", null);
         COST = prefs.getString("Cost", null);
 
-        Log.d("TOKEN", TOKEN);
+        Log.d("TOKEN SUB", TOKEN);
 
     }
 
@@ -199,35 +211,15 @@ public class SubstationActivity extends AppCompatActivity implements
 
     private void SendDataProject(){
 
-        OkHttpClient clientOk = new OkHttpClient.Builder()
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public okhttp3.Response intercept(Chain chain) throws IOException {
-                        Request authed = chain.request()
-                                .newBuilder()
-                                .addHeader("Authorization","Bearer "+ TOKEN)
-                                .build();
-                        return chain.proceed(authed);
-                    }
-                }).build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(clientOk)
-                .build();
-
-        projectInterface = retrofit.create(RequestInterface.class);
-
         RequestProject projectRegister = new RequestProject();
-        projectRegister.setName(Base64.encodeToString(NAME.getBytes(), Base64.NO_WRAP));
-        projectRegister.setAddress(Base64.encodeToString(ADDRESS.getBytes(), Base64.NO_WRAP));
-        projectRegister.setCost(Base64.encodeToString(COST.getBytes(), Base64.NO_WRAP));//Integer.valueOf(COST));
-        projectRegister.setDate(Base64.encodeToString(DATE.getBytes(), Base64.NO_WRAP));
-        projectRegister.setSurface(Base64.encodeToString(SURFACE.getBytes(), Base64.NO_WRAP));//locationSE.toString());
-        //Base64.encodeToString(NAME.getBytes(), Base64.NO_WRAP)
+        projectRegister.setName(NAME);
+        projectRegister.setAddress(ADDRESS);
+        projectRegister.setCost(COST);
+        projectRegister.setDate(DATE);
+        projectRegister.setSurface(SURFACE);
+        projectRegister.setUserId(ID_USER);
 
-        Call<ResponseProject> responseRegister = projectInterface.RegisterProject(projectRegister);
+        Call<ResponseProject> responseRegister = connectInterface.RegisterProject(TOKEN, projectRegister);
 
         responseRegister.enqueue(new Callback<ResponseProject>() {
             @Override
@@ -236,7 +228,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 int statusCode = response.code();
                 ResponseProject responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
-                    showMessage("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -248,6 +240,7 @@ public class SubstationActivity extends AppCompatActivity implements
             @Override
             public void onFailure(Call<ResponseProject> call, Throwable t) {
                 dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
                 showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
             }
         });
@@ -286,4 +279,19 @@ public class SubstationActivity extends AppCompatActivity implements
         }
     }
 
+    public void SuccessProject(String title, String message){
+        new MaterialDialog.Builder(this)
+                .title(title)
+                .content(message)
+                .positiveText("Ok")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(SubstationActivity.this, Proyects.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .show();
+    }
 }

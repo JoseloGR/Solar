@@ -17,7 +17,9 @@ public class Validations {
 
     //VALIDATE PASSWORD
     public static boolean isValidPassword(String pass) {
-        return pass != null && pass.length() >= 5;
+
+        return pass != null && pass.length() >= 4;
+
     }
 
     public static boolean isSamePassword(String pass, String passC){

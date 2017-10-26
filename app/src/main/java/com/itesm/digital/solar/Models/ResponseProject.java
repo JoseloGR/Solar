@@ -25,9 +25,13 @@ public class ResponseProject {
     @Expose
     private Integer Surface;
 
-    @SerializedName("Id")
+    @SerializedName("id")
     @Expose
-    private Integer Id;
+    private Integer id;
+
+    @SerializedName("userId")
+    @Expose
+    private Integer userId;
 
     public String getName() {
         return Name;
@@ -50,6 +54,10 @@ public class ResponseProject {
     }
 
     public Integer getId() {
-        return Id;
+        return id;
+    }
+
+    public Integer getUserId() {
+        return userId;
     }
 }
