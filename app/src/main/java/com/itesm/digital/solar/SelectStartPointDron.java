@@ -323,7 +323,7 @@ public class SelectStartPointDron extends AppCompatActivity
         // Do nothing.
     }
 
-    private void SendDataProject(){
+    /*private void SendDataProject(){
 
         OkHttpClient clientOk = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
@@ -353,7 +353,7 @@ public class SelectStartPointDron extends AppCompatActivity
         projectRegister.setSurface(Base64.encodeToString(SURFACE.getBytes(), Base64.NO_WRAP));//locationSE.toString());
         //Base64.encodeToString(NAME.getBytes(), Base64.NO_WRAP)
 
-        Call<ResponseProject> responseRegister = projectInterface.RegisterProject(projectRegister);
+        Call<ResponseProject> responseRegister = projectInterface.RegisterProject(projectRegister.);
 
         responseRegister.enqueue(new Callback<ResponseProject>() {
             @Override
@@ -410,5 +410,5 @@ public class SelectStartPointDron extends AppCompatActivity
         }else{
             showMessage("Error en la comunicación", "Asegúrate de tener conexión a internet");
         }
-    }
+    }*/
 }

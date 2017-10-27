@@ -30,7 +30,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.RequestArea;
 import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.ResponseArea;
 import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
@@ -64,7 +66,7 @@ public class SubstationActivity extends AppCompatActivity implements
     MaterialDialog dialog;
 
     public SharedPreferences prefs;
-    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
+    public String ACTIVE_USERNAME = "", ID_PROJECT="",ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
     public int COST_VALUE=10, AREA_VALUE=20;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
@@ -226,6 +228,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 ResponseProject responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
                     SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    ID_PROJECT = responseBody.getId().toString();
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -241,8 +244,42 @@ public class SubstationActivity extends AppCompatActivity implements
                 showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
             }
         });
+    }
 
+    private void SendDataArea(){
 
+        RequestArea areaRegister = new RequestArea();
+        areaRegister.setLatitude(String.valueOf(latitude));
+        areaRegister.setLongitude(String.valueOf(longitude));
+        areaRegister.setAzimuth(null);
+        areaRegister.setSolarRadiation(null);
+        areaRegister.setSurface(null);
+
+        Call<ResponseArea> responseArea = connectInterface.RegisterArea(TOKEN, areaRegister, ID_PROJECT);
+
+        responseArea.enqueue(new Callback<ResponseArea>() {
+            @Override
+            public void onResponse(Call<ResponseArea> call, Response<ResponseArea> response) {
+                dialog.dismiss();
+                int statusCode = response.code();
+                ResponseArea responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    //ID_PROJECT = responseBody.getId().toString();
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    Log.d("PROJECT",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseArea> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
     }
 
     public boolean isOnline () {
@@ -271,16 +308,7 @@ public class SubstationActivity extends AppCompatActivity implements
         if(isOnline()){
             dialog.show();
             SendDataProject();
-        }else{
-            showMessage("Error en la comunicación", "Asegúrate de tener conexión a internet");
-        }
-    }
-
-    public void uploadProject2(View v){
-
-        if(isOnline()){
-            dialog.show();
-            SendDataProject();
+            SendDataArea();
         }else{
             showMessage("Error en la comunicación", "Asegúrate de tener conexión a internet");
         }
