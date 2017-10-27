@@ -1,9 +1,11 @@
 package com.itesm.digital.solar.Interfaces;
 
 import com.itesm.digital.solar.Models.RequestArea;
+import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
 import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseLogin;
 import com.itesm.digital.solar.Models.ResponseProject;
 
@@ -33,4 +35,7 @@ public interface RequestInterface {
 
     @POST("Projects/{id}/areas")
     Call<ResponseArea> RegisterArea(@Header("Authorization") String authToken, @Body RequestArea orderArea, @Path("id") String id);
+
+    @POST("Areas/{id}/limits")
+    Call<ResponseLimit> RegisterLimits(@Header("Authorization") String authToken, @Body RequestLimit orderLimit, @Path("id") String id);
 }
