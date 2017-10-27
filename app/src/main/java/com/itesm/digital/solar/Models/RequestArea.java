@@ -2,20 +2,12 @@ package com.itesm.digital.solar.Models;
 
 public class RequestArea {
 
-    private String lat;
-    private String lng;
     private String solarRadiation;
     private String azimuth;
     private String surface;
+    private String id;
     private String projectId;
-
-    public String getLatitude(){ return lat; }
-
-    public void setLatitude(String latitude){ lat = latitude; }
-
-    public String getLongitude(){ return lng; }
-
-    public void setLongitude(String longitude){ lng = longitude; }
+    private Center center;
 
     public String getSolarRadiation(){ return solarRadiation; }
 
@@ -32,4 +24,20 @@ public class RequestArea {
     public String getProjectId() { return projectId; }
 
     public void setProjectId(String _projectId ) { projectId = _projectId; }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Center getCenter() {
+        return center;
+    }
+
+    public void setCenter(Center center) {
+        this.center = center;
+    }
 }

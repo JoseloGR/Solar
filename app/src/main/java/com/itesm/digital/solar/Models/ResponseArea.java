@@ -5,14 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class ResponseArea {
 
-    @SerializedName("lat")
-    @Expose
-    private Double lat;
-
-    @SerializedName("lng")
-    @Expose
-    private Double lng;
-
     @SerializedName("solarRadiation")
     @Expose
     private Double solarRadiation;
@@ -33,13 +25,11 @@ public class ResponseArea {
     @Expose
     private Integer projectId;
 
-    public Double getLat() {
-        return lat;
-    }
+    @SerializedName("center")
+    @Expose
+    private Center center;
 
-    public Double getLng() {
-        return lng;
-    }
+    public Center getCenter(){ return center; }
 
     public Double getSolarRadiation() {
         return solarRadiation;

@@ -30,6 +30,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.Center;
+import com.itesm.digital.solar.Models.Position;
 import com.itesm.digital.solar.Models.RequestArea;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestProject;
@@ -252,14 +254,16 @@ public class SubstationActivity extends AppCompatActivity implements
     private void SendDataArea(){
 
         RequestArea areaRegister = new RequestArea();
-        areaRegister.setLatitude(String.valueOf(latitude));
-        areaRegister.setLongitude(String.valueOf(longitude));
+        Center center = new Center();
+        center.setLat(String.valueOf(latitude));
+        center.setLng(String.valueOf(longitude));
+        areaRegister.setCenter(center);
         areaRegister.setAzimuth("0");
         areaRegister.setSolarRadiation("0");
         areaRegister.setProjectId(ID_PROJECT);
         areaRegister.setSurface("0");
 
-        Call<ResponseArea> responseArea = connectInterface.RegisterArea(TOKEN, areaRegister);
+        Call<ResponseArea> responseArea = connectInterface.RegisterArea(TOKEN, areaRegister, ID_PROJECT);
 
         responseArea.enqueue(new Callback<ResponseArea>() {
             @Override
@@ -274,7 +278,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
-                    Log.d("PROJECT",response.toString());
+                    Log.d("PROJECT A",response.toString());
                 }
             }
 
@@ -296,11 +300,12 @@ public class SubstationActivity extends AppCompatActivity implements
     public void SendDataLimits(){
 
         RequestLimit limitRegister = new RequestLimit();
-        limitRegister.setLat(null);
-        limitRegister.setLng(null);
-        limitRegister.setAltitude(null);
+        Position position = new Position();
+        position.setLat(String.valueOf(latitude));
+        position.setLng(String.valueOf(longitude));
+        limitRegister.setPosition(position);
+        limitRegister.setAltitude("0");
         limitRegister.setAreaId(ID_AREA);
-        limitRegister.setAreaId(null);
 
         Call<ResponseLimit> responseLimit = connectInterface.RegisterLimits(TOKEN, limitRegister, ID_AREA);
 
@@ -315,7 +320,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
-                    Log.d("PROJECT",response.toString());
+                    Log.d("PROJECT L",response.toString());
                 }
             }
 

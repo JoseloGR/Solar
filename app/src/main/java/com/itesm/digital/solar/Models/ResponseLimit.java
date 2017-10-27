@@ -5,14 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class ResponseLimit {
 
-    @SerializedName("lat")
-    @Expose
-    private Double lat;
-
-    @SerializedName("lng")
-    @Expose
-    private Double lng;
-
     @SerializedName("altitude")
     @Expose
     private Double altitude;
@@ -29,9 +21,11 @@ public class ResponseLimit {
     @Expose
     private Integer areaId;
 
-    public Double getLat(){ return lat; }
+    @SerializedName("position")
+    @Expose
+    private Position position;
 
-    public Double getLng(){ return lng; }
+    public Position getPosition() { return position; }
 
     public Double getAltitude(){ return altitude; }
 
