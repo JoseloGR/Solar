@@ -225,12 +225,13 @@ public class SubstationActivity extends AppCompatActivity implements
         responseRegister.enqueue(new Callback<ResponseProject>() {
             @Override
             public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
-                dialog.dismiss();
+                //dialog.dismiss();
                 int statusCode = response.code();
                 ResponseProject responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
-                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                     ID_PROJECT = responseBody.getId().toString();
+                    NextStepAreaRegister();
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -253,21 +254,23 @@ public class SubstationActivity extends AppCompatActivity implements
         RequestArea areaRegister = new RequestArea();
         areaRegister.setLatitude(String.valueOf(latitude));
         areaRegister.setLongitude(String.valueOf(longitude));
-        areaRegister.setAzimuth(null);
-        areaRegister.setSolarRadiation(null);
-        areaRegister.setSurface(null);
+        areaRegister.setAzimuth("0");
+        areaRegister.setSolarRadiation("0");
+        areaRegister.setProjectId(ID_PROJECT);
+        areaRegister.setSurface("0");
 
-        Call<ResponseArea> responseArea = connectInterface.RegisterArea(TOKEN, areaRegister, ID_PROJECT);
+        Call<ResponseArea> responseArea = connectInterface.RegisterArea(TOKEN, areaRegister);
 
         responseArea.enqueue(new Callback<ResponseArea>() {
             @Override
             public void onResponse(Call<ResponseArea> call, Response<ResponseArea> response) {
-                dialog.dismiss();
+                //dialog.dismiss();
                 int statusCode = response.code();
                 ResponseArea responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
-                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                     ID_AREA = responseBody.getId().toString();
+                    NextStepLimitRegister();
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -296,7 +299,7 @@ public class SubstationActivity extends AppCompatActivity implements
         limitRegister.setLat(null);
         limitRegister.setLng(null);
         limitRegister.setAltitude(null);
-        limitRegister.setId(null);
+        limitRegister.setAreaId(ID_AREA);
         limitRegister.setAreaId(null);
 
         Call<ResponseLimit> responseLimit = connectInterface.RegisterLimits(TOKEN, limitRegister, ID_AREA);
@@ -351,7 +354,6 @@ public class SubstationActivity extends AppCompatActivity implements
         if(isOnline()){
             dialog.show();
             SendDataProject();
-            SendDataArea();
             /*
                 for(int i = 0; i < MapsActivityCurrentPlace.listPolygons.size(); i++){
                 SendDataArea(MapsActivityCurrentPlace.listPolygons.get(i));
@@ -376,5 +378,13 @@ public class SubstationActivity extends AppCompatActivity implements
                     }
                 })
                 .show();
+    }
+
+    public void NextStepAreaRegister(){
+        SendDataArea();
+    }
+
+    public void NextStepLimitRegister(){
+        SendDataLimits();
     }
 }

@@ -7,7 +7,6 @@ public class RequestArea {
     private String solarRadiation;
     private String azimuth;
     private String surface;
-    private String id;
     private String projectId;
 
     public String getLatitude(){ return lat; }
@@ -29,10 +28,6 @@ public class RequestArea {
     public String getSurface(){ return surface; }
 
     public void setSurface(String _surface){ surface = _surface; }
-
-    public String getId() { return id; }
-
-    public void setId(String _id) { id = _id; }
 
     public String getProjectId() { return projectId; }
 

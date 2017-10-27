@@ -29,25 +29,35 @@ public class ResponseArea {
     @Expose
     private Integer id;
 
-    @SerializedName("userId")
+    @SerializedName("projectId")
     @Expose
-    private Integer userId;
+    private Integer projectId;
 
-    public Double getLat() { return lat; }
+    public Double getLat() {
+        return lat;
+    }
 
-    public Double getLng() { return lng; }
+    public Double getLng() {
+        return lng;
+    }
 
-    public Double getSolarRadiation() { return solarRadiation; }
+    public Double getSolarRadiation() {
+        return solarRadiation;
+    }
 
-    public Double getAzimuth() { return azimuth; }
+    public Double getAzimuth() {
+        return azimuth;
+    }
 
-    public Double getSurface() { return surface; }
+    public Double getSurface() {
+        return surface;
+    }
 
     public Integer getId() {
         return id;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getProjectId() {
+        return projectId;
     }
 }

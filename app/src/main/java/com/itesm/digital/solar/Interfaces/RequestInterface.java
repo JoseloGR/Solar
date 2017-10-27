@@ -33,8 +33,8 @@ public interface RequestInterface {
     @POST("Projects")
     Call<ResponseProject> RegisterProject(@Header("Authorization") String authToken, @Body RequestProject orderRequest);
 
-    @POST("Projects/{id}/areas")
-    Call<ResponseArea> RegisterArea(@Header("Authorization") String authToken, @Body RequestArea orderArea, @Path("id") String id);
+    @POST("Areas")
+    Call<ResponseArea> RegisterArea(@Header("Authorization") String authToken, @Body RequestArea orderArea);
 
     @POST("Areas/{id}/limits")
     Call<ResponseLimit> RegisterLimits(@Header("Authorization") String authToken, @Body RequestLimit orderLimit, @Path("id") String id);

@@ -5,7 +5,6 @@ public class RequestLimit {
     private String lat;
     private String lng;
     private String altitude;
-    private String id;
     private String resultId;
     private String areaId;
 
@@ -20,10 +19,6 @@ public class RequestLimit {
     public String getAltitude(){ return altitude; }
 
     public void setAltitude(String _altitude){ altitude = _altitude; }
-
-    public String getId(){ return id; }
-
-    public void setId(String _id){ id = _id; }
 
     public String getResultId(){ return resultId; }
 
