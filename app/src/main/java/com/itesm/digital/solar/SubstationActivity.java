@@ -41,6 +41,7 @@ import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -227,13 +228,11 @@ public class SubstationActivity extends AppCompatActivity implements
         responseRegister.enqueue(new Callback<ResponseProject>() {
             @Override
             public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
-                //dialog.dismiss();
                 int statusCode = response.code();
                 ResponseProject responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
                     ID_PROJECT = responseBody.getId().toString();
                     NextStepAreaRegister();
-                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -251,7 +250,7 @@ public class SubstationActivity extends AppCompatActivity implements
         });
     }
 
-    private void SendDataArea(){
+    private void SendDataArea(final List<LatLng> polygon){
 
         RequestArea areaRegister = new RequestArea();
         Center center = new Center();
@@ -273,8 +272,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 ResponseArea responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
                     ID_AREA = responseBody.getId().toString();
-                    NextStepLimitRegister();
-                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    NextStepLimitRegister(polygon);
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -289,20 +287,14 @@ public class SubstationActivity extends AppCompatActivity implements
                 showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
             }
         });
-
-        /*
-        for (int i = 0; i < polygon.size(); i++){
-            SendDataLimits(polygon.get(0));
-        }
-         */
     }
 
-    public void SendDataLimits(){
+    public void SendDataLimits(LatLng vertix){
 
         RequestLimit limitRegister = new RequestLimit();
         Position position = new Position();
-        position.setLat(String.valueOf(latitude));
-        position.setLng(String.valueOf(longitude));
+        position.setLat(String.valueOf(vertix.latitude));
+        position.setLng(String.valueOf(vertix.longitude));
         limitRegister.setPosition(position);
         limitRegister.setAltitude("0");
         limitRegister.setAreaId(ID_AREA);
@@ -316,7 +308,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 int statusCode = response.code();
                 ResponseLimit responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
-                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -359,11 +351,6 @@ public class SubstationActivity extends AppCompatActivity implements
         if(isOnline()){
             dialog.show();
             SendDataProject();
-            /*
-                for(int i = 0; i < MapsActivityCurrentPlace.listPolygons.size(); i++){
-                SendDataArea(MapsActivityCurrentPlace.listPolygons.get(i));
-            }
-             */
         }else{
             showMessage("Error en la comunicación", "Asegúrate de tener conexión a internet");
         }
@@ -386,10 +373,15 @@ public class SubstationActivity extends AppCompatActivity implements
     }
 
     public void NextStepAreaRegister(){
-        SendDataArea();
+        for(int i = 0; i < MapsActivityCurrentPlace.listPolygons.size(); i++) {
+            SendDataArea(MapsActivityCurrentPlace.listPolygons.get(i));
+        }
     }
 
-    public void NextStepLimitRegister(){
-        SendDataLimits();
+    public void NextStepLimitRegister(List<LatLng> polygon){
+        for (int i = 0; i < polygon.size(); i++){
+            SendDataLimits(polygon.get(i));
+        }
+        SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
     }
 }
