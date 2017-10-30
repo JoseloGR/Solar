@@ -30,7 +30,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.Center;
+import com.itesm.digital.solar.Models.Position;
+import com.itesm.digital.solar.Models.RequestArea;
+import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
@@ -64,7 +70,7 @@ public class SubstationActivity extends AppCompatActivity implements
     MaterialDialog dialog;
 
     public SharedPreferences prefs;
-    public String ACTIVE_USERNAME = "", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
+    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
     public int COST_VALUE=10, AREA_VALUE=20;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
@@ -221,11 +227,13 @@ public class SubstationActivity extends AppCompatActivity implements
         responseRegister.enqueue(new Callback<ResponseProject>() {
             @Override
             public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
-                dialog.dismiss();
+                //dialog.dismiss();
                 int statusCode = response.code();
                 ResponseProject responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
-                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    ID_PROJECT = responseBody.getId().toString();
+                    NextStepAreaRegister();
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                 }
                 else{
                     showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -241,8 +249,88 @@ public class SubstationActivity extends AppCompatActivity implements
                 showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
             }
         });
+    }
 
+    private void SendDataArea(){
 
+        RequestArea areaRegister = new RequestArea();
+        Center center = new Center();
+        center.setLat(String.valueOf(latitude));
+        center.setLng(String.valueOf(longitude));
+        areaRegister.setCenter(center);
+        areaRegister.setAzimuth("0");
+        areaRegister.setSolarRadiation("0");
+        areaRegister.setProjectId(ID_PROJECT);
+        areaRegister.setSurface("0");
+
+        Call<ResponseArea> responseArea = connectInterface.RegisterArea(TOKEN, areaRegister, ID_PROJECT);
+
+        responseArea.enqueue(new Callback<ResponseArea>() {
+            @Override
+            public void onResponse(Call<ResponseArea> call, Response<ResponseArea> response) {
+                //dialog.dismiss();
+                int statusCode = response.code();
+                ResponseArea responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    ID_AREA = responseBody.getId().toString();
+                    NextStepLimitRegister();
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    Log.d("PROJECT A",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseArea> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
+
+        /*
+        for (int i = 0; i < polygon.size(); i++){
+            SendDataLimits(polygon.get(0));
+        }
+         */
+    }
+
+    public void SendDataLimits(){
+
+        RequestLimit limitRegister = new RequestLimit();
+        Position position = new Position();
+        position.setLat(String.valueOf(latitude));
+        position.setLng(String.valueOf(longitude));
+        limitRegister.setPosition(position);
+        limitRegister.setAltitude("0");
+        limitRegister.setAreaId(ID_AREA);
+
+        Call<ResponseLimit> responseLimit = connectInterface.RegisterLimits(TOKEN, limitRegister, ID_AREA);
+
+        responseLimit.enqueue(new Callback<ResponseLimit>() {
+            @Override
+            public void onResponse(Call<ResponseLimit> call, Response<ResponseLimit> response) {
+                dialog.dismiss();
+                int statusCode = response.code();
+                ResponseLimit responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    Log.d("PROJECT L",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseLimit> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
     }
 
     public boolean isOnline () {
@@ -271,6 +359,11 @@ public class SubstationActivity extends AppCompatActivity implements
         if(isOnline()){
             dialog.show();
             SendDataProject();
+            /*
+                for(int i = 0; i < MapsActivityCurrentPlace.listPolygons.size(); i++){
+                SendDataArea(MapsActivityCurrentPlace.listPolygons.get(i));
+            }
+             */
         }else{
             showMessage("Error en la comunicación", "Asegúrate de tener conexión a internet");
         }
@@ -290,5 +383,13 @@ public class SubstationActivity extends AppCompatActivity implements
                     }
                 })
                 .show();
+    }
+
+    public void NextStepAreaRegister(){
+        SendDataArea();
+    }
+
+    public void NextStepLimitRegister(){
+        SendDataLimits();
     }
 }

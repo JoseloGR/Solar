@@ -35,7 +35,6 @@
         <activity android:name=".Register" />
         <activity android:name=".CreateProject" />
         <activity android:name=".Proyects" />
-        <activity android:name=".SelectSubstation" />
         <activity android:name=".MapsActivityCurrentPlace" />
         <activity android:name=".ShowMapByAddress" />
 
@@ -46,7 +45,9 @@
         <activity
             android:name=".SubstationActivity"
             android:label="@string/title_activity_substation" />
-        <activity android:name=".Login"></activity>
+        <activity android:name=".Login" />
+        <activity android:name=".SelectStartPointDron" />
+        <activity android:name=".CreateRoute"></activity>
     </application>
 
 </manifest>
