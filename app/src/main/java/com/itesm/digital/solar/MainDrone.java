@@ -94,7 +94,8 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
     private List<Waypoint> waypointList = new ArrayList<>();
 
-    private List<LatLng> coordinatesList = new ArrayList<>();
+    //private List<LatLng> coordinatesList = new ArrayList<>();
+    private List<LatLng> points = CreateRoute.points;
 
     public static WaypointMission.Builder waypointMissionBuilder;
     private FlightController mFlightController;
@@ -596,10 +597,10 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
     public void createPoints() {
         isAdd=true;
-        for (int i=0; i<coordinatesList.size(); i++)
+        for (int i=0; i<points.size(); i++)
         {
-            markWaypoint(coordinatesList.get(i));
-            Waypoint mWaypoint = new Waypoint(coordinatesList.get(i).latitude, coordinatesList.get(i).longitude, altitude);
+            markWaypoint(points.get(i));
+            Waypoint mWaypoint = new Waypoint(points.get(i).latitude, points.get(i).longitude, altitude);
             //Add Waypoints to Waypoint arraylist;
             if (waypointMissionBuilder != null) {
                 waypointList.add(mWaypoint);

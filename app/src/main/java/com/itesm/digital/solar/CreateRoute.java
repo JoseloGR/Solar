@@ -1,6 +1,7 @@
 package com.itesm.digital.solar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -88,6 +89,7 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
 
     public static List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
     private List<LatLng> last = new ArrayList<LatLng>();
+    public static List<LatLng> points = new ArrayList<LatLng>();
 
     private Spinner mSpinner;
 
@@ -210,7 +212,7 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
-        setCenter();
+        setCenter(MapsActivityCurrentPlace.listPolygons.get(0));
 
         // Instantiates a new Polyline object and adds points to define a rectangle
         PolygonOptions rectOptions = new PolygonOptions()
@@ -225,6 +227,62 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         createRoute(10, MapsActivityCurrentPlace.listPolygons.get(0));
     }
 
+    private double calcAngle(double x1, double x2, double y1, double y2)
+    {
+        double hyp;
+        double opp;
+        //double sign=0;
+
+        hyp = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
+        opp = Math.sqrt(Math.pow(y2-y1,2));
+
+        if (x2>=x1 && y2>=y1)
+            return (Math.asin(opp/hyp));
+        else if (x2<x1 && y2>=y1)
+            return ((Math.PI)-(Math.asin(opp/hyp)));
+        else if (x2<x1 && y2<y1)
+            return ((3*Math.PI/2)-(Math.PI/2 - Math.asin(opp/hyp)));
+        else
+            return ((2*Math.PI)-(Math.asin(opp/hyp)));
+    }
+
+    private LatLng findPoint(double x1, double y1, double angle, double w)
+    {
+        double y2;
+        double x2;
+
+        x2 = w * Math.cos(angle) + x1;
+        y2 = w * Math.sin(angle) + y1;
+
+        //y2  = y1  + ((w * Math.sin(angle)) / 6378137) * (180 / Math.PI);
+        //x2 = x1 + ((w * Math.cos(angle)) / 6378137) * (180 / Math.PI) / Math.cos(y1 * Math.PI/180);
+
+        /*Log.d("x1 = ", Double.toString(x1));
+        Log.d("y1 = ", Double.toString(y1));
+        Log.d("x2 = ", Double.toString(x2));
+        Log.d("y2 = ", Double.toString(y2));*/
+
+        return new LatLng(y2, x2);
+    }
+
+    private LatLng rotate(double angle, double x, double y, double ox, double oy, int r)
+    {
+        /*Log.d("angle2 = " , Double.toString(angle));
+        Log.d("ox = ", Double.toString(ox));
+        Log.d("oy = ", Double.toString(oy));
+        Log.d("x = ", Double.toString(x));
+        Log.d("y = ", Double.toString(y));
+        Log.d("r = ", Double.toString(r));*/
+
+        double lon = (x+(x*r))*Math.cos(angle)-(y+(y*r))*Math.sin(angle)+ox;
+        double lat = (x+(x*r))*Math.sin(angle)+(y+(y*r))*Math.cos(angle)+oy;
+
+        //Log.d("lon: ", Double.toString(lon));
+        //Log.d("lat: ", Double.toString(lat));
+
+        return new LatLng(lat, lon);
+    }
+
     private Location findLongitudeDron(List<LatLng> listVertices, double height){
         Location firstLocationDron = new Location("");
         Location vertix = new Location("");
@@ -234,6 +292,13 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         double latitudeDron;
         double pending;
         double b;
+        double angle;
+        double wt = 1;
+        double wa;
+        double rw = 0;
+        int i = -1;
+        int r=0;
+        int cw=0;
 
         vertix.setLongitude(listVertices.get(0).longitude);
         vertix.setLatitude(listVertices.get(0).latitude);
@@ -242,14 +307,186 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         longitudeDron = listVertices.get(0).longitude;
         latitudeDron = listVertices.get(0).latitude;
 
-        length = 1.8 * height;
-        width = 1.37 * height;
+        height = 23.0;
 
-        pending = (listVertices.get(1).longitude - listVertices.get(0).longitude) / (listVertices.get(1).latitude - listVertices.get(0).latitude);
-        b = (-pending * listVertices.get(0).latitude) + listVertices.get(0).longitude;
+        length = (1.8 * height * 0.3048) / 6378137 *180/Math.PI;
+        width = (1.37 * height * 0.3048) / 6378137 *180/Math.PI;
+        //width = 0.5;
+        //length = 1;
+
+        /*pending = (listVertices.get(1).longitude - listVertices.get(0).longitude) / (listVertices.get(1).latitude - listVertices.get(0).latitude);
+        b = (-pending * listVertices.get(0).latitude) + listVertices.get(0).longitude;*/
+
+        /*angle = calcAngle(listVertices.get(0).longitude, listVertices.get(1).longitude,
+                listVertices.get(0).latitude, listVertices.get(1).latitude);*/
+
+
+
+        /*List<LatLng> test = new ArrayList<LatLng>();
+
+        test.add(new LatLng(1,-2));
+        test.add(new LatLng(2,-5));
+        test.add(new LatLng(6,-6));
+        test.add(new LatLng(7,-3));*/
+
+        //test.add(new LatLng(6,-10));
+
+        //LatLng center = setCenter(test);
+
+        //Log.d("center: ", center.toString());
+
+        int j=0;
+        int j2=0;
+
+        //listVertices.remove(listVertices.size()-1);
+
+        //Log.d("vertices: ", listVertices.toString());
+
+        for (int k=0; k<4; k++)
+        //while (cw < listVertices.size())
+        {
+            //Log.d("j", Integer.toString(j));
+            //if (j+1 >= test.size()) {
+            if (j+1 >= listVertices.size()) {
+                j2 = 0;
+            }
+            else
+                j2 = j+1;
+
+            angle = calcAngle(listVertices.get(j).longitude, listVertices.get(j2).longitude,
+                    listVertices.get(j).latitude, listVertices.get(j2).latitude);
+
+            /*angle = calcAngle(test.get(j).longitude, test.get(j2).longitude,
+                    test.get(j).latitude, test.get(j2).latitude);*/
+
+            wt = (Math.sqrt(Math.pow(listVertices.get(j2).longitude-listVertices.get(j).longitude,2)
+                    + Math.pow(listVertices.get(j2).latitude-listVertices.get(j).latitude,2))) - width -rw;
+
+            /*wt = (Math.sqrt(Math.pow(test.get(j2).longitude-test.get(j).longitude,2)
+                    + Math.pow(test.get(j2).latitude-test.get(j).latitude,2))) - width -rw;*/
+
+            if (wt<0) {
+                cw++;
+            }
+            else {
+                cw = 0;
+
+                Log.d("angle: ", Double.toString(angle*180/Math.PI));
+                /*Log.d("length: ", Double.toString(length));
+                Log.d("width: ", Double.toString(width));
+                Log.d("wt: ", Double.toString(wt));
+                Log.d("rw: ", Double.toString(rw));*/
+
+                wa = 0;
+
+                //i=0;
+
+                //points.add(new LatLng(listVertices.get(0).latitude, listVertices.get(0).longitude));
+                points.add(rotate(angle, length / 2, length / 2, listVertices.get(j).longitude, listVertices.get(j).latitude, r));
+
+                /*if (angle > Math.PI/2 && angle <= Math.PI) {
+                    points.add(rotate(angle, length / 2, -length / 2, test.get(j).longitude, test.get(j).latitude, r));
+                    i++;
+                }
+
+                else {*/
+                //points.add(rotate(angle, length / 2, length / 2, test.get(j).longitude, test.get(j).latitude, r));
+                i++;
+                //}
+
+                //for (int l=1; l<test.size(); l++)
+                for (int l=1; l<listVertices.size(); l++)
+                {
+                    points.add(rotate(angle, -length / 2, length / 2, listVertices.get(l).longitude, listVertices.get(l).latitude, r));
+                    i++;
+                    //if (l+1 >= test.size())
+                    if (l+1 >= listVertices.size())
+                    {
+                        /*angle = calcAngle(test.get(l).longitude, test.get(0).longitude,
+                                test.get(l).latitude, test.get(0).latitude);*/
+
+                        angle = calcAngle(listVertices.get(l).longitude, listVertices.get(0).longitude,
+                                listVertices.get(l).latitude, listVertices.get(0).latitude);
+                    }
+                    else
+                    {
+                        /*angle = calcAngle(test.get(l).longitude, test.get(l + 1).longitude,
+                                test.get(l).latitude, test.get(l + 1).latitude);*/
+
+                        angle = calcAngle(listVertices.get(l).longitude, listVertices.get(l + 1).longitude,
+                                listVertices.get(l).latitude, listVertices.get(l + 1).latitude);
+                    }
+
+                    Log.d("angle: ", Double.toString(angle*180/Math.PI));
+
+                    /*if (test.get(l).longitude < test.get(l).longitude) {
+                        if (test.get(l).latitude < test.get(l).latitude){
+
+                        }
+                        else {
+
+                        }
+                    }*/
+                    //points.add(rotate(angle, -length / 2, length / 2, test.get(l).longitude, test.get(l).latitude, r));
+                    // i++;
+                }
+
+                //points.add(points.get(i-test.size()+1));
+                points.add(points.get(i-listVertices.size()+1));
+                i++;
+
+                //if (j == test.size() - 1) {
+                //if (j == listVertices.size() - 1) {
+                r++;
+                //}
+
+                /*while (wa<wt)
+                {
+                    //Log.d("i: ", Integer.toString(i));
+                    points.add(findPoint(points.get(i).longitude, points.get(i).latitude,
+                            angle, width));
+
+                    /*if (i>0 && angle <= Math.PI/2 && points.get(i).latitude < points.get(i-1).latitude)
+                        points.remove(i);
+                    else if (angle > Math.PI/2 && angle <= Math.PI && points.get(i).longitude > points.get(i-1).longitude)
+                        points.remove(i);
+                    else if (angle > Math.PI && angle <= 3*Math.PI/2 && points.get(i).latitude > points.get(i-1).latitude)
+                        points.remove(i);
+                    else if (angle > 3*Math.PI/2 && points.get(i).longitude < points.get(i-1).longitude)
+                        points.remove(i);
+                    else {
+                        i++;
+                        wa += width;
+                    //}
+                }
+
+                points.remove(i);
+                i--;*/
+            }
+
+            Log.d("points: ", points.toString());
+            //j++;
+
+            //if (j >= test.size()) {
+            //if (j >= listVertices.size()) {
+            j = 0;
+            rw += length;
+            //}
+
+        }
+
+        PolygonOptions rectOptions2 = new PolygonOptions()
+                .add(new LatLng(0, 0),
+                        new LatLng(0, 0)).fillColor(Color.rgb(255, 204, 128)).strokeWidth(10);
+
+        // Get back the mutable Polygon
+        final Polygon polygon2 = mMap.addPolygon(rectOptions2);
+        //Sets the points of this polygon
+        polygon2.setPoints(points);
+
         //longitudeDron = (pending * listVertices.get(0).latitude) + b;
 
-        while(vertix.distanceTo(firstLocationDron) <= (width / 2)){
+        /*while(vertix.distanceTo(firstLocationDron) <= (width / 2)){
             if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
                 latitudeDron -= 0.00001;
             }
@@ -260,20 +497,7 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
             firstLocationDron.setLongitude(longitudeDron);
             firstLocationDron.setLatitude(latitudeDron);
             Log.v("Position dron", firstLocationDron.toString());
-        }
-
-        while(vertix.distanceTo(firstLocationDron) <= (width / 2)){
-            if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
-                latitudeDron -= 0.00001;
-            }
-            else{
-                latitudeDron += 0.00001;
-            }
-            longitudeDron = (pending * latitudeDron) + b;
-            firstLocationDron.setLongitude(longitudeDron);
-            firstLocationDron.setLatitude(latitudeDron);
-            Log.v("Position dron", firstLocationDron.toString());
-        }
+        }*/
 
         /*while(vertix.distanceTo(firstLocationDron) <= (length / 2) + (width / 2)){
             if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
@@ -292,7 +516,7 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         Log.v("Distancia", String.valueOf(findLongitudeDron(listVertices, height)));
     }
 
-    private LatLng setCenter(){
+    private LatLng setCenter(List<LatLng> first){
         double lowestX = 0;
         double lowestY = 0;
         double highestY = 0;
@@ -300,7 +524,8 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         double centerX = 0;
         double centerY = 0;
 
-        List<LatLng> first = MapsActivityCurrentPlace.listPolygons.get(0);
+        //List<LatLng> first = MapsActivityCurrentPlace.listPolygons.get(0);
+        //List<LatLng> first = MapsActivityCurrentPlace.listPolygons.get(0);
 
         //set the lowest values of X and Y
         for (int i = 0; i < first.size(); i++){
