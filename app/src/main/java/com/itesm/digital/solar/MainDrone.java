@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
+import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -30,14 +32,21 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+import dji.common.camera.SettingsDefinitions;
+import dji.common.camera.SystemState;
 import dji.common.flightcontroller.FlightControllerState;
 import dji.common.mission.waypoint.Waypoint;
+import dji.common.mission.waypoint.WaypointAction;
+import dji.common.mission.waypoint.WaypointActionType;
 import dji.common.mission.waypoint.WaypointMission;
 import dji.common.mission.waypoint.WaypointMissionDownloadEvent;
 import dji.common.mission.waypoint.WaypointMissionExecutionEvent;
@@ -47,9 +56,18 @@ import dji.common.mission.waypoint.WaypointMissionHeadingMode;
 import dji.common.mission.waypoint.WaypointMissionUploadEvent;
 import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
+import dji.log.DJILog;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.camera.Camera;
+import dji.sdk.camera.DownloadListener;
+import dji.sdk.camera.MediaFile;
+import dji.sdk.camera.MediaManager;
+import dji.sdk.camera.VideoFeeder;
 import dji.sdk.flightcontroller.FlightController;
 import dji.common.error.DJIError;
+import dji.sdk.mission.timeline.TimelineElement;
+import dji.sdk.mission.timeline.triggers.Trigger;
+import dji.sdk.mission.timeline.triggers.TriggerEvent;
 import dji.sdk.mission.waypoint.WaypointMissionOperator;
 import dji.sdk.mission.waypoint.WaypointMissionOperatorListener;
 import dji.sdk.products.Aircraft;
@@ -72,15 +90,43 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     private Marker droneMarker = null;
 
     private float altitude = 100.0f;
-    private float mSpeed = 3.0f;;
+    private float mSpeed = 10.0f;
 
     private List<Waypoint> waypointList = new ArrayList<>();
+
+    private List<LatLng> coordinatesList = new ArrayList<>();
 
     public static WaypointMission.Builder waypointMissionBuilder;
     private FlightController mFlightController;
     private WaypointMissionOperator instance;
-    private WaypointMissionFinishedAction mFinishedAction = WaypointMissionFinishedAction.GO_HOME;
-    private WaypointMissionHeadingMode mHeadingMode = WaypointMissionHeadingMode.USING_WAYPOINT_HEADING;
+    private WaypointMissionFinishedAction mFinishedAction = WaypointMissionFinishedAction.NO_ACTION;
+    private WaypointMissionHeadingMode mHeadingMode = WaypointMissionHeadingMode.AUTO;
+
+    private int iCheck = 0;
+
+    private Handler handler;
+    final File destDir = new File(Environment.getExternalStorageDirectory().getPath() + "/testing2/");
+
+    private MediaManager mediaManager;
+    //private FileListAdapter mListAdapter;
+    private List<MediaFile> mediaFileList = new ArrayList<MediaFile>();
+    //private ProgressDialog mDownloadDialog;
+    //private ProgressDialog mLoadingDialog;
+    private int currentProgress = -1;
+    //private FetchMediaTaskScheduler scheduler;
+    private MediaManager.FileListState currentFileListState = MediaManager.FileListState.UNKNOWN;
+
+    //private WaypointAction takePhoto;
+    private WaypointAction stayDownload;
+    //public WaypointActionType photo;
+
+    /*private TimelineElement timeLine;
+
+    private Trigger trigger;
+
+    private Trigger.Action shootPhoto;
+
+    private Trigger.Listener tListener;*/
 
     @Override
     protected void onResume(){
@@ -97,6 +143,20 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     protected void onDestroy(){
         unregisterReceiver(mReceiver);
         removeListener();
+
+        DJIDemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(DJIError mError) {
+                if (mError != null){
+                    setResultToToast("Set Shoot Photo Mode Failed" + mError.getDescription());
+                }
+            }
+        });
+
+        if (mediaFileList != null) {
+            mediaFileList.clear();
+        }
+
         super.onDestroy();
     }
 
@@ -157,19 +217,188 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                     , 1);
         }
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_drone);
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(DJIDemoApplication.FLAG_CONNECTION_CHANGE);
         registerReceiver(mReceiver, filter);
 
-        initUI();
+        //takePhoto = new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0);
+        stayDownload = new WaypointAction(WaypointActionType.STAY, 15000);
+
+        /*tListener = new Trigger.Listener() {
+            @Override
+            public void onEvent(Trigger trigger, TriggerEvent triggerEvent, @Nullable DJIError djiError) {
+
+            }
+        };
+
+        shootPhoto = new Trigger.Action() {
+            @Override
+            public void onCall() {
+                switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+
+                captureAction();
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initMediaManager();
+                    }
+                }, 5000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadFileByIndex(0);
+                    }
+                }, 10000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+                    }
+                }, 15000);
+
+                //iCheck++;
+            }
+        };
+
+        trigger = new Trigger() {
+            @Override
+            public boolean isActive() {
+                return super.isActive();
+            }
+
+            @Override
+            public void start() {
+                super.start();
+                //shootPhoto.onCall();
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+            }
+
+            @Override
+            public void setAction(Action action) {
+                super.setAction(action);
+            }
+
+            @Override
+            public void addListener(Listener listener) {
+                super.addListener(listener);
+            }
+
+            @Override
+            public void removeListener(Listener listener) {
+                super.removeListener(listener);
+            }
+
+            @Override
+            public void removeAllListeners() {
+                super.removeAllListeners();
+            }
+
+            @Override
+            public void notifyListenersOfEvent(TriggerEvent triggerEvent, DJIError djiError) {
+                super.notifyListenersOfEvent(triggerEvent, djiError);
+            }
+        };
+
+        timeLine = new TimelineElement() {
+            @Override
+            public void run() {
+                trigger.setAction(shootPhoto);
+                trigger.addListener(tListener);
+                trigger.start();
+            }
+
+            @Override
+            public boolean isPausable() {
+                return false;
+            }
+
+            @Override
+            public void stop() {
+
+            }
+
+            @Override
+            public DJIError checkValidity() {
+                return null;
+            }
+        };
+
+        timeLine.triggers();*/
+
+        /*coordinatesList.add(new LatLng(19.358565, -99.259659));
+        coordinatesList.add(new LatLng(19.358613, -99.259388));
+        coordinatesList.add(new LatLng(19.358557, -99.259472));*/
+
+        //createPoints();
+
+        handler = new Handler();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         addListener();
+
+        /*mReceivedVideoDataCallBack = new VideoFeeder.VideoDataCallback() {
+
+            @Override
+            public void onReceive(byte[] videoBuffer, int size) {
+                if (mCodecManager != null) {
+                    mCodecManager.sendDataToDecoder(videoBuffer, size);
+                }
+            }
+        };*/
+
+        Camera camera = DJIDemoApplication.getCameraInstance();
+
+        if (camera != null) {
+
+            camera.setSystemStateCallback(new SystemState.Callback() {
+                @Override
+                public void onUpdate(SystemState cameraSystemState) {
+                    if (null != cameraSystemState) {
+
+                        int recordTime = cameraSystemState.getCurrentVideoRecordingTimeInSeconds();
+                        int minutes = (recordTime % 3600) / 60;
+                        int seconds = recordTime % 60;
+
+                        final String timeString = String.format("%02d:%02d", minutes, seconds);
+                        final boolean isVideoRecording = cameraSystemState.isRecording();
+
+                        MainDrone.this.runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+
+                                //recordingTime.setText(timeString);
+
+                                /*
+                                 * Update recordingTime TextView visibility and mRecordBtn's check state
+                                 */
+                                /*if (isVideoRecording){
+                                    recordingTime.setVisibility(View.VISIBLE);
+                                }else
+                                {
+                                    recordingTime.setVisibility(View.INVISIBLE);
+                                }*/
+                            }
+                        });
+                    }
+                }
+            });
+
+        }
+
+        initUI();
 
     }
 
@@ -219,6 +448,43 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                 public void onUpdate(FlightControllerState djiFlightControllerCurrentState) {
                     droneLocationLat = djiFlightControllerCurrentState.getAircraftLocation().getLatitude();
                     droneLocationLng = djiFlightControllerCurrentState.getAircraftLocation().getLongitude();
+
+                    /*if (WaypointMissionExecutionEvent.getProgress().isWaypointReached) {
+                        setResultToToast("Waypoint reached");
+                    }*/
+
+                    /*if (waypointMissionBuilder != null) {
+                        if (droneLocationLat == waypointList.get(iCheck).coordinate.getLatitude() && droneLocationLng == waypointList.get(iCheck).coordinate.getLongitude())
+                        {
+                            switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+
+                            captureAction();
+
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initMediaManager();
+                                }
+                            }, 5000);
+
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        downloadFileByIndex(0);
+                                    }
+                                }, 10000);
+
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+                                    }
+                                }, 15000);
+
+                            iCheck++;
+                        }
+                    }*/
+
                     updateDroneLocation();
                 }
             });
@@ -251,7 +517,35 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
         @Override
         public void onExecutionUpdate(WaypointMissionExecutionEvent executionEvent) {
+            //setResultToToast(Integer.toString(executionEvent.getProgress().targetWaypointIndex));
 
+            if (executionEvent.getProgress().isWaypointReached && executionEvent.getProgress().targetWaypointIndex == iCheck) {
+                //setResultToToast("Waypoint reached");
+                iCheck++;
+
+                captureAction();
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initMediaManager();
+                    }
+                }, 5000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadFileByIndex(0);
+                    }
+                }, 10000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+                    }
+                }, 15000);
+            }
         }
 
         @Override
@@ -262,6 +556,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
         @Override
         public void onExecutionFinish(@Nullable final DJIError error) {
             setResultToToast("Execution finished: " + (error == null ? "Success!" : error.getDescription()));
+            iCheck = 0;
         }
     };
 
@@ -279,7 +574,9 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
     @Override
     public void onMapClick(LatLng point) {
-        if (isAdd == true){
+        createPoints();
+
+        /*if (isAdd){
             markWaypoint(point);
             Waypoint mWaypoint = new Waypoint(point.latitude, point.longitude, altitude);
             //Add Waypoints to Waypoint arraylist;
@@ -294,6 +591,25 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
             }
         }else{
             setResultToToast("Cannot Add Waypoint");
+        }*/
+    }
+
+    public void createPoints() {
+        isAdd=true;
+        for (int i=0; i<coordinatesList.size(); i++)
+        {
+            markWaypoint(coordinatesList.get(i));
+            Waypoint mWaypoint = new Waypoint(coordinatesList.get(i).latitude, coordinatesList.get(i).longitude, altitude);
+            //Add Waypoints to Waypoint arraylist;
+            if (waypointMissionBuilder != null) {
+                waypointList.add(mWaypoint);
+                waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
+            }else
+            {
+                waypointMissionBuilder = new WaypointMission.Builder();
+                waypointList.add(mWaypoint);
+                waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
+            }
         }
     }
 
@@ -305,6 +621,12 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     private void updateDroneLocation(){
 
         LatLng pos = new LatLng(droneLocationLat, droneLocationLng);
+        /*LatLng check = new LatLng(0,0);
+
+        if (waypointMissionBuilder != null) {
+            check = new LatLng(waypointList.get(iCheck).coordinate.getLatitude(), waypointList.get(iCheck).coordinate.getLatitude());
+        }*/
+
         //Create MarkerOptions object
         final MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(pos);
@@ -322,6 +644,236 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                 }
             }
         });
+
+        /*if (waypointMissionBuilder != null) {
+            if (pos == check)
+            {
+                switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+
+                captureAction();
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initMediaManager();
+                    }
+                }, 5000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        downloadFileByIndex(0);
+                    }
+                }, 10000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+                    }
+                }, 15000);
+
+                iCheck++;
+            }
+        }*/
+    }
+
+    private void switchCameraMode(SettingsDefinitions.CameraMode cameraMode){
+
+        Camera camera = DJIDemoApplication.getCameraInstance();
+        if (camera != null) {
+            camera.setMode(cameraMode, new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(DJIError error) {
+
+                    if (error == null) {
+                        setResultToToast("Switch Camera Mode Succeeded");
+                    } else {
+                        setResultToToast(error.getDescription());
+                    }
+                }
+            });
+        }
+    }
+
+    private void captureAction(){
+
+        final Camera camera = DJIDemoApplication.getCameraInstance();
+        if (camera != null) {
+
+            SettingsDefinitions.ShootPhotoMode photoMode = SettingsDefinitions.ShootPhotoMode.SINGLE; // Set the camera capture mode as Single mode
+            camera.setShootPhotoMode(photoMode, new CommonCallbacks.CompletionCallback(){
+                @Override
+                public void onResult(DJIError djiError) {
+                    if (null == djiError) {
+                        //handler.postDelayed(new Runnable() {
+                        //@Override
+                        //public void run() {
+                        camera.startShootPhoto(new CommonCallbacks.CompletionCallback() {
+                            @Override
+                            public void onResult(DJIError djiError) {
+                                if (djiError == null) {
+                                    setResultToToast("take photo: success");
+                                }
+                                else {
+                                    setResultToToast(djiError.getDescription());
+                                }
+                            }
+                        });
+                        //}
+                        // }, 2000);
+                    }
+                }
+            });
+        }
+    }
+
+    private void initMediaManager() {
+        if (DJIDemoApplication.getProductInstance() == null) {
+            mediaFileList.clear();
+            //mListAdapter.notifyDataSetChanged();
+            DJILog.e(TAG, "Product disconnected");
+            return;
+        } else {
+            if (null != DJIDemoApplication.getCameraInstance() && DJIDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                mediaManager = DJIDemoApplication.getCameraInstance().getMediaManager();
+                if (null != mediaManager) {
+                    mediaManager.addUpdateFileListStateListener(this.updateFileListStateListener);
+                    //mediaManager.addMediaUpdatedVideoPlaybackStateListener(this.updatedVideoPlaybackStateListener);
+                    DJIDemoApplication.getCameraInstance().setMode(SettingsDefinitions.CameraMode.MEDIA_DOWNLOAD, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(DJIError error) {
+                            if (error == null) {
+                                DJILog.e(TAG, "Set cameraMode success");
+                                //showProgressDialog();
+                                getFileList();
+                            } else {
+                                setResultToToast("Set cameraMode failed");
+                            }
+                        }
+                    });
+                    if (mediaManager.isVideoPlaybackSupported()) {
+                        DJILog.e(TAG, "Camera support video playback!");
+                    } else {
+                        setResultToToast("Camera does not support video playback!");
+                    }
+                    //scheduler = mediaManager.getScheduler();
+                }
+
+            } else if (null != DJIDemoApplication.getCameraInstance()
+                    && !DJIDemoApplication.getCameraInstance().isMediaDownloadModeSupported()) {
+                setResultToToast("Media Download Mode not Supported");
+            }
+        }
+        return;
+    }
+
+    private void getFileList() {
+        mediaManager = DJIDemoApplication.getCameraInstance().getMediaManager();
+        if (mediaManager != null) {
+
+            if ((currentFileListState == MediaManager.FileListState.SYNCING) || (currentFileListState == MediaManager.FileListState.DELETING)){
+                DJILog.e(TAG, "Media Manager is busy.");
+            }else{
+                mediaManager.refreshFileList(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(DJIError error) {
+                        if (null == error) {
+                            //hideProgressDialog();
+
+                            //Reset data
+                            if (currentFileListState != MediaManager.FileListState.INCOMPLETE) {
+                                mediaFileList.clear();
+                                //lastClickViewIndex = -1;
+                                //lastClickView = null;
+                            }
+
+                            mediaFileList = mediaManager.getFileListSnapshot();
+                            Collections.sort(mediaFileList, new Comparator<MediaFile>() {
+                                @Override
+                                public int compare(MediaFile lhs, MediaFile rhs) {
+                                    if (lhs.getTimeCreated() < rhs.getTimeCreated()) {
+                                        return 1;
+                                    } else if (lhs.getTimeCreated() > rhs.getTimeCreated()) {
+                                        return -1;
+                                    }
+                                    return 0;
+                                }
+                            });
+                            /*scheduler.resume(new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(DJIError error) {
+                                    if (error == null) {
+                                        //getThumbnails();
+                                        //getPreviews();
+                                    }
+                                }
+                            });*/
+                        } else {
+                            //hideProgressDialog();
+                            setResultToToast("Get Media File List Failed:" + error.getDescription());
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    private MediaManager.FileListStateListener updateFileListStateListener = new MediaManager.FileListStateListener() {
+        @Override
+        public void onFileListStateChange(MediaManager.FileListState state) {
+            currentFileListState = state;
+        }
+    };
+
+    private void downloadFileByIndex(final int index){
+        /*if ((mediaFileList.get(index).getMediaType() == MediaFile.MediaType.PANORAMA)
+                || (mediaFileList.get(index).getMediaType() == MediaFile.MediaType.SHALLOW_FOCUS)) {
+            return;
+        }*/
+
+        try {
+            mediaFileList.get(index).fetchFileData(destDir, null, new DownloadListener<String>() {
+                @Override
+                public void onFailure(DJIError error) {
+                    //HideDownloadProgressDialog();
+                    setResultToToast("Download File Failed" + error.getDescription());
+                    currentProgress = -1;
+                }
+
+                @Override
+                public void onProgress(long total, long current) {
+                }
+
+                @Override
+                public void onRateUpdate(long total, long current, long persize) {
+                    int tmpProgress = (int) (1.0 * current / total * 100);
+                    if (tmpProgress != currentProgress) {
+                        //mDownloadDialog.setProgress(tmpProgress);
+                        currentProgress = tmpProgress;
+                    }
+                }
+
+                @Override
+                public void onStart() {
+                    currentProgress = -1;
+                    //ShowDownloadProgressDialog();
+                }
+
+                @Override
+                public void onSuccess(String filePath) {
+                    //HideDownloadProgressDialog();
+                    setResultToToast("Download File Success" + ":" + filePath);
+                    currentProgress = -1;
+                }
+            });
+
+            //switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
+
+        } catch(IndexOutOfBoundsException e) {
+            setResultToToast(e.getMessage());
+        }
+
     }
 
     private void markWaypoint(LatLng point){
@@ -401,6 +953,59 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
         LinearLayout wayPointSettings = (LinearLayout)getLayoutInflater().inflate(R.layout.dialog_waypointsetting, null);
 
         final TextView wpAltitude_TV = (TextView) wayPointSettings.findViewById(R.id.altitude);
+        RadioGroup speed_RG = (RadioGroup) wayPointSettings.findViewById(R.id.speed);
+        RadioGroup actionAfterFinished_RG = (RadioGroup) wayPointSettings.findViewById(R.id.actionAfterFinished);
+        RadioGroup heading_RG = (RadioGroup) wayPointSettings.findViewById(R.id.heading);
+
+        speed_RG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == R.id.lowSpeed){
+                    mSpeed = 3.0f;
+                } else if (checkedId == R.id.MidSpeed){
+                    mSpeed = 5.0f;
+                } else if (checkedId == R.id.HighSpeed){
+                    mSpeed = 10.0f;
+                }
+            }
+
+        });
+
+        actionAfterFinished_RG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Log.d(TAG, "Select finish action");
+                if (checkedId == R.id.finishNone){
+                    mFinishedAction = WaypointMissionFinishedAction.NO_ACTION;
+                } else if (checkedId == R.id.finishGoHome){
+                    mFinishedAction = WaypointMissionFinishedAction.GO_HOME;
+                } else if (checkedId == R.id.finishAutoLanding){
+                    mFinishedAction = WaypointMissionFinishedAction.AUTO_LAND;
+                } else if (checkedId == R.id.finishToFirst){
+                    mFinishedAction = WaypointMissionFinishedAction.GO_FIRST_WAYPOINT;
+                }
+            }
+        });
+
+        heading_RG.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Log.d(TAG, "Select heading");
+
+                if (checkedId == R.id.headingNext) {
+                    mHeadingMode = WaypointMissionHeadingMode.AUTO;
+                } else if (checkedId == R.id.headingInitDirec) {
+                    mHeadingMode = WaypointMissionHeadingMode.USING_INITIAL_DIRECTION;
+                } else if (checkedId == R.id.headingRC) {
+                    mHeadingMode = WaypointMissionHeadingMode.CONTROL_BY_REMOTE_CONTROLLER;
+                } else if (checkedId == R.id.headingWP) {
+                    mHeadingMode = WaypointMissionHeadingMode.USING_WAYPOINT_HEADING;
+                }
+            }
+        });
 
         new AlertDialog.Builder(this)
                 .setTitle("")
@@ -466,6 +1071,8 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
             for (int i=0; i< waypointMissionBuilder.getWaypointList().size(); i++){
                 waypointMissionBuilder.getWaypointList().get(i).altitude = altitude;
+                //waypointMissionBuilder.getWaypointList().get(i).addAction(takePhoto);
+                waypointMissionBuilder.getWaypointList().get(i).addAction(stayDownload);
             }
 
             setResultToToast("Set Waypoint attitude successfully");
@@ -496,6 +1103,8 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     }
 
     private void startWaypointMission(){
+
+        //timeLine.run();
 
         getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
             @Override

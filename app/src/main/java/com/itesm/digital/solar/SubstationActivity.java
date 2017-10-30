@@ -89,8 +89,6 @@ public class SubstationActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Button btn_send_substation = (Button) findViewById(R.id.btn_send_substation);  //relaciona el objeto con el boton
-
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -380,7 +378,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent(SubstationActivity.this, Proyects.class);
+                        Intent intent = new Intent(SubstationActivity.this, ConnectionActivity.class);
                         startActivity(intent);
                         finish();
                     }
