@@ -378,7 +378,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent(SubstationActivity.this, ConnectionActivity.class);
+                        Intent intent = new Intent(SubstationActivity.this, CreateRoute.class);
                         startActivity(intent);
                         finish();
                     }

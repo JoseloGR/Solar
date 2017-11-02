@@ -640,6 +640,14 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         updateLocationUI();
     }
 
+    /** Called when the send button is clicked. */
+    public void send(View view) {
+
+        //Intent mainIntent = new Intent().setClass(CreateRoute.this, SubstationActivity.class);
+        Intent mainIntent = new Intent().setClass(CreateRoute.this, ConnectionActivity.class);
+        startActivity(mainIntent);
+    }
+
     /**
      * Prompts the user to select the current place from a list of likely places, and shows the
      * current place on the map - provided the user has granted location permission.

@@ -3,6 +3,7 @@ package com.itesm.digital.solar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.view.ViewCompat;
@@ -56,6 +57,9 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        time timer = new time();
+        timer.execute();
 
         user = (EditText) findViewById(R.id.user_text);  //recibe lo que el usuario ingreso
         password = (EditText) findViewById(R.id.password_text); //recibe lo que el usuario ingreso
@@ -171,6 +175,7 @@ public class Login extends AppCompatActivity {
                     SharedPreferences.Editor editor = tokenUser.edit();
 
                     editor.putString("Token", responseBody.getId());
+                    editor.putString("Ttl", responseBody.getTtl());
                     editor.putString("IdUser", responseBody.getUserId());
                     editor.putString("User", user.getText().toString());
                     editor.apply();
@@ -257,4 +262,34 @@ public class Login extends AppCompatActivity {
 
     }
 
+    public void hilo(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ejecutar(){
+        time timer = new time();
+        timer.execute();
+    }
+
+    public class time extends AsyncTask<Void, Integer, Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            for(int i = 1; i <= 11; i++){
+                hilo();
+            }
+            return true;
+        }
+
+        protected void onPostExecute(boolean b) {
+            ejecutar();
+            Toast.makeText(Login.this, "cada 10 segundos", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }
+
+

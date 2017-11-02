@@ -657,7 +657,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         if(sendEnabled){
-            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
+            //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
+            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, CreateRoute.class);
             //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, ConnectionActivity.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);

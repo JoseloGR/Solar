@@ -21,6 +21,8 @@
     <string name="create_new_proyect">Create New Proyect</string>
 
     <!-- activity_create_project -->
+    <string name="project_name">Enter project name</string>
+    <string name="cost_kw">Enter the K/h cost</string>
     <string name="address_project">Address</string>
     <string name="create">Create</string>
     <string name="continue_project">Continue</string>
@@ -36,7 +38,7 @@
     <string name="default_info_title">Default Location</string>
     <string name="default_info_snippet">No places found, because location permission is disabled.</string>
     <string name="pick_place">Choose a place</string>
-    <string name="title_activity_substation">Subestación eléctrica</string>
+    <string name="title_activity_substation">Electrical Substation</string>
     <string-array name="layers_array">
         <item>@string/normal</item>
         <item>@string/hybrid</item>
@@ -50,7 +52,7 @@
     <string name="terrain">Terrain</string>
     <string name="none_map">None</string>
 
-    <string name="progress_dialog">Iniciar Sesión</string>
+    <string name="progress_dialog">Log in</string>
     <string name="please_wait">Conectando con el servidor, por favor espere un momento...</string>
 
     <string name="error_field_required">Este campo es requerido</string>

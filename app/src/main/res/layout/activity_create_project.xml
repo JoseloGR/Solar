@@ -14,7 +14,16 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/project_name"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:textSize="25dp"/>
 
         <EditText
             android:id="@+id/name_project"
@@ -28,6 +37,14 @@
             android:singleLine="true"
             android:textColor="@color/input_login"
             android:textColorHint="@color/input_login_hint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cost_kw"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            android:textSize="25dp"/>
 
         <EditText
             android:id="@+id/cost_kwh_project"
@@ -53,4 +70,5 @@
         android:textSize="24sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
+
 </RelativeLayout>
