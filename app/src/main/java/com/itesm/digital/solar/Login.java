@@ -58,8 +58,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        ejecutar();
-
         user = (EditText) findViewById(R.id.user_text);  //recibe lo que el usuario ingreso
         password = (EditText) findViewById(R.id.password_text); //recibe lo que el usuario ingreso
 
@@ -259,39 +257,6 @@ public class Login extends AppCompatActivity {
         });
 
 
-    }
-
-    public void hilo(){
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void ejecutar(){
-        time time = new time();
-        time.execute();
-
-    }
-
-    public class time extends AsyncTask<Void,Integer,Boolean>{
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            for(int i=0;i<3;i++){
-                hilo();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-
-            Toast.makeText(Login.this,"hola",Toast.LENGTH_SHORT).show();
-            ejecutar();
-        }
     }
 
 }

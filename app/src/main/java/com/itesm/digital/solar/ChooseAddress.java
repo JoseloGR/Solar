@@ -61,7 +61,7 @@ public class ChooseAddress extends AppCompatActivity{
         btn_enter_coordinates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent().setClass(ChooseAddress.this, MapsActivity.class);
+                Intent mainIntent = new Intent().setClass(ChooseAddress.this, Coordinates.class);
                 startActivity(mainIntent);
             }
         });

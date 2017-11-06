@@ -78,7 +78,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ConnectionActivity" />
         <activity android:name=".ChooseAddress" />
         <activity android:name=".MainActivity" />
@@ -92,11 +91,10 @@
             android:name=".SubstationActivity"
             android:label="@string/title_activity_substation" />
         <activity android:name=".Login" />
-
-        <activity android:name=".MainDrone"></activity>
+        <activity android:name=".MainDrone" />
         <activity android:name=".SelectStartPointDron" />
-        <activity android:name=".CreateRoute"></activity>
-
+        <activity android:name=".CreateRoute" />
+        <activity android:name=".Coordinates"></activity>
     </application>
 
 </manifest>
