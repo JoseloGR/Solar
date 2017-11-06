@@ -58,8 +58,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        time timer = new time();
-        timer.execute();
+        ejecutar();
 
         user = (EditText) findViewById(R.id.user_text);  //recibe lo que el usuario ingreso
         password = (EditText) findViewById(R.id.password_text); //recibe lo que el usuario ingreso
@@ -271,22 +270,27 @@ public class Login extends AppCompatActivity {
     }
 
     public void ejecutar(){
-        time timer = new time();
-        timer.execute();
+        time time = new time();
+        time.execute();
+
     }
 
-    public class time extends AsyncTask<Void, Integer, Boolean>{
+    public class time extends AsyncTask<Void,Integer,Boolean>{
+
         @Override
-        protected Boolean doInBackground(Void... params) {
-            for(int i = 1; i <= 11; i++){
+        protected Boolean doInBackground(Void... voids) {
+            for(int i=0;i<3;i++){
                 hilo();
             }
-            return true;
+            return null;
         }
 
-        protected void onPostExecute(boolean b) {
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+
+            Toast.makeText(Login.this,"hola",Toast.LENGTH_SHORT).show();
             ejecutar();
-            Toast.makeText(Login.this, "cada 10 segundos", Toast.LENGTH_SHORT).show();
         }
     }
 
