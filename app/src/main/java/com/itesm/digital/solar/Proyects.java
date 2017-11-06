@@ -11,6 +11,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.itesm.digital.solar.Models.RequestCoordinate;
+import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.ResponseCoordinate;
+import com.itesm.digital.solar.Models.ResponseProject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Proyects extends AppCompatActivity {
 
     public SharedPreferences prefs;
@@ -51,6 +60,49 @@ public class Proyects extends AppCompatActivity {
         TOKEN = prefs.getString("Token", null);
 
         Log.d("TOKEN", TOKEN);
+
+    }
+
+    private void SendDataProject(){
+
+        double ALTITUDE = 2.0;
+
+        RequestCoordinate sendCoordinate = new RequestCoordinate();
+        sendCoordinate.setAltitude(ALTITUDE);
+
+        projectRegister.setName(NAME);
+        projectRegister.setAddress(ADDRESS);
+        projectRegister.setCost(COST);
+        projectRegister.setDate(DATE);
+        projectRegister.setSurface(SURFACE);
+        projectRegister.setUserId(ID_USER);
+
+        Call<ResponseProject> responseRegister = connectInterface.RegisterProject(TOKEN, projectRegister);
+
+        responseRegister.enqueue(new Callback<ResponseProject>() {
+            @Override
+            public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
+                dialog.dismiss();
+                int statusCode = response.code();
+                ResponseProject responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    Log.d("PROJECT",response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseProject> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
+
 
     }
 }

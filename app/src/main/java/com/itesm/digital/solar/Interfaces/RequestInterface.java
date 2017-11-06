@@ -1,7 +1,11 @@
 package com.itesm.digital.solar.Interfaces;
 
+import com.itesm.digital.solar.Models.RequestBlobstore;
+import com.itesm.digital.solar.Models.RequestCoordinate;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.ResponseBlobstore;
+import com.itesm.digital.solar.Models.ResponseCoordinate;
 import com.itesm.digital.solar.Models.ResponseLogin;
 import com.itesm.digital.solar.Models.ResponseProject;
 
@@ -28,5 +32,11 @@ public interface RequestInterface {
 
     @POST("Projects")
     Call<ResponseProject> RegisterProject(@Header("Authorization") String authToken, @Body RequestProject orderRequest);
+
+    @POST("Coordinate")
+    Call<ResponseCoordinate> RegisterCoordinate(@Header("Authorization") String authToken, @Body RequestCoordinate coordinateRequest);
+
+    @POST("Photos")
+    Call<ResponseBlobstore> RegisterPhoto(@Header("Authorization") String authToken, @Body RequestBlobstore photoRequest);
 
 }
