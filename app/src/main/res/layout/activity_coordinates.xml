@@ -13,7 +13,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:paddingRight="20dp"
+        android:id="@+id/linearLayout2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,7 +28,7 @@
 
         <EditText
             android:id="@+id/latitude"
-            android:hint="Latitude"
+            android:hint="@string/latitude_hint_textbox"
             android:inputType="numberDecimal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -38,7 +41,7 @@
 
         <EditText
             android:id="@+id/longitude"
-            android:hint="Longitude"
+            android:hint="@string/longitude_hint_textbox"
             android:inputType="numberDecimal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -51,14 +54,36 @@
 
         <Button
             android:id="@+id/add_new"
-            android:layout_width="100dp"
+            android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:text="Add new" />
+            android:text="@string/add_new_coordinate" />
     </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_alignParentStart="true">
+
+        <ListView
+            android:id="@android:id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:drawSelectorOnTop="false" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/send"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
+        android:text="@string/continue_project"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Send" />
+        android:background="@color/colorGreen"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>

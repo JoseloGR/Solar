@@ -86,7 +86,7 @@ public class Proyects extends AppCompatActivity {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
 
-            Toast.makeText(Proyects.this,"hola",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(Proyects.this,"hola",Toast.LENGTH_SHORT).show();
             ejecutar();
         }
     }

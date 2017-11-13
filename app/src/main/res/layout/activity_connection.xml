@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/accent"
     android:orientation="vertical">
 
     <TextView
@@ -52,17 +53,14 @@
         android:textSize="15dp"
         android:id="@+id/textView2" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="DJIGSDemo"
-        android:id="@+id/textView"
-        android:layout_marginTop="58dp"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:textColor="@color/colorBlack"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <ImageView
+        android:id="@+id/iv_solar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:background="@drawable/solar_logo"
+        android:transitionName="logo"
+        android:layout_above="@+id/text_connection_status"
+        android:layout_alignEnd="@+id/textView2"
+        android:layout_marginBottom="13dp" />
 
 </RelativeLayout>
