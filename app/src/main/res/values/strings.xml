@@ -21,13 +21,28 @@
     <string name="create_new_proyect">Create New Proyect</string>
 
     <!-- activity_create_project -->
+    <string name="project_name">Enter project name</string>
+    <string name="cost_kw">Enter the K/h cost</string>
     <string name="address_project">Address</string>
     <string name="create">Create</string>
     <string name="continue_project">Continue</string>
-    <string name="choose_way_to_introduce_address">Choose way to introduce address</string>
+    <string name="select_an_option_to_locate">Select an option to locate the area</string>
     <string name="select_current_position">Select current position</string>
-    <string name="introduce_address">Introduce address</string>
-    <string name="show_general_map">Show general map</string>
+    <string name="introduce_address">Enter address</string>
+    <string name="enter_coordinates">Enter coordinates</string>
+
+    <!--  activity coordinates -->
+    <string name="enter_coordinates_precision">Enter the coordinates for each vertex to draw the area</string>
+    <string name="latitude_hint_textbox">Latitude</string>
+    <string name="longitude_hint_textbox">Longitude</string>
+    <string name="add_new_coordinate">Add new</string>
+    <string name="delete_coordinate">Delete</string>
+    <string name="view_all_coordinate">View all</string>
+    <string name="list_coordinates">Coordinates list</string>
+    <string name="error_lat">The length for the latitude must be longer</string>
+    <string name="error_emp_lat">Latitude must not be empty</string>
+    <string name="error_lon">The length for the longitude must be longer</string>
+    <string name="error_emp_lon">Longitude must not be empty</string>
 
     <!-- current_place_menu -->
     <string name="option_get_place">Get place</string>
@@ -36,7 +51,7 @@
     <string name="default_info_title">Default Location</string>
     <string name="default_info_snippet">No places found, because location permission is disabled.</string>
     <string name="pick_place">Choose a place</string>
-    <string name="title_activity_substation">Subestación eléctrica</string>
+    <string name="title_activity_substation">Electrical Substation</string>
     <string-array name="layers_array">
         <item>@string/normal</item>
         <item>@string/hybrid</item>
@@ -50,16 +65,23 @@
     <string name="terrain">Terrain</string>
     <string name="none_map">None</string>
 
-    <string name="progress_dialog">Iniciar Sesión</string>
+    <string name="progress_dialog">Log in</string>
     <string name="please_wait">Conectando con el servidor, por favor espere un momento...</string>
 
     <string name="error_field_required">Este campo es requerido</string>
     <string name="error_user_username">Este nombre de usuario no se encuentra disponible</string>
-    <string name="error_user_pass">Esta contraseña es muy corta, debe contener mínimo 6 caracteres</string>
+    <string name="error_user_pass">Esta contraseña es muy corta, debe contener mínimo 5 caracteres</string>
     <string name="error_user_pass_confirm">Las contraseñas no son iguales</string>
     <string name="error_user_email">Ingresa una correo válido</string>
     <string name="error_user_phone">Ingresa un teléfono válido</string>
     <string name="error_user_pass_empty">Ingrese su contraseña</string>
+
+
+    <string name="title_activity_demo">GSDemoActivity</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="product_information">Product Information</string>
+    <string name="connection_loose">Status: No Product Connected</string>
+    <string name="sdk_version">DJI SDK Version: 4.2.1</string>
 
 
 </resources>

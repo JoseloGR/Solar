@@ -3,6 +3,7 @@ package com.itesm.digital.solar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.view.ViewCompat;
@@ -171,6 +172,7 @@ public class Login extends AppCompatActivity {
                     SharedPreferences.Editor editor = tokenUser.edit();
 
                     editor.putString("Token", responseBody.getId());
+                    editor.putString("Ttl", responseBody.getTtl());
                     editor.putString("IdUser", responseBody.getUserId());
                     editor.putString("User", user.getText().toString());
                     editor.apply();
@@ -258,3 +260,5 @@ public class Login extends AppCompatActivity {
     }
 
 }
+
+

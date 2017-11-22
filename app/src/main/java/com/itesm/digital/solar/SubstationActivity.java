@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -377,7 +378,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent(SubstationActivity.this, Proyects.class);
+                        Intent intent = new Intent(SubstationActivity.this, CreateRoute.class);
                         startActivity(intent);
                         finish();
                     }

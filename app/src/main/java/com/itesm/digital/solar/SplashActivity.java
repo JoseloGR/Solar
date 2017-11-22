@@ -34,6 +34,8 @@ public class SplashActivity extends Activity {
             }
         };
         timerThread.start();
+
+
     }
 
     @Override
@@ -46,13 +48,15 @@ public class SplashActivity extends Activity {
         SharedPreferences userProfile = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
 
         if(userProfile.contains("Token")){
-            Intent i = new Intent(SplashActivity.this, Login.class);
+            Intent i = new Intent(SplashActivity.this, Proyects.class);
             // Pass data object in the bundle and populate details activity.
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
             startActivity(i, options.toBundle());
         }else{
-            Intent i = new Intent(SplashActivity.this, Login.class);
+            //Intent i = new Intent(SplashActivity.this, Login.class);
+            Intent i = new Intent(SplashActivity.this, Proyects.class);
+            //Intent i = new Intent(SplashActivity.this, ConnectionActivity.class);
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
             startActivity(i, options.toBundle());

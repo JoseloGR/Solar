@@ -17,7 +17,16 @@ public class Validations {
 
     //VALIDATE PASSWORD
     public static boolean isValidPassword(String pass) {
+
         return pass != null && pass.length() >= 4;
+
+    }
+
+    //From -180° to 180° and from -90° to 90°
+    public static boolean emptyLeng(String leng) {
+
+        return leng != null && leng.length() <= 8;
+
     }
 
     public static boolean isSamePassword(String pass, String passC){
