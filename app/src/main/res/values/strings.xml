@@ -35,12 +35,14 @@
     <string name="enter_coordinates_precision">Enter the coordinates for each vertex to draw the area</string>
     <string name="latitude_hint_textbox">Latitude</string>
     <string name="longitude_hint_textbox">Longitude</string>
-    <string name="last_coordinates_hint_textbox">Last coordinates</string>
     <string name="add_new_coordinate">Add new</string>
-    <string name="last_coordinates">This are the last coordinates you enter</string>
     <string name="delete_coordinate">Delete</string>
     <string name="view_all_coordinate">View all</string>
     <string name="list_coordinates">Coordinates list</string>
+    <string name="error_lat">The length for the latitude must be longer</string>
+    <string name="error_emp_lat">Latitude must not be empty</string>
+    <string name="error_lon">The length for the longitude must be longer</string>
+    <string name="error_emp_lon">Longitude must not be empty</string>
 
     <!-- current_place_menu -->
     <string name="option_get_place">Get place</string>

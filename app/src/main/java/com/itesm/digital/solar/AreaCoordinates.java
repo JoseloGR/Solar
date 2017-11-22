@@ -4,10 +4,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -54,17 +52,15 @@ import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
 
 /**
- * An activity that displays a map showing the place at the device's current location.
+ * Created by hugo on 15/11/2017.
  */
-public class MapsActivityCurrentPlace extends AppCompatActivity
-        implements AdapterView.OnItemSelectedListener, OnMapReadyCallback {
+
+public class AreaCoordinates extends AppCompatActivity implements AdapterView.OnItemSelectedListener, OnMapReadyCallback {
 
     private static final String TAG = MapsActivityCurrentPlace.class.getSimpleName();
+
     private GoogleMap mMap;
     private CameraPosition mCameraPosition;
-
-    private double latitude;
-    private double longitude;
 
     // The entry points to the Places API.
     private GeoDataClient mGeoDataClient;
@@ -95,15 +91,12 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private String[] mLikelyPlaceAttributions;
     private LatLng[] mLikelyPlaceLatLngs;
 
-    private boolean firstPoint = true;
-    private boolean deletePolygon = false;
-    private boolean startAnother = false;
-    private boolean sendEnabled = false;
-
-    public static List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
-    private List<LatLng> last = new ArrayList<LatLng>();
+    public static List<LatLng> points = new ArrayList<LatLng>();
 
     private Spinner mSpinner;
+
+    //set if the user is near of the area selected
+    private boolean nearArea = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +131,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     /**
@@ -222,6 +214,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         // Get the current location of the device and set the position of the map.
         getDeviceLocation();
 
+        setCenter(MapsActivityCurrentPlace.listPolygons.get(0));
+
         // Instantiates a new Polyline object and adds points to define a rectangle
         PolygonOptions rectOptions = new PolygonOptions()
                 .add(new LatLng(0, 0),
@@ -229,188 +223,59 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
         // Get back the mutable Polygon
         final Polygon polygon = mMap.addPolygon(rectOptions);
-        final Polygon polygon2 = mMap.addPolygon(rectOptions);
-        final Polygon polygon3 = mMap.addPolygon(rectOptions);
-        final Polygon polygon4 = mMap.addPolygon(rectOptions);
+        //Sets the points of this polygon
+        polygon.setPoints(MapsActivityCurrentPlace.listPolygons.get(0));
+    }
 
-        mMap.setOnMapClickListener( new GoogleMap.OnMapClickListener(){
-            @Override
-            public void onMapClick(LatLng latLng) {
-                if(listPolygons.size() == 0) {
-                    List<LatLng> path = polygon.getPoints();
-                    if (startAnother) {
-                        Log.d("size ", Integer.toString(path.size()));
-                        if(path.size() < 4){
-                            Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            listPolygons.add(polygon.getPoints());
-                            firstPoint = true;
-                        }
-                        startAnother = false;
-                    }
-                    else if (firstPoint) {   //check the first
-                        path.remove(0);
-                        path.remove(0);
-                        path.add(latLng);
-                        path.add(latLng);
-                        firstPoint = false;
-                    }
-                    else if (deletePolygon) {
-                        int size = path.size();
-                        for (int i = 0; i < size; i++) {
-                            path.remove(0);
-                        }
-                        path.add(latLng);
-                        path.add(latLng);
-                        deletePolygon = false;
-                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
-                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
-                        path.remove(path.size() - 1);
-                        path.add(latLng);
-                        if (path.size() >= 3){
-                            sendEnabled = true;
-                            last = path;
-                        }
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
-                    }
-                    polygon.setPoints(path);
-                    Log.d("path + ", path.toString());
-                }
-                if(listPolygons.size() == 1) {
-                    List<LatLng> path = polygon2.getPoints();
-                    if (startAnother) {
-                        Log.d("size ", Integer.toString(path.size()));
-                        if(path.size() < 4){
-                            Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            listPolygons.add(polygon2.getPoints());
-                            firstPoint = true;
-                        }
-                        startAnother = false;
-                    }
-                    else if (firstPoint) {   //check the first
-                        path.remove(0);
-                        path.remove(0);
-                        path.add(latLng);
-                        path.add(latLng);
-                        firstPoint = false;
-                    }
-                    else if (deletePolygon) {
-                        int size = path.size();
-                        for (int i = 0; i < size; i++) {
-                            path.remove(0);
-                        }
-                        path.add(latLng);
-                        path.add(latLng);
-                        deletePolygon = false;
-                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
-                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
-                        path.remove(path.size() - 1);
-                        path.add(latLng);
-                        if (path.size() >= 3){
-                            sendEnabled = true;
-                            last = path;
-                        }
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
-                    }
-                    polygon2.setPoints(path);
-                    Log.d("path + ", path.toString());
-                }
-                if(listPolygons.size() == 2) {
-                    List<LatLng> path = polygon3.getPoints();
-                    if (startAnother) {
-                        Log.d("size ", Integer.toString(path.size()));
-                        if(path.size() < 4){
-                            Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            listPolygons.add(polygon3.getPoints());
-                            firstPoint = true;
-                        }
-                        startAnother = false;
-                    }
-                    else if (firstPoint) {   //check the first
-                        path.remove(0);
-                        path.remove(0);
-                        path.add(latLng);
-                        path.add(latLng);
-                        firstPoint = false;
-                    }
-                    else if (deletePolygon) {
-                        int size = path.size();
-                        for (int i = 0; i < size; i++) {
-                            path.remove(0);
-                        }
-                        path.add(latLng);
-                        path.add(latLng);
-                        deletePolygon = false;
-                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
-                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
-                        path.remove(path.size() - 1);
-                        path.add(latLng);
-                        if (path.size() >= 3){
-                            sendEnabled = true;
-                            last = path;
-                        }
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
-                    }
-                    polygon3.setPoints(path);
-                    Log.d("path + ", path.toString());
-                }
-                if(listPolygons.size() == 3) {
-                    List<LatLng> path = polygon4.getPoints();
-                    if (startAnother) {
-                        Toast.makeText(getApplicationContext(), "You can't add more areas", Toast.LENGTH_SHORT).show();
-                        startAnother = false;
-                    }
-                    else if (firstPoint) {   //check the first
-                        path.remove(0);
-                        path.remove(0);
-                        path.add(latLng);
-                        path.add(latLng);
-                        firstPoint = false;
-                    }
-                    else if (deletePolygon) {
-                        int size = path.size();
-                        for (int i = 0; i < size; i++) {
-                            path.remove(0);
-                        }
-                        path.add(latLng);
-                        path.add(latLng);
-                        deletePolygon = false;
-                    } else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
-                            path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
-                            path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
-                        path.remove(path.size() - 1);
-                        path.add(latLng);
-                        if (path.size() >= 3){
-                            sendEnabled = true;
-                            last = path;
-                        }
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), "Big Distances between Points", Toast.LENGTH_SHORT).show();
-                    }
-                    polygon4.setPoints(path);
-                    Log.d("path + ", path.toString());
-                }
+    private LatLng setCenter(List<LatLng> first){
+        double lowestX = 0;
+        double lowestY = 0;
+        double highestY = 0;
+        double highestX = 0;
+        double centerX = 0;
+        double centerY = 0;
+
+        //List<LatLng> first = MapsActivityCurrentPlace.listPolygons.get(0);
+        //List<LatLng> first = MapsActivityCurrentPlace.listPolygons.get(0);
+
+        //set the lowest values of X and Y
+        for (int i = 0; i < first.size(); i++){
+            if (i == 0){
+                lowestX = first.get(0).longitude;
+                lowestY = first.get(0).latitude;
             }
-        });
+            if (lowestX > first.get(i).longitude){
+                lowestX = first.get(i).longitude;
+            }
+            if (lowestY > first.get(i).latitude){
+                lowestY = first.get(i).latitude;
+            }
+        }
+
+        //set the highest values of X and Y
+        for (int i = 0; i < first.size(); i++){
+            if (i == 0){
+                highestX = first.get(0).longitude;
+                highestY = first.get(0).latitude;
+            }
+            if (highestX < first.get(i).longitude){
+                highestX = first.get(i).longitude;
+            }
+            if (highestY < first.get(i).latitude){
+                highestY = first.get(i).latitude;
+            }
+        }
+
+        centerX = lowestX + ((highestX - lowestX) / 2);
+        centerY = lowestY + ((highestY - lowestY) / 2);
+
+        LatLng center = new LatLng(centerY, centerX);
+
+        Log.d("center ", center.toString());
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 19f));
+
+        return center;
     }
 
     /**
@@ -430,11 +295,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         if (task.isSuccessful()) {
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = task.getResult();
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                    new LatLng(mLastKnownLocation.getLatitude(),
-                                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-                            latitude = mLastKnownLocation.getLatitude();
-                            longitude = mLastKnownLocation.getLongitude();
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
@@ -489,6 +349,14 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             }
         }
         updateLocationUI();
+    }
+
+    /** Called when the send button is clicked. */
+    public void send(View view) {
+
+        Intent mainIntent = new Intent().setClass(AreaCoordinates.this, SubstationActivity.class);
+        //Intent mainIntent = new Intent().setClass(AreaCoordinates.this, CreateRoute.class);
+        startActivity(mainIntent);
     }
 
     /**
@@ -634,43 +502,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         return true;
     }
 
-    /** Called when the Clear button is clicked. */
-    public void onClearMap(View view) {
-        if (!checkReady()) {
-            return;
-        }
-        //mMap.clear();
-        deletePolygon = true;
-    }
-
-    /** Called when the draw button is clicked. */
-    public void drawAnother(View view) {
-        if (!checkReady()) {
-            return;
-        }
-        startAnother = true;
-    }
-
-    /** Called when the send button is clicked. */
-    public void send(View view) {
-        if (!checkReady()) {
-            return;
-        }
-        if(sendEnabled){
-            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
-            //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, CreateRoute.class);
-            //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, ConnectionActivity.class);
-            mainIntent.putExtra("latitude", latitude);
-            mainIntent.putExtra("longitude", longitude);
-            listPolygons.add(last);
-            Log.d("final + ", last.toString());
-            startActivity(mainIntent);
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "You need to complete area", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         updateMapType();
@@ -705,4 +536,23 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing.
     }
+
+    private void verifyCercany(){
+        //verify if the distance between actual location and area selected is too big
+        Location vertices = new Location("");
+        int numberVertices = MapsActivityCurrentPlace.listPolygons.get(0).size();
+        float distance = 0;
+        for(int i = 0; i < numberVertices; i++) {
+            vertices.setLatitude(MapsActivityCurrentPlace.listPolygons.get(0).get(i).latitude);
+            vertices.setLongitude(MapsActivityCurrentPlace.listPolygons.get(0).get(i).longitude);
+            //distance = mLastKnownLocation.distanceTo(vertices);
+            //Log.v("Localizacion", String.valueOf(actualLatitude) + " " + String.valueOf(actualLongitude));
+            //Log.v("Distancia", "Punto " +  String.valueOf(i + 1) + " distancia " + String.valueOf(distance));
+            /*if(distance < 1.0000000E7){
+                nearArea = true;
+                Log.v("Area cerca", String.valueOf(nearArea));
+            }*/
+        }
+    }
+
 }

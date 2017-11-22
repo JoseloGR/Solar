@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF"
+    android:background="@color/accent"
     tools:context="com.itesm.digital.solar.MainDrone">
 
     <LinearLayout
@@ -14,7 +14,7 @@
             android:id="@+id/ConnectStatusTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GSDemo"
+            android:text="Solar"
             android:gravity="center"
             android:textColor="#000000"
             android:textSize="21sp"
@@ -30,12 +30,7 @@
             android:layout_height="wrap_content"
             android:text="Locate"
             android:layout_weight="1"/>
-        <Button
-            android:id="@+id/add"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add"
-            android:layout_weight="1"/>
+
         <Button
             android:id="@+id/clear"
             android:layout_width="match_parent"
@@ -48,12 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/config"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Config"
-            android:layout_weight="0.9"/>
+
         <Button
             android:id="@+id/upload"
             android:layout_width="match_parent"

@@ -94,7 +94,8 @@
         <activity android:name=".MainDrone" />
         <activity android:name=".SelectStartPointDron" />
         <activity android:name=".CreateRoute" />
-        <activity android:name=".Coordinates"></activity>
+        <activity android:name=".Coordinates" />
+        <activity android:name=".AreaCoordinates"></activity>
     </application>
 
 </manifest>
