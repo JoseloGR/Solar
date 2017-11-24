@@ -3,6 +3,7 @@ package com.itesm.digital.solar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,15 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-
-import com.itesm.digital.solar.Models.RequestCoordinate;
-import com.itesm.digital.solar.Models.RequestProject;
-import com.itesm.digital.solar.Models.ResponseCoordinate;
-import com.itesm.digital.solar.Models.ResponseProject;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import android.widget.Toast;
 
 public class Proyects extends AppCompatActivity {
 
@@ -29,6 +22,8 @@ public class Proyects extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proyects);
+
+        ejecutar();
 
         Button btn_projects = (Button) findViewById(R.id.projects);
         Button btn_create = (Button) findViewById(R.id.generate_project);
@@ -63,46 +58,36 @@ public class Proyects extends AppCompatActivity {
 
     }
 
-    private void SendDataProject(){
+    public void hilo(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
-        double ALTITUDE = 2.0;
+    public void ejecutar(){
+        time time = new time();
+        time.execute();
 
-        RequestCoordinate sendCoordinate = new RequestCoordinate();
-        sendCoordinate.setAltitude(ALTITUDE);
+    }
 
-        projectRegister.setName(NAME);
-        projectRegister.setAddress(ADDRESS);
-        projectRegister.setCost(COST);
-        projectRegister.setDate(DATE);
-        projectRegister.setSurface(SURFACE);
-        projectRegister.setUserId(ID_USER);
+    public class time extends AsyncTask<Void,Integer,Boolean> {
 
-        Call<ResponseProject> responseRegister = connectInterface.RegisterProject(TOKEN, projectRegister);
-
-        responseRegister.enqueue(new Callback<ResponseProject>() {
-            @Override
-            public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
-                dialog.dismiss();
-                int statusCode = response.code();
-                ResponseProject responseBody = response.body();
-                if (statusCode==201 || statusCode==200){
-                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
-                }
-                else{
-                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
-                    Log.d("PROJECT",response.toString());
-                }
-
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            for(int i=0;i<3;i++){
+                hilo();
             }
+            return null;
+        }
 
-            @Override
-            public void onFailure(Call<ResponseProject> call, Throwable t) {
-                dialog.dismiss();
-                Log.d("OnFail", t.getMessage());
-                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
-            }
-        });
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
 
-
+            //Toast.makeText(Proyects.this,"hola",Toast.LENGTH_SHORT).show();
+            ejecutar();
+        }
     }
 }

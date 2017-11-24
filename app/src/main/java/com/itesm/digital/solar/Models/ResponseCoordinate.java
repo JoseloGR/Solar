@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ResponseCoordinate {
-    public class Position {
+    /*public class Position {
         @SerializedName("lat")
         @Expose
         private double lat;
@@ -15,7 +15,7 @@ public class ResponseCoordinate {
 
         public double getLat() { return lat; }
         public double getLng() { return lng; }
-    }
+    }*/
 
     @SerializedName("altitude")
     @Expose
@@ -23,24 +23,24 @@ public class ResponseCoordinate {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
 
     @SerializedName("resultId")
     @Expose
-    private Integer resultId;
+    private String resultId;
 
     @SerializedName("areaId")
     @Expose
-    private Integer areaId;
+    private String areaId;
 
     @SerializedName("position")
     @Expose
     private Position position;
 
     public double getAltitude() { return altitude; }
-    public int getId() { return id; }
-    public int getResultId() { return resultId; }
-    public int getAreaId() { return areaId; }
+    public String getId() { return id; }
+    public String getResultId() { return resultId; }
+    public String getAreaId() { return areaId; }
     public Position getPosition() {
         return position;
     }

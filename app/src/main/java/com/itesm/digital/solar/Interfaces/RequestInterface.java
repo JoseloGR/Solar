@@ -6,6 +6,12 @@ import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
 import com.itesm.digital.solar.Models.ResponseBlobstore;
 import com.itesm.digital.solar.Models.ResponseCoordinate;
+import com.itesm.digital.solar.Models.RequestArea;
+import com.itesm.digital.solar.Models.RequestLimit;
+import com.itesm.digital.solar.Models.RequestLogin;
+import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseLogin;
 import com.itesm.digital.solar.Models.ResponseProject;
 
@@ -18,7 +24,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface RequestInterface {
-
 
     @POST("Users/login")
     Call<ResponseLogin> LoginAccess(@Body RequestLogin loginRequest);
@@ -33,10 +38,18 @@ public interface RequestInterface {
     @POST("Projects")
     Call<ResponseProject> RegisterProject(@Header("Authorization") String authToken, @Body RequestProject orderRequest);
 
-    @POST("Coordinate")
+    @POST("Coordinates")
     Call<ResponseCoordinate> RegisterCoordinate(@Header("Authorization") String authToken, @Body RequestCoordinate coordinateRequest);
 
     @POST("Photos")
     Call<ResponseBlobstore> RegisterPhoto(@Header("Authorization") String authToken, @Body RequestBlobstore photoRequest);
 
+    @POST("Projects/{id}/areas")
+    Call<ResponseArea> RegisterArea(@Header("Authorization") String authToken, @Body RequestArea orderArea, @Path("id") String id);
+
+    @POST("Areas/{id}/limits")
+    Call<ResponseLimit> RegisterLimits(@Header("Authorization") String authToken, @Body RequestLimit orderLimit, @Path("id") String id);
+
+    @GET("Areas/{id}/limits")
+    Call<ResponseLimit> GetLimits(@Header("Authorization") String authToken, @Body RequestLimit getLimit, @Path("id") String id);
 }

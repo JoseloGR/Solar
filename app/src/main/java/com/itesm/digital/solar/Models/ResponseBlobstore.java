@@ -3,24 +3,21 @@ package com.itesm.digital.solar.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by pabmacias28 on 27/10/17.
- */
 
 public class ResponseBlobstore {
-    @SerializedName("picture")
+    @SerializedName("image")
     @Expose
-    private String picture;
+    private String image;
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private String id;
 
     @SerializedName("coordinateId")
     @Expose
-    private Integer coordinateId;
+    private String coordinateId;
 
-    public String getPicture() { return picture; }
-    public int getId() { return id; }
-    public int getCoordinateId() { return coordinateId; }
+    public String getImage() { return image; }
+    public String getId() { return id; }
+    public String getCoordinateId() { return coordinateId; }
 }

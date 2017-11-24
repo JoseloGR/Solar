@@ -19,7 +19,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/choose_way_to_introduce_address"
+            android:text="@string/select_an_option_to_locate"
             android:textColor="@color/white"
             android:padding="10dp"
             android:textSize="25dp"/>
@@ -34,7 +34,7 @@
             android:textColor="@color/btn_login"/>
 
         <Button
-            android:id="@+id/btn_introduce_address"
+            android:id="@+id/btn_enter_address"
             android:text="@string/introduce_address"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -43,8 +43,8 @@
             android:textColor="@color/btn_login"/>
 
         <Button
-            android:id="@+id/btn_show_general_map"
-            android:text="@string/show_general_map"
+            android:id="@+id/btn_enter_coordinates"
+            android:text="@string/enter_coordinates"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dip"
