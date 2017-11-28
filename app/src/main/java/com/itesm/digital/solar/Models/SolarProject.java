@@ -2,14 +2,15 @@ package com.itesm.digital.solar.Models;
 
 public class SolarProject {
 
-    private String name;
-    private String address;
-    private String cost;
-    private String date;
-    private String surface;
+    private String Name;
+    private String Address;
+    private String Cost;
+    private String Date;
+    private String Surface;
     private String id;
     private String userId;
 
+    /*
     public SolarProject(String name,
                         String address,
                         String cost,
@@ -24,61 +25,33 @@ public class SolarProject {
         this.surface = surface;
         this.id = id;
         this.userId = userId;
-    }
+    }*/
 
     public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        return Name;
     }
 
     public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+        return Address;
     }
 
     public String getCost() {
-        return cost;
-    }
-
-    public void setCost(String cost) {
-        this.cost = cost;
+        return Cost;
     }
 
     public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+        return Date;
     }
 
     public String getSurface() {
-        return surface;
-    }
-
-    public void setSurface(String surface) {
-        this.surface = surface;
+        return Surface;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 }
