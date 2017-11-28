@@ -4,6 +4,7 @@ import com.itesm.digital.solar.Models.RequestArea;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.ResponseAllProjects;
 import com.itesm.digital.solar.Models.ResponseArea;
 import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseLogin;
@@ -16,6 +17,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RequestInterface {
 
@@ -38,4 +40,7 @@ public interface RequestInterface {
 
     @POST("Areas/{id}/limits")
     Call<ResponseLimit> RegisterLimits(@Header("Authorization") String authToken, @Body RequestLimit orderLimit, @Path("id") String id);
+
+    @GET("Projects")
+    Call<ResponseAllProjects> GetAllProjects(@Header("Authorization") String authToken, @Query("userId") String userId);
 }
