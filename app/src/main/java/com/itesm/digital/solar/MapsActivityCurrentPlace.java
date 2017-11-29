@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
     private double latitude;
     private double longitude;
+    public static float altitude = 0.0f;
 
     // The entry points to the Places API.
     private GeoDataClient mGeoDataClient;
@@ -664,7 +666,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             mainIntent.putExtra("longitude", longitude);
             listPolygons.add(last);
             Log.d("final + ", last.toString());
-            startActivity(mainIntent);
+            if (altitude == 0.0f){
+                showSettingDialog();
+            }else{
+                startActivity(mainIntent);
+            }
         }
         else{
             Toast.makeText(getApplicationContext(), "You need to complete area", Toast.LENGTH_SHORT).show();
@@ -705,4 +711,45 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing.
     }
+
+    private void showSettingDialog(){
+        LinearLayout wayPointSettings = (LinearLayout)getLayoutInflater().inflate(R.layout.dialog_waypointsetting, null);
+
+        final TextView wpAltitude_TV = (TextView) wayPointSettings.findViewById(R.id.altitude);
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("")
+                .setView(wayPointSettings)
+                .setPositiveButton("Finish",new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        String altitudeString = wpAltitude_TV.getText().toString();
+                        altitude = Integer.parseInt(nulltoIntegerDefalt(altitudeString));
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+
+                })
+                .create()
+                .show();
+    }
+
+    String nulltoIntegerDefalt(String value){
+        if(!isIntValue(value)) value="0";
+        return value;
+    }
+
+    boolean isIntValue(String val)
+    {
+        try {
+            val=val.replace(" ","");
+            Integer.parseInt(val);
+        } catch (Exception e) {return false;}
+        return true;
+    }
+
 }

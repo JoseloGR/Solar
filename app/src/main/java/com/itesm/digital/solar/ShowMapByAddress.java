@@ -1,5 +1,6 @@
 package com.itesm.digital.solar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -308,7 +311,11 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
         Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, CreateRoute.class);
         mainIntent.putExtra("latitude", latitude);
         mainIntent.putExtra("longitude", longitude);
-        startActivity(mainIntent);
+        if (MapsActivityCurrentPlace.altitude == 0.0f){
+            showSettingDialog();
+        }else{
+            startActivity(mainIntent);
+        }
     }
 
     @Override
@@ -345,4 +352,44 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing.
     }
+
+    private void showSettingDialog(){
+        LinearLayout wayPointSettings = (LinearLayout)getLayoutInflater().inflate(R.layout.dialog_waypointsetting, null);
+
+        final TextView wpAltitude_TV = (TextView) wayPointSettings.findViewById(R.id.altitude);
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("")
+                .setView(wayPointSettings)
+                .setPositiveButton("Finish",new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id) {
+                        String altitudeString = wpAltitude_TV.getText().toString();
+                        MapsActivityCurrentPlace.altitude = Integer.parseInt(nulltoIntegerDefalt(altitudeString));
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+
+                })
+                .create()
+                .show();
+    }
+
+    String nulltoIntegerDefalt(String value){
+        if(!isIntValue(value)) value="0";
+        return value;
+    }
+
+    boolean isIntValue(String val)
+    {
+        try {
+            val=val.replace(" ","");
+            Integer.parseInt(val);
+        } catch (Exception e) {return false;}
+        return true;
+    }
+
 }
