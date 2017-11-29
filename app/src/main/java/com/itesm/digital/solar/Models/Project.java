@@ -5,56 +5,64 @@ import com.google.gson.annotations.SerializedName;
 
 public class Project {
 
-    @SerializedName("name")
+    @SerializedName("Name")
     @Expose
-    private String name;
+    private String Name;
 
-    @SerializedName("address")
+    @SerializedName("Address")
     @Expose
-    private String address;
+    private String Address;
 
-    @SerializedName("cost")
+    @SerializedName("Cost")
     @Expose
-    private String cost;
+    private String Cost;
 
-    @SerializedName("date")
+    @SerializedName("Date")
     @Expose
-    private String date;
+    private String Date;
 
-    @SerializedName("surface")
+    @SerializedName("Surface")
     @Expose
     private String surface;
 
+    @SerializedName("id")
+    @Expose
+    private String id;
+
+    @SerializedName("userId")
+    @Expose
+    private String userId;
+
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        Name = name;
     }
 
     public String getAddress() {
-        return address;
+        return Address;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        Address = address;
     }
 
     public String getCost() {
-        return cost;
+        return Cost;
     }
 
     public void setCost(String cost) {
-        this.cost = cost;
+        Cost = cost;
     }
 
     public String getDate() {
-        return date;
+        return Date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        Date = date;
     }
 
     public String getSurface() {
@@ -63,5 +71,21 @@ public class Project {
 
     public void setSurface(String surface) {
         this.surface = surface;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

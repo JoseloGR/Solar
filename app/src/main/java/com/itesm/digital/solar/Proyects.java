@@ -31,7 +31,7 @@ public class Proyects extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Proyects.this, Projects.class);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
 

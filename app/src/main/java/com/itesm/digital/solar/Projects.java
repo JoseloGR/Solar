@@ -15,12 +15,14 @@ import android.widget.TextView;
 
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.DataAdapterProjects;
+import com.itesm.digital.solar.Models.Project;
 import com.itesm.digital.solar.Models.ResponseAllProjects;
 import com.itesm.digital.solar.Models.SolarProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,7 +35,7 @@ public class Projects extends AppCompatActivity {
     public String ACTIVE_USERNAME,ID_USER,TOKEN;
 
     private RecyclerView recyclerView;
-    private ArrayList<SolarProject> data;
+    private ArrayList<Project> data;
     private DataAdapterProjects adapter;
     TextView msg;
     public SharedPreferences prefs;
@@ -88,29 +90,30 @@ public class Projects extends AppCompatActivity {
 
     private void loadDataProjects(){
 
-        Call<ResponseAllProjects> responseProjects = connectInterface.GetAllProjects(TOKEN, ID_USER);
+        Call<List<Project>> responseProjects = connectInterface.GetAllProjects(TOKEN,ID_USER);
 
-        responseProjects.enqueue(new Callback<ResponseAllProjects>() {
+        responseProjects.enqueue(new Callback<List<Project>>() {
             @Override
-            public void onResponse(Call<ResponseAllProjects> call, Response<ResponseAllProjects> response) {
+            public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
                 //dialog.dismiss();
                 int statusCode = response.code();
 
                 if (statusCode==200){
                     msg.setVisibility(View.GONE);
-                    ResponseAllProjects jsonResponse = response.body();
-                    data = new ArrayList<>(Arrays.asList(jsonResponse.getProjects()));
+                    List<Project> jsonResponse = response.body();
+                    data = new ArrayList<>(jsonResponse);
                     adapter = new DataAdapterProjects(data);
                     recyclerView.setAdapter(adapter);
                 }
                 else{
                     Log.d("PROJECT",response.toString());
+                    //msg.setVisibility(View.VISIBLE);
                 }
 
             }
 
             @Override
-            public void onFailure(Call<ResponseAllProjects> call, Throwable t) {
+            public void onFailure(Call<List<Project>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
                 msg.setVisibility(View.VISIBLE);
             }

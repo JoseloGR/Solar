@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProjects.ViewHolder> {
 
-    private ArrayList<SolarProject> projects;
+    private ArrayList<Project> projects;
 
-    public DataAdapterProjects(ArrayList<SolarProject> projects){
+    public DataAdapterProjects(ArrayList<Project> projects){
         this.projects = projects;
     }
 

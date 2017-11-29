@@ -2,9 +2,9 @@ package com.itesm.digital.solar.Models;
 
 public class ResponseAllProjects {
 
-    private SolarProject[] projects;
+    private Project[] projects;
 
-    public SolarProject[] getProjects(){
+    public Project[] getProjects(){
         return projects;
     }
 }
