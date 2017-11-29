@@ -89,7 +89,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     private final Map<Integer, Marker> mMarkers = new ConcurrentHashMap<Integer, Marker>();
     private Marker droneMarker = null;
 
-    private float altitude = 100.0f;
+    private float altitude = MapsActivityCurrentPlace.altitude;
     private float mSpeed = 3.0f;
 
     private List<Waypoint> waypointList = new ArrayList<>();

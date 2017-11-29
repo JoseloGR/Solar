@@ -76,7 +76,9 @@
     <string name="error_user_phone">Ingresa un teléfono válido</string>
     <string name="error_user_pass_empty">Ingrese su contraseña</string>
 
-
+    <!-- Drone -->
+    <string name="altitude">Altitude:</string>
+    <string name="altitude_conf">Altitude Configuration</string>
     <string name="title_activity_demo">GSDemoActivity</string>
     <string name="disconnected">Disconnected</string>
     <string name="product_information">Product Information</string>
