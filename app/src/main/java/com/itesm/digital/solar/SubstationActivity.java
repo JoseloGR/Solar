@@ -420,7 +420,7 @@ public class SubstationActivity extends AppCompatActivity implements
         return new LatLng(y2, x2);
     }
 
-    private int findPoints2(LatLng p1, LatLng p2, double w, int i)
+    private int findPoints2(LatLng p1, LatLng p2, double w, int i, double h)
     {
         double angle = calcAngle(p1.longitude, p2.longitude, p1.latitude, p2.latitude);
         LatLng temp;
@@ -452,6 +452,7 @@ public class SubstationActivity extends AppCompatActivity implements
             }
 
             points.add(i+1, temp);
+            sendCoordinate(temp.latitude, temp.longitude, h);
             i++;
             //w+=w;
         }
@@ -488,7 +489,7 @@ public class SubstationActivity extends AppCompatActivity implements
         return y-m*x;
     }
 
-    private boolean findVertex(LatLng p1, LatLng p2, LatLng p3, double d)
+    private boolean findVertex(LatLng p1, LatLng p2, LatLng p3, double d, double h)
     {
         double ma = calcSlope(p1.longitude, p2.longitude, p1.latitude, p2.latitude);
         double mb = calcSlope(p2.longitude, p3.longitude, p2.latitude, p3.latitude);
@@ -526,6 +527,7 @@ public class SubstationActivity extends AppCompatActivity implements
         double y = ma*x+ba+da*Math.sqrt(1+Math.pow(ma,2));
 
         points.add(new LatLng(y,x));
+        sendCoordinate(y, x, h);
 
         return true;
     }
@@ -581,7 +583,7 @@ public class SubstationActivity extends AppCompatActivity implements
         longitudeDron = listVertices.get(0).longitude;
         latitudeDron = listVertices.get(0).latitude;
 
-        height = 23.0;
+        height = 32.0;
 
         length = (1.8 * height * 0.3048) / 6378137 *180/Math.PI;
         width = (1.37 * height * 0.3048) / 6378137 *180/Math.PI;
@@ -621,7 +623,7 @@ public class SubstationActivity extends AppCompatActivity implements
                 //Log.d("angle1: ", Double.toString(angles.get(l)));
 
                 added = findVertex(listVertices.get(li), listVertices.get(l),
-                        listVertices.get(lf), length/2);
+                        listVertices.get(lf), length/2, height);
 
                 if (added) {
                     i++;
@@ -722,9 +724,9 @@ public class SubstationActivity extends AppCompatActivity implements
                 ii=i;
 
                 if (l + 1 >= listVertices.size()) {
-                    i = findPoints2(listVertices.get(l), listVertices.get(0), width / 2, i);
+                    i = findPoints2(listVertices.get(l), listVertices.get(0), width / 2, i, height);
                 } else {
-                    i = findPoints2(listVertices.get(l), listVertices.get(l+1), width / 2, i);
+                    i = findPoints2(listVertices.get(l), listVertices.get(l+1), width / 2, i, height);
                 }
 
                 if (ii==i) {
@@ -795,6 +797,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
             if (listVertices.size() == 1) {
                 points.add(listVertices.get(0));
+                sendCoordinate(listVertices.get(0).latitude, listVertices.get(0).longitude, height);
                 break;
             }
             else if (listVertices.size() < 1)
