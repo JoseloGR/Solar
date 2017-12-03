@@ -1,6 +1,10 @@
 [
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\xml\\accessory_filter.xml",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\xml\\accessory_filter.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\xml\\accessory_filter.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\xml\\accessory_filter.xml"
+    },
+    {
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/xml/accessory_filter.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/xml/accessory_filter.xml"
     }
 ]
