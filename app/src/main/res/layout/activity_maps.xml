@@ -65,21 +65,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:onClick="drawAnother"
-                android:text="Another" />
-
-        </LinearLayout>
     </FrameLayout>
 </LinearLayout>
 
