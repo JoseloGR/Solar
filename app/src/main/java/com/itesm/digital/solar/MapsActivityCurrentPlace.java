@@ -99,7 +99,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
     private boolean sendEnabled = false;
     private boolean firstPoint = true;
-    private boolean deletePolygon = false;
 
     public static List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
     List<LatLng> path = new ArrayList<LatLng>();
@@ -237,10 +236,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         mMap.setOnMapClickListener( new GoogleMap.OnMapClickListener(){
             @Override
             public void onMapClick(LatLng latLng) {
-                if(deletePolygon){
-                    mMap.addPolygon(rectOptions);
-                    deletePolygon = false;
-                }
                 path = polygon.getPoints();
                 if(firstPoint){
                     path.remove(0);

@@ -48,7 +48,7 @@ public class SplashActivity extends Activity {
         SharedPreferences userProfile = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
 
         if(userProfile.contains("Token")){
-            Intent i = new Intent(SplashActivity.this, MapsActivityCurrentPlace.class);
+            Intent i = new Intent(SplashActivity.this, ChooseAddress.class);
             // Pass data object in the bundle and populate details activity.
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
