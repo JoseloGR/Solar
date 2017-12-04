@@ -94,7 +94,12 @@
         <activity android:name=".MainDrone" />
         <activity android:name=".SelectStartPointDron" />
         <activity android:name=".CreateRoute" />
-        <activity android:name=".Coordinates"></activity>
+        <activity android:name=".Coordinates" />
+        <activity android:name=".AreaCoordinates" />
+        <activity
+            android:name=".Projects"
+            android:label="@string/title_activity_projects"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

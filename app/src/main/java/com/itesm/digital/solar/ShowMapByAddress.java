@@ -1,5 +1,6 @@
 package com.itesm.digital.solar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -40,7 +43,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
     private boolean deletePolygon = false;
     private boolean startAnother = false;
 
-    private List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
+    //private List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
 
     private Spinner mSpinner;
 
@@ -113,7 +116,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
         mMap.setOnMapClickListener( new GoogleMap.OnMapClickListener(){
             @Override
             public void onMapClick(LatLng latLng) {
-                if(listPolygons.size() == 0) {
+                if(MapsActivityCurrentPlace.listPolygons.size() == 0) {
                     List<LatLng> path = polygon.getPoints();
                     if (startAnother) {
                         Log.d("size ", Integer.toString(path.size()));
@@ -121,7 +124,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
                             Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            listPolygons.add(polygon.getPoints());
+                            MapsActivityCurrentPlace.listPolygons.add(polygon.getPoints());
                             firstPoint = true;
                         }
                         startAnother = false;
@@ -154,7 +157,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
                     polygon.setPoints(path);
                     Log.d("path + ", path.toString());
                 }
-                if(listPolygons.size() == 1) {
+                if(MapsActivityCurrentPlace.listPolygons.size() == 1) {
                     List<LatLng> path = polygon2.getPoints();
                     if (startAnother) {
                         Log.d("size ", Integer.toString(path.size()));
@@ -162,7 +165,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
                             Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            listPolygons.add(polygon2.getPoints());
+                            MapsActivityCurrentPlace.listPolygons.add(polygon2.getPoints());
                             firstPoint = true;
                         }
                         startAnother = false;
@@ -195,15 +198,14 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
                     polygon2.setPoints(path);
                     Log.d("path + ", path.toString());
                 }
-                if(listPolygons.size() == 2) {
+                if(MapsActivityCurrentPlace.listPolygons.size() == 2) {
                     List<LatLng> path = polygon3.getPoints();
                     if (startAnother) {
                         Log.d("size ", Integer.toString(path.size()));
                         if(path.size() < 4){
                             Toast.makeText(getApplicationContext(), "You need more number of vertices", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            listPolygons.add(polygon3.getPoints());
+                        }else{
+                            MapsActivityCurrentPlace.listPolygons.add(polygon3.getPoints());
                             firstPoint = true;
                         }
                         startAnother = false;
@@ -236,7 +238,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
                     polygon3.setPoints(path);
                     Log.d("path + ", path.toString());
                 }
-                if(listPolygons.size() == 3) {
+                if(MapsActivityCurrentPlace.listPolygons.size() == 3) {
                     List<LatLng> path = polygon4.getPoints();
                     if (startAnother) {
                         Toast.makeText(getApplicationContext(), "You can't add more areas", Toast.LENGTH_SHORT).show();
@@ -305,10 +307,15 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
         if (!checkReady()) {
             return;
         }
-        Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SubstationActivity.class);
+        //Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SubstationActivity.class);
+        Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, CreateRoute.class);
         mainIntent.putExtra("latitude", latitude);
         mainIntent.putExtra("longitude", longitude);
-        startActivity(mainIntent);
+        if (MapsActivityCurrentPlace.altitude == 0.0f){
+            showSettingDialog();
+        }else{
+            startActivity(mainIntent);
+        }
     }
 
     @Override
@@ -345,4 +352,44 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
     public void onNothingSelected(AdapterView<?> parent) {
         // Do nothing.
     }
+
+    private void showSettingDialog(){
+        LinearLayout wayPointSettings = (LinearLayout)getLayoutInflater().inflate(R.layout.dialog_waypointsetting, null);
+
+        final TextView wpAltitude_TV = (TextView) wayPointSettings.findViewById(R.id.altitude);
+
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("")
+                .setView(wayPointSettings)
+                .setPositiveButton("Finish",new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id) {
+                        String altitudeString = wpAltitude_TV.getText().toString();
+                        MapsActivityCurrentPlace.altitude = Integer.parseInt(nulltoIntegerDefalt(altitudeString));
+                    }
+
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+
+                })
+                .create()
+                .show();
+    }
+
+    String nulltoIntegerDefalt(String value){
+        if(!isIntValue(value)) value="0";
+        return value;
+    }
+
+    boolean isIntValue(String val)
+    {
+        try {
+            val=val.replace(" ","");
+            Integer.parseInt(val);
+        } catch (Exception e) {return false;}
+        return true;
+    }
+
 }

@@ -8,6 +8,7 @@ import com.itesm.digital.solar.Models.RequestCoordinate;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.ResponseAllProjects;
 import com.itesm.digital.solar.Models.ResponseArea;
 import com.itesm.digital.solar.Models.ResponseBlobstore;
 import com.itesm.digital.solar.Models.ResponseCoordinate;

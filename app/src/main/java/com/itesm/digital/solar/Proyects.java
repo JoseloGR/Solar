@@ -23,18 +23,17 @@ public class Proyects extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proyects);
 
-        ejecutar();
-
         Button btn_projects = (Button) findViewById(R.id.projects);
         Button btn_create = (Button) findViewById(R.id.generate_project);
 
-        /*btn_projects.setOnClickListener(new View.OnClickListener() {
+        btn_projects.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainIntent = new Intent().setClass(Proyects.this, Register.class);
-                startActivity(mainIntent);
+                Intent intent = new Intent(Proyects.this, Projects.class);
+                startActivity(intent);
+                //finish();
             }
-        });*/
+        });
 
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,18 +43,15 @@ public class Proyects extends AppCompatActivity {
             }
         });
 
-        initValues();
+        //initValues();
     }
 
     private void initValues() {
-
         prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
         ACTIVE_USERNAME = prefs.getString("User", null);
         ID_USER = prefs.getString("IdUser", null);
         TOKEN = prefs.getString("Token", null);
-
         Log.d("TOKEN", TOKEN);
-
     }
 
     public void hilo(){

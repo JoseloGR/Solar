@@ -33,6 +33,16 @@
 
     <!--  activity coordinates -->
     <string name="enter_coordinates_precision">Enter the coordinates for each vertex to draw the area</string>
+    <string name="latitude_hint_textbox">Latitude</string>
+    <string name="longitude_hint_textbox">Longitude</string>
+    <string name="add_new_coordinate">Add new</string>
+    <string name="delete_coordinate">Delete</string>
+    <string name="view_all_coordinate">View all</string>
+    <string name="list_coordinates">Coordinates list</string>
+    <string name="error_lat">The length for the latitude must be longer</string>
+    <string name="error_emp_lat">Latitude must not be empty</string>
+    <string name="error_lon">The length for the longitude must be longer</string>
+    <string name="error_emp_lon">Longitude must not be empty</string>
 
     <!-- current_place_menu -->
     <string name="option_get_place">Get place</string>
@@ -66,12 +76,18 @@
     <string name="error_user_phone">Ingresa un teléfono válido</string>
     <string name="error_user_pass_empty">Ingrese su contraseña</string>
 
-
+    <!-- Drone -->
+    <string name="altitude">Altitude:</string>
+    <string name="altitude_conf">Altitude Configuration</string>
     <string name="title_activity_demo">GSDemoActivity</string>
     <string name="disconnected">Disconnected</string>
     <string name="product_information">Product Information</string>
     <string name="connection_loose">Status: No Product Connected</string>
     <string name="sdk_version">DJI SDK Version: 4.2.1</string>
+    <string name="title_activity_projects">Solar Projects</string>
+
+    <string name="msg_records">There are still no registered projects</string>
+
 
 
 </resources>

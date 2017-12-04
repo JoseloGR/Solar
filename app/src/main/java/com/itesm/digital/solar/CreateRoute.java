@@ -346,7 +346,7 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         longitudeDron = listVertices.get(0).longitude;
         latitudeDron = listVertices.get(0).latitude;
 
-        height = 23.0;
+        height = MapsActivityCurrentPlace.altitude;
 
         length = (1.8 * height * 0.3048) / 6378137 *180/Math.PI;
         width = (1.37 * height * 0.3048) / 6378137 *180/Math.PI;
