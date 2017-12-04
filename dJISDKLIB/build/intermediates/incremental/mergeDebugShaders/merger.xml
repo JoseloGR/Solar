@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/src/main/shaders"/></dataSet><dataSet config="debug"><source path="/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/src/debug/shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/src/main/shaders"/></dataSet><dataSet config="debug"><source path="/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/src/debug/shaders"/></dataSet></merger>

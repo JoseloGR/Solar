@@ -1,29 +1,32 @@
 package com.itesm.digital.solar.Interfaces;
 
+import com.itesm.digital.solar.Models.Coordinate;
+import com.itesm.digital.solar.Models.Project;
+import com.itesm.digital.solar.Models.RequestArea;
 import com.itesm.digital.solar.Models.RequestBlobstore;
 import com.itesm.digital.solar.Models.RequestCoordinate;
-import com.itesm.digital.solar.Models.RequestLogin;
-import com.itesm.digital.solar.Models.RequestProject;
-import com.itesm.digital.solar.Models.ResponseBlobstore;
-import com.itesm.digital.solar.Models.ResponseCoordinate;
-import com.itesm.digital.solar.Models.RequestArea;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
 import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseBlobstore;
+import com.itesm.digital.solar.Models.ResponseCoordinate;
 import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseLogin;
 import com.itesm.digital.solar.Models.ResponseProject;
 
-import okhttp3.ResponseBody;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RequestInterface {
+
 
     @POST("Users/login")
     Call<ResponseLogin> LoginAccess(@Body RequestLogin loginRequest);
@@ -50,6 +53,9 @@ public interface RequestInterface {
     @POST("Areas/{id}/limits")
     Call<ResponseLimit> RegisterLimits(@Header("Authorization") String authToken, @Body RequestLimit orderLimit, @Path("id") String id);
 
+    @GET("Projects")
+    Call<List<Project>> GetAllProjects(@Header("Authorization") String authToken, @Query("userId") String userId);
+
     @GET("Areas/{id}/limits")
-    Call<ResponseLimit> GetLimits(@Header("Authorization") String authToken, @Body RequestLimit getLimit, @Path("id") String id);
+    Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);
 }

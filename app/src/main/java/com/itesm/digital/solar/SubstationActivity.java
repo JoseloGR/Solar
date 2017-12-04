@@ -393,6 +393,7 @@ public class SubstationActivity extends AppCompatActivity implements
                         Intent intent = new Intent(SubstationActivity.this, ConnectionActivity.class);
 
                         intent.putExtra("ID_AREA", ID_AREA);
+                        intent.putExtra("TOKEN", TOKEN);
 
                         startActivity(intent);
                         finish();

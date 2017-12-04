@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.Coordinate;
 import com.itesm.digital.solar.Models.RequestBlobstore;
 import com.itesm.digital.solar.Models.ResponseBlobstore;
 import com.itesm.digital.solar.Models.ResponseCoordinate;
@@ -64,6 +65,7 @@ import dji.common.mission.waypoint.WaypointMissionExecutionEvent;
 import dji.common.mission.waypoint.WaypointMissionFinishedAction;
 import dji.common.mission.waypoint.WaypointMissionFlightPathMode;
 import dji.common.mission.waypoint.WaypointMissionHeadingMode;
+import dji.common.mission.waypoint.WaypointMissionState;
 import dji.common.mission.waypoint.WaypointMissionUploadEvent;
 import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
@@ -159,8 +161,11 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     public SharedPreferences prefs;
 
     public String TOKEN;
+    public String ID_AREA;
 
-    int i=0;
+    private int j=1;
+
+    private ArrayList<Coordinate> data;
 
     @Override
     protected void onResume(){
@@ -234,6 +239,20 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                ID_AREA = "";
+                TOKEN = "";
+            } else {
+                ID_AREA = extras.getString("ID_AREA");
+                TOKEN = extras.getString("TOKEN");
+            }
+        } else {
+            ID_AREA = (String) savedInstanceState.getSerializable("ID_AREA");
+            TOKEN = (String) savedInstanceState.getSerializable("TOKEN");
+        }
 
         // When the compile and target version is higher than 22, please request the
         // following permissions at runtime to ensure the
@@ -441,8 +460,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
         dialog = builder.build();
 
-        prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
-        TOKEN = prefs.getString("Token", null);
+        getCoordinate();
 
     }
 
@@ -640,11 +658,14 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
     public void createPoints() {
         isAdd=true;
-        for (int i=0; i<points.size(); i++)
+        for (int i=1; i<data.size(); i++)
         {
-            markWaypoint(points.get(i));
-            Waypoint mWaypoint = new Waypoint(points.get(i).latitude, points.get(i).longitude, altitude);
+            markWaypoint(new LatLng(Double.parseDouble(data.get(i).getPosition().getLat()),
+                    Double.parseDouble(data.get(i).getPosition().getLng())));
+            Waypoint mWaypoint = new Waypoint(Double.parseDouble(data.get(i).getPosition().getLat()),
+                    Double.parseDouble(data.get(i).getPosition().getLng()), altitude);
             //Add Waypoints to Waypoint arraylist;
+            Log.d("Waypoint: ", mWaypoint.toString());
             if (waypointMissionBuilder != null) {
                 waypointList.add(mWaypoint);
                 waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
@@ -796,11 +817,11 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                             }
                         }
                     });
-                    if (mediaManager.isVideoPlaybackSupported()) {
+                    /*if (mediaManager.isVideoPlaybackSupported()) {
                         DJILog.e(TAG, "Camera support video playback!");
                     } else {
                         setResultToToast("Camera does not support video playback!");
-                    }
+                    }*/
                     //scheduler = mediaManager.getScheduler();
                 }
 
@@ -1150,6 +1171,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                     setResultToToast("Mission upload failed, error: " + error.getDescription() + " retrying...");
                     getWaypointMissionOperator().retryUploadMission(null);
                 }
+
             }
         });
 
@@ -1158,13 +1180,18 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     private void startWaypointMission(){
 
         //timeLine.run();
-
-        getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(DJIError error) {
-                setResultToToast("Mission Start: " + (error == null ? "Successfully" : error.getDescription()));
-            }
-        });
+        if (getWaypointMissionOperator().getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
+            //setResultToToast("Ya funciona");
+            getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(DJIError error) {
+                    setResultToToast("Mission Start: " + (error == null ? "Successfully" : error.getDescription()));
+                }
+            });
+        }
+        else {
+            setResultToToast("Aun no");
+        }
     }
 
     private void stopWaypointMission(){
@@ -1208,8 +1235,8 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
 
         photoRegister.setImage(img);
-        photoRegister.setCoordinateId(Integer.toString(i)); //Por ahora
-        i++;
+        photoRegister.setCoordinateId(data.get(j).getId()); //Por ahora
+        j++;
 
         Call<ResponseBlobstore> responsePhoto = connectInterface.RegisterPhoto(TOKEN, photoRegister);
 
@@ -1238,7 +1265,32 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
         });
     }
 
-    private void receiveCoordinates() {
+    public void getCoordinate() {
+        Call<List<Coordinate>> responseLimits = connectInterface.GetLimits(TOKEN,ID_AREA);
 
+        responseLimits.enqueue(new Callback<List<Coordinate>>() {
+            @Override
+            public void onResponse(Call<List<Coordinate>> call, Response<List<Coordinate>> response) {
+                int statusCode = response.code();
+
+                if (statusCode==200){
+                    //msg.setVisibility(View.GONE);
+                    List<Coordinate> jsonResponse = response.body();
+                    data = new ArrayList<>(jsonResponse);
+                    Log.d("Coordinates:", data.get(2).getId());
+                    //adapter = new DataAdapterProjects(data);
+                    //recyclerView.setAdapter(adapter);
+                }
+                else{
+                    Log.d("PROJECT",response.toString());
+                    //msg.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Coordinate>> call, Throwable t) {
+
+            }
+        });
     }
 }
