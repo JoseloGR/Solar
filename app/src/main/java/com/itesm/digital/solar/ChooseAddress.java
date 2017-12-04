@@ -25,7 +25,7 @@ public class ChooseAddress extends AppCompatActivity{
 
     public static final String TAG = "SampleActivityBase";
     /**
-     * Request code for the autocomplete activity. This will be used to identify results from the
+     * Request code for the autocomplete activity. This will be used to identify Results from the
      * autocomplete activity in onActivityResult.
      */
     private static final int REQUEST_CODE_AUTOCOMPLETE = 1;

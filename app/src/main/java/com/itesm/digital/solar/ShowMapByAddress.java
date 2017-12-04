@@ -43,7 +43,6 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
     private boolean sendEnabled = false;
     private boolean firstPoint = true;
 
-    public static List<List<LatLng>> listPolygons = new ArrayList<List<LatLng>>();
     List<LatLng> path = new ArrayList<LatLng>();
 
     // Instantiates a new Polyline object and adds points to define a rectangle
@@ -177,7 +176,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
             //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, ConnectionActivity.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);
-            listPolygons.add(path);
+            MapsActivityCurrentPlace.listPolygons.add(path);
             if (altitude == 0.0f){
                 showSettingDialog();
             }else{
