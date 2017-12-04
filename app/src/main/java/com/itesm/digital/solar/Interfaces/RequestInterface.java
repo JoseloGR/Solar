@@ -1,12 +1,17 @@
 package com.itesm.digital.solar.Interfaces;
 
+import com.itesm.digital.solar.Models.Coordinate;
 import com.itesm.digital.solar.Models.Project;
 import com.itesm.digital.solar.Models.RequestArea;
+import com.itesm.digital.solar.Models.RequestBlobstore;
+import com.itesm.digital.solar.Models.RequestCoordinate;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
 import com.itesm.digital.solar.Models.ResponseAllProjects;
 import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseBlobstore;
+import com.itesm.digital.solar.Models.ResponseCoordinate;
 import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseLogin;
 import com.itesm.digital.solar.Models.ResponseProject;
@@ -37,6 +42,12 @@ public interface RequestInterface {
     @POST("Projects")
     Call<ResponseProject> RegisterProject(@Header("Authorization") String authToken, @Body RequestProject orderRequest);
 
+    @POST("Coordinates")
+    Call<ResponseCoordinate> RegisterCoordinate(@Header("Authorization") String authToken, @Body RequestCoordinate coordinateRequest);
+
+    @POST("Photos")
+    Call<ResponseBlobstore> RegisterPhoto(@Header("Authorization") String authToken, @Body RequestBlobstore photoRequest);
+
     @POST("Projects/{id}/areas")
     Call<ResponseArea> RegisterArea(@Header("Authorization") String authToken, @Body RequestArea orderArea, @Path("id") String id);
 
@@ -45,4 +56,7 @@ public interface RequestInterface {
 
     @GET("Projects")
     Call<List<Project>> GetAllProjects(@Header("Authorization") String authToken, @Query("userId") String userId);
+
+    @GET("Areas/{id}/limits")
+    Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);
 }

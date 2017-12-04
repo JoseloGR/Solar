@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
@@ -14,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,7 +36,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.Coordinate;
+import com.itesm.digital.solar.Models.RequestBlobstore;
+import com.itesm.digital.solar.Models.ResponseBlobstore;
+import com.itesm.digital.solar.Models.ResponseCoordinate;
+import com.itesm.digital.solar.Utils.GlobalVariables;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +65,7 @@ import dji.common.mission.waypoint.WaypointMissionExecutionEvent;
 import dji.common.mission.waypoint.WaypointMissionFinishedAction;
 import dji.common.mission.waypoint.WaypointMissionFlightPathMode;
 import dji.common.mission.waypoint.WaypointMissionHeadingMode;
+import dji.common.mission.waypoint.WaypointMissionState;
 import dji.common.mission.waypoint.WaypointMissionUploadEvent;
 import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
@@ -73,6 +86,11 @@ import dji.sdk.mission.waypoint.WaypointMissionOperatorListener;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 import dji.sdk.useraccount.UserAccountManager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainDrone extends FragmentActivity implements View.OnClickListener, GoogleMap.OnMapClickListener, OnMapReadyCallback {
 
@@ -95,7 +113,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     private List<Waypoint> waypointList = new ArrayList<>();
 
     //private List<LatLng> coordinatesList = new ArrayList<>();
-    private List<LatLng> points = CreateRoute.points;
+    private List<LatLng> points = SubstationActivity.points;
 
     public static WaypointMission.Builder waypointMissionBuilder;
     private FlightController mFlightController;
@@ -128,6 +146,26 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     private Trigger.Action shootPhoto;
 
     private Trigger.Listener tListener;*/
+
+    MaterialDialog.Builder builder;
+    MaterialDialog dialog;
+
+    Retrofit.Builder builderR = new Retrofit.Builder()
+            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
+            .addConverterFactory(GsonConverterFactory.create());
+
+    Retrofit retrofit = builderR.build();
+
+    RequestInterface connectInterface = retrofit.create(RequestInterface.class);
+
+    public SharedPreferences prefs;
+
+    public String TOKEN;
+    public String ID_AREA;
+
+    private int j=1;
+
+    private ArrayList<Coordinate> data;
 
     @Override
     protected void onResume(){
@@ -197,6 +235,20 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                ID_AREA = "";
+                TOKEN = "";
+            } else {
+                ID_AREA = extras.getString("ID_AREA");
+                TOKEN = extras.getString("TOKEN");
+            }
+        } else {
+            ID_AREA = (String) savedInstanceState.getSerializable("ID_AREA");
+            TOKEN = (String) savedInstanceState.getSerializable("TOKEN");
+        }
 
         // When the compile and target version is higher than 22, please request the
         // following permissions at runtime to ensure the
@@ -284,6 +336,15 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
         }
 
         initUI();
+
+        builder = new MaterialDialog.Builder(this)
+                .title(R.string.progress_dialog)
+                .content(R.string.please_wait)
+                .progress(true, 0);
+
+        dialog = builder.build();
+
+        getCoordinate();
 
     }
 
@@ -464,11 +525,14 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
     public void createPoints() {
         isAdd=true;
-        for (int i=0; i<points.size(); i++)
+        for (int i=1; i<data.size(); i++)
         {
-            markWaypoint(points.get(i));
-            Waypoint mWaypoint = new Waypoint(points.get(i).latitude, points.get(i).longitude, altitude);
+            markWaypoint(new LatLng(Double.parseDouble(data.get(i).getPosition().getLat()),
+                    Double.parseDouble(data.get(i).getPosition().getLng())));
+            Waypoint mWaypoint = new Waypoint(Double.parseDouble(data.get(i).getPosition().getLat()),
+                    Double.parseDouble(data.get(i).getPosition().getLng()), altitude);
             //Add Waypoints to Waypoint arraylist;
+            Log.d("Waypoint: ", mWaypoint.toString());
             if (waypointMissionBuilder != null) {
                 waypointList.add(mWaypoint);
                 waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
@@ -588,11 +652,11 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                             }
                         }
                     });
-                    if (mediaManager.isVideoPlaybackSupported()) {
+                    /*if (mediaManager.isVideoPlaybackSupported()) {
                         DJILog.e(TAG, "Camera support video playback!");
                     } else {
                         setResultToToast("Camera does not support video playback!");
-                    }
+                    }*/
                     //scheduler = mediaManager.getScheduler();
                 }
 
@@ -701,6 +765,15 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                     //HideDownloadProgressDialog();
                     setResultToToast("Download File Success" + ":" + filePath);
                     currentProgress = -1;
+
+                    Bitmap bm = BitmapFactory.decodeFile(filePath);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
+                    byte[] b = baos.toByteArray();
+
+                    String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+                    sendPhoto(encodedImage);
                 }
             });
 
@@ -818,6 +891,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                     setResultToToast("Mission upload failed, error: " + error.getDescription() + " retrying...");
                     getWaypointMissionOperator().retryUploadMission(null);
                 }
+
             }
         });
 
@@ -826,13 +900,18 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     private void startWaypointMission(){
 
         //timeLine.run();
-
-        getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(DJIError error) {
-                setResultToToast("Mission Start: " + (error == null ? "Successfully" : error.getDescription()));
-            }
-        });
+        if (getWaypointMissionOperator().getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
+            //setResultToToast("Ya funciona");
+            getWaypointMissionOperator().startMission(new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(DJIError error) {
+                    setResultToToast("Mission Start: " + (error == null ? "Successfully" : error.getDescription()));
+                }
+            });
+        }
+        else {
+            setResultToToast("Aun no");
+        }
     }
 
     private void stopWaypointMission(){
@@ -856,5 +935,82 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
         LatLng shenzhen = new LatLng(22.5362, 113.9454);
         gMap.addMarker(new MarkerOptions().position(shenzhen).title("Marker in Shenzhen"));
         gMap.moveCamera(CameraUpdateFactory.newLatLng(shenzhen));
+    }
+
+    private void showMessage(String title, String message){
+
+        if(message.isEmpty())
+            message = "Tuvimos un problema con la conexión, inténtalo de nuevo por favor";
+        new MaterialDialog.Builder(this)
+                .title(title)
+                .content(message)
+                .positiveText("Ok")
+                .show();
+    }
+
+    public void sendPhoto(String img) {
+        //String DATE="2017-10-12T17:22:31.316Z", NAME="Solar", ADDRESS="CSF TEC", COST="10", SURFACE="10", ID_USER="1";
+
+        RequestBlobstore photoRegister = new RequestBlobstore();
+
+
+        photoRegister.setImage(img);
+        photoRegister.setCoordinateId(data.get(j).getId()); //Por ahora
+        j++;
+
+        Call<ResponseBlobstore> responsePhoto = connectInterface.RegisterPhoto(TOKEN, photoRegister);
+
+        responsePhoto.enqueue(new Callback<ResponseBlobstore>() {
+            @Override
+            public void onResponse(Call<ResponseBlobstore> call, Response<ResponseBlobstore> response) {
+                dialog.dismiss();
+                int statusCode = response.code();
+                ResponseBlobstore responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    Log.d("SUCCESS",response.toString());
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    Log.d("PROJECT",response.toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBlobstore> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
+    }
+
+    public void getCoordinate() {
+        Call<List<Coordinate>> responseLimits = connectInterface.GetLimits(TOKEN,ID_AREA);
+
+        responseLimits.enqueue(new Callback<List<Coordinate>>() {
+            @Override
+            public void onResponse(Call<List<Coordinate>> call, Response<List<Coordinate>> response) {
+                int statusCode = response.code();
+
+                if (statusCode==200){
+                    //msg.setVisibility(View.GONE);
+                    List<Coordinate> jsonResponse = response.body();
+                    data = new ArrayList<>(jsonResponse);
+                    Log.d("Coordinates:", data.get(2).getId());
+                    //adapter = new DataAdapterProjects(data);
+                    //recyclerView.setAdapter(adapter);
+                }
+                else{
+                    Log.d("PROJECT",response.toString());
+                    //msg.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Coordinate>> call, Throwable t) {
+
+            }
+        });
     }
 }

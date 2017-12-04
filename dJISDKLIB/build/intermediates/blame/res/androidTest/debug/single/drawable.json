@@ -1,62 +1,182 @@
 [
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_radio_selector.xml",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_radio_selector.xml"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_zoom_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_zoom_selector.xml"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\draw_arrow.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\draw_arrow.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/radio_checked.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/radio_checked.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\draw_route.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\draw_route.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indoorpointing_cannotpass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\indoorpointing_cannotpass.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_end.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_end.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/indoorpointing_cannotpass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/indoorpointing_cannotpass.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_starter.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_starter.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\draw_route.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\draw_route.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_zoom_selector.xml",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_zoom_selector.xml"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/draw_route_pass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/draw_route_pass.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indoorpointing_cannotpass.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\indoorpointing_cannotpass.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_starter.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_starter.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\radio_unchecked.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\radio_unchecked.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\draw_arrow.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\draw_arrow.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indoorpointing_canpass.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\indoorpointing_canpass.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_lock_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_lock_selector.xml"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\draw_route_pass.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\draw_route_pass.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_radio_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_radio_selector.xml"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_started.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_started.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/ic_launcher.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_start_plane.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_start_plane.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\radio_checked.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\radio_checked.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ic_launcher.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\ic_launcher.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\ic_launcher.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_lock_selector.xml",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_lock_selector.xml"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/indoorpointing_cannotpass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/indoorpointing_cannotpass.png"
     },
     {
-        "merged": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\radio_checked.png",
-        "source": "C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\radio_checked.png"
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_started.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_started.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_zoom_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_zoom_selector.xml"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\draw_route_pass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\draw_route_pass.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/draw_arrow.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/draw_arrow.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_end.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_end.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_zoom_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_zoom_selector.xml"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/draw_route.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/draw_route.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/draw_route_pass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/draw_route_pass.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/radio_unchecked.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/radio_unchecked.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_started.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_started.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/radio_unchecked.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/radio_unchecked.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_started.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_started.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\indoorpointing_canpass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\indoorpointing_canpass.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_lock_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_lock_selector.xml"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_starter.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_starter.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_lock_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_lock_selector.xml"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_end.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_end.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_start_plane.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_start_plane.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_start_plane.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_start_plane.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/radio_checked.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/radio_checked.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/indoorpointing_canpass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/indoorpointing_canpass.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/ic_launcher.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/ic_launcher.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_end.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_end.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_radio_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_radio_selector.xml"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_draw_start_plane.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_draw_start_plane.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\btn_draw_starter.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\btn_draw_starter.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/draw_arrow.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/draw_arrow.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/btn_radio_selector.xml",
+        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/btn_radio_selector.xml"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/draw_route.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/draw_route.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/drawable/indoorpointing_canpass.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/drawable/indoorpointing_canpass.png"
+    },
+    {
+        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\radio_unchecked.png",
+        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\drawable\\radio_unchecked.png"
     }
 ]

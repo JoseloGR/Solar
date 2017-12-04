@@ -3,6 +3,8 @@ package com.itesm.digital.solar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -30,18 +32,24 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Center;
 import com.itesm.digital.solar.Models.Position;
 import com.itesm.digital.solar.Models.RequestArea;
+import com.itesm.digital.solar.Models.RequestCoordinate;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestProject;
 import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseCoordinate;
 import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -69,6 +77,8 @@ public class SubstationActivity extends AppCompatActivity implements
 
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
+
+    public static List<LatLng> points = new ArrayList<LatLng>();
 
     public SharedPreferences prefs;
     public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
@@ -378,12 +388,476 @@ public class SubstationActivity extends AppCompatActivity implements
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent(SubstationActivity.this, CreateRoute.class);
+                        createRoute(MapsActivityCurrentPlace.listPolygons.get(0), 23.0);
+
+                        Intent intent = new Intent(SubstationActivity.this, ConnectionActivity.class);
+
+                        intent.putExtra("ID_AREA", ID_AREA);
+                        intent.putExtra("TOKEN", TOKEN);
+
                         startActivity(intent);
                         finish();
                     }
                 })
                 .show();
+    }
+
+    private LatLng findPoint(double x1, double y1, double angle, double w)
+    {
+        double y2;
+        double x2;
+
+        x2 = w * Math.cos(angle) + x1;
+        y2 = w * Math.sin(angle) + y1;
+
+        //y2  = y1  + ((w * Math.sin(angle)) / 6378137) * (180 / Math.PI);
+        //x2 = x1 + ((w * Math.cos(angle)) / 6378137) * (180 / Math.PI) / Math.cos(y1 * Math.PI/180);
+
+        /*Log.d("x1 = ", Double.toString(x1));
+        Log.d("y1 = ", Double.toString(y1));
+        Log.d("x2 = ", Double.toString(x2));
+        Log.d("y2 = ", Double.toString(y2));*/
+
+        return new LatLng(y2, x2);
+    }
+
+    private int findPoints2(LatLng p1, LatLng p2, double w, int i, double h)
+    {
+        double angle = calcAngle(p1.longitude, p2.longitude, p1.latitude, p2.latitude);
+        LatLng temp;
+
+        while(true)
+        {
+            if (points.size()<=1)
+                break;
+
+            temp = findPoint(points.get(i).longitude, points.get(i).latitude, angle, w);
+
+            //Log.d("temp: ", temp.toString());
+
+            if (angle >= 0 && angle < Math.PI/2 && temp.longitude >= p2.longitude
+                    && temp.latitude >= p2.latitude) {
+                break;
+            }
+            else if (angle >= Math.PI/2 && angle < Math.PI && temp.longitude < p2.longitude
+                    && temp.latitude >= p2.latitude) {
+                break;
+            }
+            else if (angle >= Math.PI && angle < 3*Math.PI/2 && temp.longitude < p2.longitude
+                    && temp.latitude < p2.latitude) {
+                break;
+            }
+            else if (angle >= 3*Math.PI/2 && angle < 2*Math.PI && temp.longitude >= p2.longitude
+                    && temp.latitude < p2.latitude) {
+                break;
+            }
+
+            points.add(i+1, temp);
+            sendCoordinate(temp.latitude, temp.longitude, h);
+            i++;
+            //w+=w;
+        }
+
+        return i;
+    }
+
+    private double calcAngle(double x1, double x2, double y1, double y2)
+    {
+        double hyp;
+        double opp;
+        //double sign=0;
+
+        hyp = Math.sqrt(Math.pow(x2-x1,2) + Math.pow(y2-y1,2));
+        opp = Math.sqrt(Math.pow(y2-y1,2));
+
+        if (x2>=x1 && y2>=y1)
+            return (Math.asin(opp/hyp));
+        else if (x2<x1 && y2>=y1)
+            return ((Math.PI)-(Math.asin(opp/hyp)));
+        else if (x2<x1 && y2<y1)
+            return ((3*Math.PI/2)-(Math.PI/2 - Math.asin(opp/hyp)));
+        else
+            return ((2*Math.PI)-(Math.asin(opp/hyp)));
+    }
+
+    private double calcSlope(double x1, double x2, double y1, double y2)
+    {
+        return (y2-y1)/(x2-x1);
+    }
+
+    private double calcB(double x, double y, double m)
+    {
+        return y-m*x;
+    }
+
+    private boolean findVertex(LatLng p1, LatLng p2, LatLng p3, double d, double h)
+    {
+        double ma = calcSlope(p1.longitude, p2.longitude, p1.latitude, p2.latitude);
+        double mb = calcSlope(p2.longitude, p3.longitude, p2.latitude, p3.latitude);
+        double ba = calcB(p2.longitude, p2.latitude, ma);
+        double bb = calcB(p3.longitude, p3.latitude, mb);
+
+        double angle1 = calcAngle(p1.longitude, p2.longitude, p1.latitude, p2.latitude);
+        double angle2 = calcAngle(p2.longitude, p3.longitude, p2.latitude, p3.latitude);
+
+        double da = d;
+        double db = d;
+
+        /*Log.d("p1: ", p1.toString());
+        Log.d("p2: ", p2.toString());
+        Log.d("p3: ", p3.toString());
+
+        Log.d("angle1: ", Double.toString(Math.toDegrees(angle1)));
+        Log.d("angle2: ", Double.toString(Math.toDegrees(angle2)));
+
+
+        Log.d("ma: ", Double.toString(ma));
+        Log.d("ba: ", Double.toString(ba));
+        Log.d("mb: ", Double.toString(mb));
+        Log.d("bb: ", Double.toString(bb));
+        Log.d("", "");*/
+
+        if (angle1 > Math.PI/2 && angle1 <= 3*Math.PI/2) {
+            da=-da;
+        }
+        if (angle2 > Math.PI/2 && angle2 <= 3*Math.PI/2) {
+            db=-db;
+        }
+
+        double x = (bb +db*Math.sqrt(1+Math.pow(mb,2)) - ba - da*Math.sqrt(1+Math.pow(ma,2)))/(ma-mb);
+        double y = ma*x+ba+da*Math.sqrt(1+Math.pow(ma,2));
+
+        points.add(new LatLng(y,x));
+        sendCoordinate(y, x, h);
+
+        return true;
+    }
+
+    private LatLng rotate(double angle, double x, double y, double ox, double oy, int r)
+    {
+        /*Log.d("angle2 = " , Double.toString(angle));
+        Log.d("ox = ", Double.toString(ox));
+        Log.d("oy = ", Double.toString(oy));
+        Log.d("x = ", Double.toString(x));
+        Log.d("y = ", Double.toString(y));
+        Log.d("r = ", Double.toString(r));*/
+
+        double lon = (x+(x*r))*Math.cos(angle)-(y+(y*r))*Math.sin(angle)+ox;
+        double lat = (x+(x*r))*Math.sin(angle)+(y+(y*r))*Math.cos(angle)+oy;
+
+        //Log.d("lon: ", Double.toString(lon));
+        //Log.d("lat: ", Double.toString(lat));
+
+        return new LatLng(lat, lon);
+    }
+
+    private void createRoute(List<LatLng> listVertices, double height){
+        double length;
+        double width;
+        double longitudeDron;
+        double latitudeDron;
+        double pending;
+        double b;
+        double angle;
+        double angle2;
+        double wt = 1;
+        double wa;
+        double rw = 0;
+        int i = -1;
+        int ii;
+        int fi;
+        int r=0;
+        int cw=0;
+        int dei=0;
+        boolean added;
+
+        double tempx=0;
+        double tempy=0;
+
+        List<Integer> deleteVertex = new ArrayList<Integer>();
+        List<Double> angles = new ArrayList<Double>();
+
+        //vertix.setLongitude(listVertices.get(0).longitude);
+        //vertix.setLatitude(listVertices.get(0).latitude);
+        //firstLocationDron.setLongitude(listVertices.get(0).longitude);
+        //firstLocationDron.setLatitude(listVertices.get(0).latitude);
+        longitudeDron = listVertices.get(0).longitude;
+        latitudeDron = listVertices.get(0).latitude;
+
+        height = 32.0;
+
+        length = (1.8 * height * 0.3048) / 6378137 *180/Math.PI;
+        width = (1.37 * height * 0.3048) / 6378137 *180/Math.PI;
+
+        int li=0;
+        int lf=0;
+
+        //Log.d("New Vertex1: ", listVertices.toString());
+
+        int sizeV=listVertices.size();
+
+        //for (int k=0; k<8; k++)
+        while (true)
+        {
+            for (int l=0; l<listVertices.size(); l++)
+            {
+                if (l-1<0) {
+                    li=listVertices.size()-1;
+                }
+                else {
+                    li=l-1;
+                }
+                if (l+1>=listVertices.size()) {
+                    lf=0;
+                }
+                else {
+                    lf=l+1;
+                }
+
+                /*angles.add(Math.atan2(listVertices.get(li).latitude
+                        - listVertices.get(lf).latitude, listVertices.get(li).longitude
+                        - listVertices.get(lf).longitude));*/
+
+                angles.add(calcAngle(listVertices.get(l).longitude, listVertices.get(lf).longitude,
+                        listVertices.get(l).latitude, listVertices.get(lf).latitude));
+
+                //Log.d("angle1: ", Double.toString(angles.get(l)));
+
+                added = findVertex(listVertices.get(li), listVertices.get(l),
+                        listVertices.get(lf), length/2, height);
+
+                if (added) {
+                    i++;
+                }
+                else {
+                    sizeV--;
+                }
+
+                /*angle = calcAngle(listVertices.get(l).longitude, points.get(i+1).longitude,
+                        listVertices.get(l).latitude, points.get(i+1).latitude);
+
+                Log.d("angle: ", Double.toString(Math.toDegrees(angle)));*/
+
+                //i++;
+            }
+
+            //Log.d("sizeV: ", Integer.toString(sizeV));
+
+            if (sizeV <= 1)
+                break;
+
+            i=i-listVertices.size()+1;
+
+            //Log.d("i1: ", Integer.toString(i));
+
+            listVertices.clear();
+
+            for (int l=0; l<sizeV; l++)
+            {
+                //Log.d("i1: ", Integer.toString(i));
+
+                listVertices.add(points.get(i));
+                i++;
+                //Log.d("i2: ", Integer.toString(i));
+
+            }
+
+            i=i-listVertices.size();
+
+            //Log.d("i2: ", Integer.toString(i));
+            int l2=0;
+
+            for (int l=0; l<listVertices.size(); l++)
+            {
+                //Log.d("angle1: ", Double.toString(angles.get(l2)));
+
+                if (l-1<0) {
+                    li=listVertices.size()-1;
+                }
+                else {
+                    li=l-1;
+                }
+                if (l+1>=listVertices.size()) {
+                    lf=0;
+                }
+                else {
+                    lf=l+1;
+                }
+
+                angle2 = calcAngle(listVertices.get(l).longitude, listVertices.get(lf).longitude,
+                        listVertices.get(l).latitude, listVertices.get(lf).latitude);
+
+                //Log.d("angle2: ", Double.toString(angle2));
+
+                if (angle2 >= angles.get(l2) - 0.00000001 && angle2 <= angles.get(l2) + 0.00000001) {
+                    i++;
+                }
+                else {
+                    Log.d("hola: ", "funciona");
+
+                    sizeV--;
+                    points.remove(i);
+                    listVertices.remove(l);
+                    l--;
+                }
+                l2++;
+
+            }
+
+            Log.d("Vertices: ", listVertices.toString());
+
+            if (sizeV <= 1)
+                break;
+
+            //Log.d(" "," ");
+
+            i=points.size()-listVertices.size();
+
+
+
+            //points.add(points.get(i));
+
+            //i++;
+
+            for (int l=0; l<listVertices.size(); l++)
+            {
+                //Log.d("i1: ", Integer.toString(i));
+                ii=i;
+
+                if (l + 1 >= listVertices.size()) {
+                    i = findPoints2(listVertices.get(l), listVertices.get(0), width / 2, i, height);
+                } else {
+                    i = findPoints2(listVertices.get(l), listVertices.get(l+1), width / 2, i, height);
+                }
+
+                if (ii==i) {
+                    sizeV--;
+                    deleteVertex.add(l);
+                }
+                //Log.d("i2: ", Integer.toString(i));
+
+                //Log.d("points: ", points.toString());
+
+                i++;
+            }
+
+            if (listVertices.size() <= 2)
+                break;
+
+            //Log.d("points: ", points.toString());
+
+            for (int l=0; l<deleteVertex.size(); l++)
+            {
+                //Log.d("hola: ", Integer.toString(deleteVertex.size()));
+                if (deleteVertex.get(l)+1 > listVertices.size()) {
+                    tempx=((listVertices.get(0).longitude
+                            - listVertices.get(deleteVertex.get(l)).longitude) /2)
+                            + listVertices.get(deleteVertex.get(l)).longitude;
+
+                    tempy=((listVertices.get(deleteVertex.get(l)+1).latitude
+                            - listVertices.get(deleteVertex.get(l)).latitude) /2)
+                            + listVertices.get(deleteVertex.get(l)).latitude;
+                }
+                else {
+                    tempx=((listVertices.get(deleteVertex.get(l)+1).longitude
+                            - listVertices.get(deleteVertex.get(l)).longitude) /2)
+                            + listVertices.get(deleteVertex.get(l)).longitude;
+
+                    tempy=((listVertices.get(deleteVertex.get(l)+1).latitude
+                            - listVertices.get(deleteVertex.get(l)).latitude) /2)
+                            + listVertices.get(deleteVertex.get(l)).latitude;
+                }
+
+                /*Log.d("tempx = (", Double.toString(listVertices.get(deleteVertex.get(l)+1).longitude)
+                        + " - " + Double.toString(listVertices.get(deleteVertex.get(l)).longitude)
+                        + ") / 2 + " + Double.toString(listVertices.get(deleteVertex.get(l)).longitude));
+
+                Log.d("tempy = (", Double.toString(listVertices.get(deleteVertex.get(l)+1).latitude)
+                        + " - " + Double.toString(listVertices.get(deleteVertex.get(l)).latitude)
+                        + ") / 2 + " + Double.toString(listVertices.get(deleteVertex.get(l)).latitude));*/
+
+                //Log.d("tempx: ", Double.toString(tempx));
+                //Log.d("tempy: ", Double.toString(tempy));
+
+                listVertices.set(deleteVertex.get(l), new LatLng(tempy, tempx));
+            }
+
+            //Log.d("New Vertex1: ", listVertices.toString());
+
+            for (int l=0; l<deleteVertex.size(); l++)
+            {
+                listVertices.remove(deleteVertex.get(l)+1-dei);
+                dei++;
+            }
+
+            deleteVertex.clear();
+            dei=0;
+
+            i--;
+            //Log.d("New Vertex2: ", listVertices.toString());
+
+            if (listVertices.size() == 1) {
+                points.add(listVertices.get(0));
+                sendCoordinate(listVertices.get(0).latitude, listVertices.get(0).longitude, height);
+                break;
+            }
+            else if (listVertices.size() < 1)
+                break;
+
+            //if (sizeV<=3)
+            //break;
+        }
+
+        Log.d("points: ", points.toString());
+
+        //Log.d("Salio: ", listVertices.toString());
+
+        //return firstLocationDron;
+    }
+
+    public void sendCoordinate(double lat, double lon, double al) {
+        //String DATE="2017-10-12T17:22:31.316Z", NAME="Solar", ADDRESS="CSF TEC", COST="10", SURFACE="10", ID_USER="1";
+
+        RequestCoordinate coordinateRegister = new RequestCoordinate();
+        Position pos = new Position();
+
+        pos.setLat(Double.toString(lat));
+        pos.setLng(Double.toString(lon));
+
+        coordinateRegister.setPosition(pos);
+        coordinateRegister.setAltitude(al);
+        coordinateRegister.setAreaId(ID_AREA); //Por ahora
+        coordinateRegister.setResultId(""); //Por ahora
+
+        Call<ResponseCoordinate> responseCoordinate = connectInterface.RegisterCoordinate(TOKEN, coordinateRegister);
+
+        responseCoordinate.enqueue(new Callback<ResponseCoordinate>() {
+            @Override
+            public void onResponse(Call<ResponseCoordinate> call, Response<ResponseCoordinate> response) {
+                dialog.dismiss();
+                int statusCode = response.code();
+                ResponseCoordinate responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    Log.d("SUCCESS",response.toString());
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear la coordenada. Contacte al administrador.");
+                    Log.d("PROJECT",response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCoordinate> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
+
+        //Log.d("hola: ", "sale");
+
     }
 
     public void NextStepAreaRegister(){

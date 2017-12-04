@@ -21,6 +21,8 @@ import dji.sdk.products.Aircraft;
 public class ConnectionActivity extends Activity implements View.OnClickListener {
 
     private static final String TAG = ConnectionActivity.class.getName();
+    public String ID_AREA;
+    public String TOKEN;
 
     private TextView mTextConnectionStatus;
     private TextView mTextProduct;
@@ -29,6 +31,20 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                ID_AREA = "";
+                TOKEN = "";
+            } else {
+                ID_AREA = extras.getString("ID_AREA");
+                TOKEN = extras.getString("TOKEN");
+            }
+        } else {
+            ID_AREA = (String) savedInstanceState.getSerializable("ID_AREA");
+            TOKEN = (String) savedInstanceState.getSerializable("TOKEN");
+        }
 
         // When the compile and target version is higher than 22, please request the
         // following permissions at runtime to ensure the
@@ -135,6 +151,8 @@ public class ConnectionActivity extends Activity implements View.OnClickListener
 
             case R.id.btn_open: {
                 Intent intent = new Intent(this, MainDrone.class);
+                intent.putExtra("ID_AREA", ID_AREA);
+                intent.putExtra("TOKEN", TOKEN);
                 startActivity(intent);
                 break;
             }

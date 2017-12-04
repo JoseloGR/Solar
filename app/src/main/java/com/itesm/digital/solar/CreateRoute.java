@@ -1,7 +1,9 @@
 package com.itesm.digital.solar;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -22,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.GeoDataClient;
@@ -41,9 +44,20 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.Position;
+import com.itesm.digital.solar.Models.RequestCoordinate;
+import com.itesm.digital.solar.Models.ResponseCoordinate;
+import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
 import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE;
@@ -96,6 +110,21 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
     //set if the user is near of the area selected
     private boolean nearArea = false;
 
+    MaterialDialog.Builder builder;
+    MaterialDialog dialog;
+
+    Retrofit.Builder builderR = new Retrofit.Builder()
+            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
+            .addConverterFactory(GsonConverterFactory.create());
+
+    Retrofit retrofit = builderR.build();
+
+    RequestInterface connectInterface = retrofit.create(RequestInterface.class);
+
+    public SharedPreferences prefs;
+
+    public String TOKEN;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +158,16 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        builder = new MaterialDialog.Builder(this)
+                .title(R.string.progress_dialog)
+                .content(R.string.please_wait)
+                .progress(true, 0);
+
+        dialog = builder.build();
+
+        prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+        TOKEN = prefs.getString("Token", null);
     }
 
     /**
@@ -382,7 +421,10 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
                 //i=0;
 
                 //points.add(new LatLng(listVertices.get(0).latitude, listVertices.get(0).longitude));
+
                 points.add(rotate(angle, length / 2, length / 2, listVertices.get(j).longitude, listVertices.get(j).latitude, r));
+                sendCoordinate(points.get(i+1).latitude, points.get(i+1).longitude, height);
+                //Log.d("hola: ", "entra");
 
                 /*if (angle > Math.PI/2 && angle <= Math.PI) {
                     points.add(rotate(angle, length / 2, -length / 2, test.get(j).longitude, test.get(j).latitude, r));
@@ -398,6 +440,7 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
                 for (int l=1; l<listVertices.size(); l++)
                 {
                     points.add(rotate(angle, -length / 2, length / 2, listVertices.get(l).longitude, listVertices.get(l).latitude, r));
+                    sendCoordinate(points.get(i+1).latitude, points.get(i+1).longitude, height);
                     i++;
                     //if (l+1 >= test.size())
                     if (l+1 >= listVertices.size())
@@ -433,6 +476,7 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
 
                 //points.add(points.get(i-test.size()+1));
                 points.add(points.get(i-listVertices.size()+1));
+                sendCoordinate(points.get(i+1).latitude, points.get(i+1).longitude, height);
                 i++;
 
                 //if (j == test.size() - 1) {
@@ -486,30 +530,63 @@ public class CreateRoute extends AppCompatActivity implements AdapterView.OnItem
 
         //longitudeDron = (pending * listVertices.get(0).latitude) + b;
 
-        /*while(vertix.distanceTo(firstLocationDron) <= (width / 2)){
-            if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
-                latitudeDron -= 0.00001;
-            }
-            else{
-                latitudeDron += 0.00001;
-            }
-            longitudeDron = (pending * latitudeDron) + b;
-            firstLocationDron.setLongitude(longitudeDron);
-            firstLocationDron.setLatitude(latitudeDron);
-            Log.v("Position dron", firstLocationDron.toString());
-        }*/
-
-        /*while(vertix.distanceTo(firstLocationDron) <= (length / 2) + (width / 2)){
-            if(listVertices.get(0).latitude - listVertices.get(1).latitude > 0){
-                latitudeDron -= 0.00001;
-            }
-            else{
-                latitudeDron += 0.00001;
-            }
-            firstLocationDron.setLatitude(latitudeDron);
-            Log.v("Latitude dron", firstLocationDron.toString());
-        }*/
         return firstLocationDron;
+    }
+
+    private void showMessage(String title, String message){
+
+        if(message.isEmpty())
+            message = "Tuvimos un problema con la conexión, inténtalo de nuevo por favor";
+        new MaterialDialog.Builder(this)
+                .title(title)
+                .content(message)
+                .positiveText("Ok")
+                .show();
+    }
+
+    public void sendCoordinate(double lat, double lon, double al) {
+        //String DATE="2017-10-12T17:22:31.316Z", NAME="Solar", ADDRESS="CSF TEC", COST="10", SURFACE="10", ID_USER="1";
+
+        RequestCoordinate coordinateRegister = new RequestCoordinate();
+        Position pos = new Position();
+
+        pos.setLat(Double.toString(lat));
+        pos.setLng(Double.toString(lon));
+
+        coordinateRegister.setPosition(pos);
+        coordinateRegister.setAltitude(al);
+        //coordinateRegister.setAreaId(2); //Por ahora
+        //coordinateRegister.setResultId(0); //Por ahora
+
+        Call<ResponseCoordinate> responseCoordinate = connectInterface.RegisterCoordinate(TOKEN, coordinateRegister);
+
+        responseCoordinate.enqueue(new Callback<ResponseCoordinate>() {
+            @Override
+            public void onResponse(Call<ResponseCoordinate> call, Response<ResponseCoordinate> response) {
+                dialog.dismiss();
+                int statusCode = response.code();
+                ResponseCoordinate responseBody = response.body();
+                if (statusCode==201 || statusCode==200){
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    Log.d("SUCCESS",response.toString());
+                }
+                else{
+                    showMessage("Proyecto Solar", "Hubo un problema al crear la coordenada. Contacte al administrador.");
+                    Log.d("PROJECT",response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCoordinate> call, Throwable t) {
+                dialog.dismiss();
+                Log.d("OnFail", t.getMessage());
+                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
+            }
+        });
+
+        //Log.d("hola: ", "sale");
+
     }
 
     private void createRoute(double height, List<LatLng> listVertices){
