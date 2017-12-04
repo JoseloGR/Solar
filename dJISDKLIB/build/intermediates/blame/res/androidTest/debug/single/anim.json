@@ -1,170 +1,114 @@
 [
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_exit.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_exit.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_enter_back.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_enter_back.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_enter.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_enter.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_hyperspace_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_hyperspace_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_other.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_other.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_other.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_other.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_exit.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_exit.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_left_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_left_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_up_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_up_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_enter.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_enter.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hold.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hold.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_up_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_up_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_left_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_left_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_enter_back.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_enter_back.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_left_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_left_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_exit_back.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_exit_back.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_other.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_other.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_exit.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_exit.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_right_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_right_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_hold.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_hold.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_other.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_other.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_exit_back.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_exit_back.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_right_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_right_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_right_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_right_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_left_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_left_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_up_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_up_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_left_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_left_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hold.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hold.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_enter_back.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_enter_back.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_up_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_up_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_hyperspace_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_hyperspace_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hyperspace_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hyperspace_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_up_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_up_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_up_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_up_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_enter.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_enter.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_left_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_left_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hyperspace_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hyperspace_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_right_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_right_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_left_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_left_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_hyperspace_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_hyperspace_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_exit_back.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_exit_back.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hyperspace_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hyperspace_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hyperspace_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hyperspace_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_left_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_left_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_exit_back.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_exit_back.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_right_in.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_right_in.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_up_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_up_in.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_other.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_other.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_right_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_right_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_right_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_right_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hyperspace_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hyperspace_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_left_out.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_left_out.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_exit.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_exit.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_exit.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_exit.xml"
     },
     {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_hyperspace_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_hyperspace_in.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hyperspace_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hyperspace_out.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_up_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_up_in.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_right_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_right_in.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_enter_back.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_enter_back.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_enter.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_enter.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_right_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_right_out.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_right_in.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_right_in.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_left_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_left_out.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_push_up_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_push_up_out.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_hold.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_hold.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/anim/core_zoom_enter_back.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/otros/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/anim/core_zoom_enter_back.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_exit_back.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_exit_back.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_hold.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_hold.xml"
-    },
-    {
-        "merged": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_push_up_out.xml",
-        "source": "/home/pabmacias28/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_push_up_out.xml"
+        "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\core_zoom_enter.xml",
+        "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\anim\\core_zoom_enter.xml"
     }
 ]

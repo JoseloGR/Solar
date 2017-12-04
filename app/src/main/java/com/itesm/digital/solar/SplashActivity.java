@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
-import android.view.View;
 import android.widget.ImageView;
 
 public class SplashActivity extends Activity {
@@ -48,7 +46,7 @@ public class SplashActivity extends Activity {
         SharedPreferences userProfile = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
 
         if(userProfile.contains("Token")){
-            Intent i = new Intent(SplashActivity.this, Proyects.class);
+            Intent i = new Intent(SplashActivity.this, Results.class);
             // Pass data object in the bundle and populate details activity.
             ActivityOptionsCompat options = ActivityOptionsCompat.
                     makeSceneTransitionAnimation(this, ivLogo,  ViewCompat.getTransitionName(ivLogo));
