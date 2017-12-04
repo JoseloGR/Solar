@@ -660,17 +660,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         }
         if(sendEnabled){
             Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
-            //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, CreateRoute.class);
-            //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, ConnectionActivity.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);
             listPolygons.add(last);
             Log.d("final + ", last.toString());
-            if (altitude == 0.0f){
-                showSettingDialog();
-            }else{
-                startActivity(mainIntent);
-            }
+            startActivity(mainIntent);
         }
         else{
             Toast.makeText(getApplicationContext(), "You need to complete area", Toast.LENGTH_SHORT).show();

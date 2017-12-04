@@ -356,12 +356,7 @@ public class AreaCoordinates extends AppCompatActivity implements AdapterView.On
     public void send(View view) {
 
         Intent mainIntent = new Intent().setClass(AreaCoordinates.this, SubstationActivity.class);
-        //Intent mainIntent = new Intent().setClass(AreaCoordinates.this, CreateRoute.class);
-        if (MapsActivityCurrentPlace.altitude == 0.0f){
-            showSettingDialog();
-        }else{
-            startActivity(mainIntent);
-        }
+        startActivity(mainIntent);
     }
 
     /**

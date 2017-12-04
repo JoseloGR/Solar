@@ -311,11 +311,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
         Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, CreateRoute.class);
         mainIntent.putExtra("latitude", latitude);
         mainIntent.putExtra("longitude", longitude);
-        if (MapsActivityCurrentPlace.altitude == 0.0f){
-            showSettingDialog();
-        }else{
-            startActivity(mainIntent);
-        }
+        startActivity(mainIntent);
     }
 
     @Override
