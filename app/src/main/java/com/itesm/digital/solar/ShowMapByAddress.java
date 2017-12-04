@@ -170,18 +170,15 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
         if (!checkReady()) {
             return;
         }
+
         if(sendEnabled){
-            Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SetObstaclesActivity.class);
-            //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, CreateRoute.class);
-            //Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, ConnectionActivity.class);
+            Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SubstationActivity.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);
+            startActivity(mainIntent);
             MapsActivityCurrentPlace.listPolygons.add(path);
-            if (altitude == 0.0f){
-                showSettingDialog();
-            }else{
-                startActivity(mainIntent);
-            }
+            startActivity(mainIntent);
+
         }
         else{
             Toast.makeText(getApplicationContext(), "You need to complete area", Toast.LENGTH_SHORT).show();
