@@ -148,6 +148,8 @@ public class SubstationActivity extends AppCompatActivity implements
         TOKEN = prefs.getString("Token", null);
         NAME = prefs.getString("Name", null);
         COST = prefs.getString("Cost", null);
+        latitude = Double.valueOf(prefs.getString("LATITUDE_USER", null));
+        longitude = Double.valueOf(prefs.getString("LONGITUDE_USER", null));
 
         Log.d("TOKEN SUB", TOKEN);
 

@@ -1,7 +1,9 @@
 package com.itesm.digital.solar;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -504,6 +506,14 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         if(sendEnabled){
+
+
+            SharedPreferences tokenUser = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = tokenUser.edit();
+            editor.putString("LATITUDE_USER", String.valueOf(latitude));
+            editor.putString("LONGITUDE_USER", String.valueOf(longitude));
+            editor.apply();
+
             Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SetAltitude.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);
