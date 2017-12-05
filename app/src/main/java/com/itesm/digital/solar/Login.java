@@ -163,6 +163,7 @@ public class Login extends AppCompatActivity {
                 showProgress(false);
 
                 if(statusCode != 200) {
+                    Log.d("LOGIN", response.toString());
                     showMessage("Iniciar sesión", "Verifica tu nombre de usuario y contraseña");
 
                 }
