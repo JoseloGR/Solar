@@ -29,10 +29,7 @@ public class HomeResults extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ClearActiveProject();
-                Intent intent = new Intent(HomeResults.this, Projects.class);
-                startActivity(intent);
-                finish();
+                backFlow();
             }
         });
 
@@ -49,7 +46,9 @@ public class HomeResults extends AppCompatActivity {
             }
         });
 
-        String ID_PROJECT = getIntent().getExtras().getString("ID_PROJECT");
+        ID_PROJECT = getIntent().getExtras().getString("ID_PROJECT");
+        ID_AREA = getIntent().getExtras().getString("ID_AREA");
+        TOKEN = getIntent().getExtras().getString("TOKEN");
         SetActiveProject(ID_PROJECT);
     }
 
@@ -66,5 +65,19 @@ public class HomeResults extends AppCompatActivity {
         SharedPreferences.Editor editor = project.edit();
         editor.clear();
         editor.commit();
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        backFlow();
+    }
+
+    public void backFlow(){
+        ClearActiveProject();
+        Intent intent = new Intent(HomeResults.this, Projects.class);
+        startActivity(intent);
+        finish();
+
     }
 }
