@@ -22,7 +22,7 @@
 
     <!-- activity_create_project -->
     <string name="project_name">Enter project name</string>
-    <string name="cost_kw">Enter the K/h cost</string>
+    <string name="cost_kw">Enter the kW/h cost</string>
     <string name="address_project">Address</string>
     <string name="create">Create</string>
     <string name="continue_project">Continue</string>
@@ -68,7 +68,7 @@
     <string name="progress_dialog">Log in</string>
     <string name="please_wait">Conectando con el servidor, por favor espere un momento...</string>
 
-    <string name="error_field_required">Este campo es requerido</string>
+    <string name="error_field_required">This field is required</string>
     <string name="error_user_username">Este nombre de usuario no se encuentra disponible</string>
     <string name="error_user_pass">Esta contraseña es muy corta, debe contener mínimo 5 caracteres</string>
     <string name="error_user_pass_confirm">Las contraseñas no son iguales</string>
