@@ -48,7 +48,7 @@ public class SetAltitude extends AppCompatActivity {
             editor.putString("Altitude", String.valueOf(feets));
             editor.apply();
 
-            Intent intent = new Intent(SetAltitude.this, MapsActivityCurrentPlace.class);
+            Intent intent = new Intent(SetAltitude.this, SubstationActivity.class);
             startActivity(intent);
         }
     }

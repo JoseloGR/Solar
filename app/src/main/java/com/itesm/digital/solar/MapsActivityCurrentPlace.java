@@ -504,7 +504,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         if(sendEnabled){
-            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SubstationActivity.class);
+            Intent mainIntent = new Intent().setClass(MapsActivityCurrentPlace.this, SetAltitude.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);
             listPolygons.add(path);

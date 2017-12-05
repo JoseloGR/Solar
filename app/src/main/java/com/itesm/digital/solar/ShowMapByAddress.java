@@ -172,7 +172,7 @@ public class ShowMapByAddress extends FragmentActivity implements AdapterView.On
         }
 
         if(sendEnabled){
-            Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SubstationActivity.class);
+            Intent mainIntent = new Intent().setClass(ShowMapByAddress.this, SetAltitude.class);
             mainIntent.putExtra("latitude", latitude);
             mainIntent.putExtra("longitude", longitude);
             startActivity(mainIntent);
