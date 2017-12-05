@@ -244,10 +244,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     path.add(latLng);
                     firstPoint = false;
                 }
-                else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.004 &&
-                        path.get(path.size() - 1).latitude - latLng.latitude <= 0.004 &&
-                        path.get(path.size() - 1).longitude - latLng.longitude >= -0.004 &&
-                        path.get(path.size() - 1).longitude - latLng.longitude <= 0.004){
+                else if (path.get(path.size() - 1).latitude - latLng.latitude >= -0.001 &&
+                        path.get(path.size() - 1).latitude - latLng.latitude <= 0.001 &&
+                        path.get(path.size() - 1).longitude - latLng.longitude >= -0.001 &&
+                        path.get(path.size() - 1).longitude - latLng.longitude <= 0.001){
                     path.remove(path.size() - 1);
                     path.add(latLng);
                 }
