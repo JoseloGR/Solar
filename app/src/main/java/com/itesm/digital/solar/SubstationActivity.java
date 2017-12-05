@@ -82,7 +82,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
     public SharedPreferences prefs;
     public SharedPreferences prefs2;
-    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
+    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="",DATE="2017-12-05T09:25:13.106Z",SURFACE="30";
     public int COST_VALUE=10, AREA_VALUE=20;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
@@ -225,6 +225,8 @@ public class SubstationActivity extends AppCompatActivity implements
     }
 
     private void SendDataProject(){
+
+        //SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0));
 
         RequestProject projectRegister = new RequestProject();
         projectRegister.setName(NAME);

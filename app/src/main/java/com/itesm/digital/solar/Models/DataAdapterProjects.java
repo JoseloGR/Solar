@@ -39,7 +39,7 @@ public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProject
         viewHolder.tv_address.setText(projects.get(i).getAddress());
         viewHolder.tv_cost.setText(projects.get(i).getCost());
         viewHolder.tv_date.setText(projects.get(i).getDate());
-        viewHolder.tv_surface.setText(projects.get(i).getSurface());
+        viewHolder.tv_surface.setText("Area: " + projects.get(i).getSurface());
         viewHolder.tv_id.setText(projects.get(i).getId());
         viewHolder.tv_user_id.setText(projects.get(i).getUserId());
         viewHolder.setClickListener(new RecyclerViewClickListener(){

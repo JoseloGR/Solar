@@ -17,17 +17,16 @@
             android:id="@+id/logo_project"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:background="@drawable/solar_energy"
-            android:src="@drawable/drone_black"
+            android:src="@drawable/solar_energy"
             android:padding="10dp"
             android:layout_alignParentStart="true"/>
         <TextView
             android:id="@+id/tv_name"
-            android:layout_marginBottom="10dp"
             android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:layout_marginLeft="10px"
             android:layout_toRightOf="@+id/logo_project"/>
         <TextView
             android:text="Costo "
@@ -40,18 +39,22 @@
             android:id="@+id/tv_date"
             android:layout_below="@+id/tv_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_name"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tv_surface"
-            android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginBottom="5dp"
+            android:layout_toRightOf="@+id/logo_project"/>
         <TextView
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/tv_date"/>
+            android:layout_below="@id/tv_surface"
+            android:layout_toRightOf="@+id/logo_project"/>
         <TextView
             android:id="@+id/tv_id"
             android:layout_width="wrap_content"
