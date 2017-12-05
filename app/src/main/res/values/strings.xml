@@ -87,6 +87,6 @@
     <string name="title_activity_projects">Solar Projects</string>
 
     <string name="msg_records">There are still no registered projects</string>
-
+    <string name="title_activity_results_without_obstacles">ResultsWithoutObstacles</string>
 
 </resources>

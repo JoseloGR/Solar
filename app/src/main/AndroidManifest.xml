@@ -97,12 +97,18 @@
         <activity android:name=".Coordinates" />
         <activity android:name=".AreaCoordinates" />
         <activity android:name=".SetObstaclesActivity" />
-        <activity android:name=".Results" />
+        <activity android:name=".ResultsWithObstacles" />
+        <activity android:name=".CentralResults" />
         <activity
             android:name=".Projects"
             android:label="@string/title_activity_projects"
             android:theme="@style/AppTheme" />
+
         <activity android:name=".SetAltitude"></activity>
+        <activity
+            android:name=".ResultsWithoutObstacles"
+            android:label="@string/title_activity_results_without_obstacles"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
