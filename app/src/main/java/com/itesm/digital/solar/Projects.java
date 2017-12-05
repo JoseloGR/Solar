@@ -91,6 +91,15 @@ public class Projects extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        /*listener = new RecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
+            }
+        };
+        adapter = new DataAdapterProjects(data, listener);
+        recyclerView.setAdapter(adapter);*/
+
         loadDataProjects();
     }
 
@@ -108,13 +117,7 @@ public class Projects extends AppCompatActivity {
                     msg.setVisibility(View.GONE);
                     List<Project> jsonResponse = response.body();
                     data = new ArrayList<>(jsonResponse);
-                    listener = new RecyclerViewClickListener() {
-                        @Override
-                        public void onClick(View view, int position) {
-                            Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    adapter = new DataAdapterProjects(data, listener);
+                    adapter = new DataAdapterProjects(data, getApplicationContext());
                     recyclerView.setAdapter(adapter);
 
                 }
