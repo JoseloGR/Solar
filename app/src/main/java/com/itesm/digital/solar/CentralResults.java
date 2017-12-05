@@ -3,8 +3,11 @@ package com.itesm.digital.solar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 public class CentralResults extends AppCompatActivity{
 
@@ -12,6 +15,8 @@ public class CentralResults extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.central_results);
+
+        String ID_PROJECT = getIntent().getExtras().getString("ID_PROJECT");
 
         Button btn_area_with_obstacles = (Button) findViewById(R.id.btn_area_with_obstacles);  //relaciona el objeto con el boton
         Button btn_area_without_obstacles = (Button) findViewById(R.id.btn_area_without_obstacles);
@@ -32,6 +37,8 @@ public class CentralResults extends AppCompatActivity{
                 startActivity(mainIntent);
             }
         });
+
+        Log.d("Project Selected", ID_PROJECT);
     }
 
 }
