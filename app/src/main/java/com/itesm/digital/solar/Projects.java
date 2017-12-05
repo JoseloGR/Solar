@@ -12,7 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.itesm.digital.solar.Interfaces.RecyclerViewClickListener;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.DataAdapterProjects;
 import com.itesm.digital.solar.Models.Project;
@@ -30,6 +32,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static dji.midware.data.manager.P3.ServiceManager.getContext;
+
 public class Projects extends AppCompatActivity {
 
     public String ACTIVE_USERNAME,ID_USER,TOKEN;
@@ -39,6 +43,7 @@ public class Projects extends AppCompatActivity {
     private DataAdapterProjects adapter;
     TextView msg;
     public SharedPreferences prefs;
+    RecyclerViewClickListener listener;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
             .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
@@ -85,6 +90,7 @@ public class Projects extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
+
         loadDataProjects();
     }
 
@@ -102,8 +108,15 @@ public class Projects extends AppCompatActivity {
                     msg.setVisibility(View.GONE);
                     List<Project> jsonResponse = response.body();
                     data = new ArrayList<>(jsonResponse);
-                    adapter = new DataAdapterProjects(data);
+                    listener = new RecyclerViewClickListener() {
+                        @Override
+                        public void onClick(View view, int position) {
+                            Toast.makeText(getContext(), "Position " + position, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    adapter = new DataAdapterProjects(data, listener);
                     recyclerView.setAdapter(adapter);
+
                 }
                 else{
                     Log.d("PROJECT",response.toString());

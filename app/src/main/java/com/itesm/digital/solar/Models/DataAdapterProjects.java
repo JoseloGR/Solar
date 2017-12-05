@@ -6,22 +6,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.itesm.digital.solar.Interfaces.RecyclerViewClickListener;
 import com.itesm.digital.solar.R;
 
 import java.util.ArrayList;
 
-public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProjects.ViewHolder> {
+public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProjects.ViewHolder>{
 
+    private RecyclerViewClickListener mListener;
     private ArrayList<Project> projects;
 
-    public DataAdapterProjects(ArrayList<Project> projects){
+    public DataAdapterProjects(ArrayList<Project> projects, RecyclerViewClickListener listener){
         this.projects = projects;
+        this.mListener = listener;
     }
 
     @Override
     public DataAdapterProjects.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_row, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mListener);
     }
 
     @Override
@@ -35,6 +38,8 @@ public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProject
         viewHolder.tv_id.setText(projects.get(i).getId());
         viewHolder.tv_user_id.setText(projects.get(i).getUserId());
 
+        //viewHolder.bind(projects.get(i), listener);
+
     }
 
     @Override
@@ -43,10 +48,15 @@ public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProject
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private RecyclerViewClickListener mListener;
+
         private TextView tv_name,tv_address,tv_cost, tv_date, tv_surface, tv_id, tv_user_id;
-        public ViewHolder(View view) {
+        public ViewHolder(View view, RecyclerViewClickListener listener) {
             super(view);
+
+            mListener = listener;
 
             tv_name = (TextView)view.findViewById(R.id.tv_name);
             tv_address = (TextView)view.findViewById(R.id.tv_address);
@@ -56,6 +66,14 @@ public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProject
             tv_id = (TextView)view.findViewById(R.id.tv_id);
             tv_user_id = (TextView)view.findViewById(R.id.tv_user_id);
 
+            view.setOnClickListener(this);
+
+        }
+
+
+        @Override
+        public void onClick(View view) {
+            mListener.onClick(view, getAdapterPosition());
         }
     }
 }
