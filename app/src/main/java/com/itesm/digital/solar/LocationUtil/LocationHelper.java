@@ -218,7 +218,7 @@ public class LocationHelper implements PermissionUtils.PermissionResultCallback{
 
 
     /**
-     * Handles the permission Results
+     * Handles the permission ResultsWithObstacles
      */
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
     {
@@ -226,7 +226,7 @@ public class LocationHelper implements PermissionUtils.PermissionResultCallback{
     }
 
     /**
-     * Handles the activity Results
+     * Handles the activity ResultsWithObstacles
      */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {

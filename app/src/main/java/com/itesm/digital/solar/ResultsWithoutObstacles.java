@@ -1,39 +1,53 @@
 package com.itesm.digital.solar;
 
-import android.app.Activity;
-import android.graphics.*;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 
-import com.androidplot.util.PixelUtils;
+import com.androidplot.xy.CatmullRomInterpolator;
+import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
+import com.androidplot.xy.XYGraphWidget;
+import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
-import com.androidplot.xy.*;
 
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
-import java.util.*;
+import java.util.Arrays;
 
-/**
- * A simple XYPlot
- */
-public class Results extends Activity {
+public class ResultsWithoutObstacles extends AppCompatActivity {
 
     private XYPlot plot;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_results);
+        setContentView(R.layout.activity_results_without_obstacles);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         TextView roi = (TextView) findViewById(R.id.roi);
         TextView payback = (TextView) findViewById(R.id.payback);
         TextView earnings = (TextView) findViewById(R.id.earnings);
         TextView totalCost = (TextView) findViewById(R.id.total_cost);
 
-        totalCost.setText("hola");
+        totalCost.setText("Total Cost xxx");
 
         // initialize our XYPlot reference:
         plot = (XYPlot) findViewById(R.id.plot);
@@ -54,17 +68,6 @@ public class Results extends Activity {
         // and configure them from xml:
         LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.RED, Color.GREEN, Color.BLUE, null);
 
-        //LineAndPointFormatter series2Format = new LineAndPointFormatter(Color.RED, Color.GREEN, Color.BLUE, null);
-
-        // add an "dash" effect to the series2 line:
-        /*series2Format.getLinePaint().setPathEffect(new DashPathEffect(new float[] {
-
-                // always use DP when specifying pixel sizes, to keep things consistent across devices:
-                PixelUtils.dpToPix(20),
-                PixelUtils.dpToPix(15)}, 0));*/
-
-        // just for fun, add some smoothing to the lines:
-        // see: http://androidplot.com/smooth-curves-and-androidplot/
         series1Format.setInterpolationParams(
                 new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
 
@@ -87,4 +90,5 @@ public class Results extends Activity {
             }
         });
     }
+
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ap="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -7,67 +7,72 @@
     android:background="@color/accent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/accent">
 
-        <com.androidplot.xy.XYPlot
-            style="@style/APDefacto.Light"
-            android:id="@+id/plot"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            ap:title="A Simple XY Plot"
-            ap:rangeTitle="range"
-            ap:domainTitle="Años"
-            ap:lineLabels="left|bottom"
-            ap:lineLabelRotationBottom="0"
-            ap:lineLabelRotationLeft="-55" />
+            android:layout_height="300dp"
+            android:orientation="vertical">
+
+            <com.androidplot.xy.XYPlot
+                style="@style/APDefacto.Light"
+                android:id="@+id/plot"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                ap:title="A Simple XY Plot"
+                ap:rangeTitle="range"
+                ap:domainTitle="Años"
+                ap:lineLabels="left|bottom"
+                ap:lineLabelRotationBottom="0"
+                ap:lineLabelRotationLeft="-55" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ROI xxxx"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:padding="15dp"
+                android:id="@+id/roi"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payback xxxx"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:padding="15dp"
+                android:id="@+id/payback"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Earnings xxxx"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:padding="15dp"
+                android:id="@+id/earnings"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Total Cost xxxx"
+                android:textSize="25sp"
+                android:textColor="@color/white"
+                android:padding="15dp"
+                android:id="@+id/total_cost"/>
+
+        </LinearLayout>
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ROI xxxx"
-            android:textSize="25dp"
-            android:textColor="@color/white"
-            android:padding="15dp"
-            android:id="@+id/roi"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Payback xxxx"
-            android:textSize="25dp"
-            android:textColor="@color/white"
-            android:padding="15dp"
-            android:id="@+id/payback"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Earnings xxxx"
-            android:textSize="25dp"
-            android:textColor="@color/white"
-            android:padding="15dp"
-            android:id="@+id/earnings"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Total Cost xxxx"
-            android:textSize="25dp"
-            android:textColor="@color/white"
-            android:padding="15dp"
-            android:id="@+id/total_cost"/>
-
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
