@@ -10,8 +10,8 @@
     <color name="icons">#FFFFFF</color>
 
     <color name="divider">#BDBDBD</color>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#FFC107</color>
+    <color name="colorPrimaryDark">#FFA000</color>
     <color name="bg_login">#EAAB3D</color>
     <color name="white">#ffffff</color>
     <color name="input_login">#222222</color>

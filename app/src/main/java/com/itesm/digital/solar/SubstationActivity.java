@@ -395,8 +395,9 @@ public class SubstationActivity extends AppCompatActivity implements
 
                         createRoute(MapsActivityCurrentPlace.listPolygons.get(0), altitude);
 
-                        Intent intent = new Intent(SubstationActivity.this, ConnectionActivity.class);
+                        Intent intent = new Intent(SubstationActivity.this, CentralResults.class);
 
+                        intent.putExtra("ID_PROJECT", ID_PROJECT);
                         intent.putExtra("ID_AREA", ID_AREA);
                         intent.putExtra("TOKEN", TOKEN);
 
