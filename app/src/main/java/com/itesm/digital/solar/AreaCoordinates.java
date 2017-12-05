@@ -355,7 +355,7 @@ public class AreaCoordinates extends AppCompatActivity implements AdapterView.On
     /** Called when the send button is clicked. */
     public void send(View view) {
 
-        Intent mainIntent = new Intent().setClass(AreaCoordinates.this, SubstationActivity.class);
+        Intent mainIntent = new Intent().setClass(AreaCoordinates.this, SetAltitude.class);
         startActivity(mainIntent);
     }
 
