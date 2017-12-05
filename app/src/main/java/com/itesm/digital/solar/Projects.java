@@ -1,6 +1,7 @@
 package com.itesm.digital.solar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -66,6 +67,8 @@ public class Projects extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(Projects.this, Proyects.class);
+                startActivity(intent);
                 finish();
             }
         });

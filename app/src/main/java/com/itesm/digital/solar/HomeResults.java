@@ -102,8 +102,9 @@ public class HomeResults extends AppCompatActivity {
 
     public void backFlow(){
         ClearActiveProject();
-        //Intent intent = new Intent(HomeResults.this, Projects.class);
-        //startActivity(intent);
+        Intent intent = new Intent(HomeResults.this, Projects.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
         finish();
 
     }

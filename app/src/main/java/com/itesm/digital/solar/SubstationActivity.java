@@ -87,7 +87,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
     public SharedPreferences prefs;
     public SharedPreferences prefs2;
-    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Hola",DATE="",SURFACE="100";
+    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Ubicación del terreno",DATE="",SURFACE="100";
     public int COST_VALUE=10, AREA_VALUE=20;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
@@ -404,11 +404,11 @@ public class SubstationActivity extends AppCompatActivity implements
                         createRoute(MapsActivityCurrentPlace.listPolygons.get(0), altitude);
 
                         Intent intent = new Intent(SubstationActivity.this, HomeResults.class);
-
                         intent.putExtra("ID_PROJECT", ID_PROJECT);
                         intent.putExtra("ID_AREA", ID_AREA);
                         intent.putExtra("TOKEN", TOKEN);
 
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     }
@@ -828,14 +828,9 @@ public class SubstationActivity extends AppCompatActivity implements
         {
             sendCoordinate(points.get(l).latitude, points.get(l).longitude, height);
         }
-
-        //Log.d("Salio: ", listVertices.toString());
-
-        //return firstLocationDron;
     }
 
     public void sendCoordinate(double lat, double lon, double al) {
-        //String DATE="2017-10-12T17:22:31.316Z", NAME="Solar", ADDRESS="CSF TEC", COST="10", SURFACE="10", ID_USER="1";
 
         RequestCoordinate coordinateRegister = new RequestCoordinate();
         Position pos = new Position();
@@ -874,8 +869,6 @@ public class SubstationActivity extends AppCompatActivity implements
                 showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
             }
         });
-
-        //Log.d("hola: ", "sale");
 
     }
 

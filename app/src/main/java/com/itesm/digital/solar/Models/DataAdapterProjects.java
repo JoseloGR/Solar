@@ -1,5 +1,6 @@
 package com.itesm.digital.solar.Models;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +49,8 @@ public class DataAdapterProjects extends RecyclerView.Adapter<DataAdapterProject
                 Intent intent = new Intent(context, HomeResults.class);
                 intent.putExtra("ID_PROJECT", projects.get(i).getId());
                 context.startActivity(intent);
+                //((Activity)context).finish();
+
             }
         });
 

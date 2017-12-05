@@ -50,6 +50,7 @@ public class SetAltitude extends AppCompatActivity {
 
             Intent intent = new Intent(SetAltitude.this, SubstationActivity.class);
             startActivity(intent);
+            finish();
         }
     }
 }
