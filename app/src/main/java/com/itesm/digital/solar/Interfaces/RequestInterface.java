@@ -51,11 +51,17 @@ public interface RequestInterface {
     @POST("Projects/{id}/areas")
     Call<ResponseArea> RegisterArea(@Header("Authorization") String authToken, @Body RequestArea orderArea, @Path("id") String id);
 
+    @GET("Projects/{id}/areas")
+    Call<ResponseArea> GetAreaProject(@Header("Authorization") String authToken, @Path("id") String id);
+
     @POST("Areas/{id}/limits")
     Call<ResponseLimit> RegisterLimits(@Header("Authorization") String authToken, @Body RequestLimit orderLimit, @Path("id") String id);
 
     @GET("Projects")
     Call<List<Project>> GetAllProjects(@Header("Authorization") String authToken, @Query("userId") String userId);
+
+    @GET("Projects/{id}")
+    Call<ResponseProject> GetDataProject(@Header("Authorization") String authToken, @Path("id") String id);
 
     @GET("Areas/{id}/limits")
     Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);

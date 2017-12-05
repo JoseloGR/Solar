@@ -10,17 +10,37 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Project;
+import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseProject;
+import com.itesm.digital.solar.Utils.GlobalVariables;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeResults extends AppCompatActivity {
 
-    String ID_PROJECT="", ID_AREA="1", TOKEN="";
+    String ID_PROJECT="", ID_AREA="1", TOKEN="", NOMBRE="";
+    Toolbar toolbar;
+
+    Retrofit.Builder builderR = new Retrofit.Builder()
+            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
+            .addConverterFactory(GsonConverterFactory.create());
+
+    Retrofit retrofit = builderR.build();
+
+    RequestInterface connectInterface = retrofit.create(RequestInterface.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_results);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -37,26 +57,25 @@ public class HomeResults extends AppCompatActivity {
         cardDrone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeResults.this, ConnectionActivity.class);
-                intent.putExtra("ID_PROJECT", ID_PROJECT);
-                intent.putExtra("ID_AREA", ID_AREA);
-                intent.putExtra("TOKEN", TOKEN);
-                startActivity(intent);
-                finish();
+
+                StartConnectionDrone();
             }
         });
 
         ID_PROJECT = getIntent().getExtras().getString("ID_PROJECT");
         ID_AREA = getIntent().getExtras().getString("ID_AREA");
-        TOKEN = getIntent().getExtras().getString("TOKEN");
-        SetActiveProject(ID_PROJECT);
+        //TOKEN = getIntent().getExtras().getString("TOKEN");
+        SetActiveProject(ID_PROJECT, ID_AREA);
+        loadDataAreaProject();
+        loadDataProject();
     }
 
-    public void SetActiveProject(String ID_P){
+    public void SetActiveProject(String ID_P, String ID_A){
         SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = project.edit();
 
         editor.putString("ID_PROJECT", ID_P);
+        editor.putString("ID_AREA", ID_A);
         editor.apply();
     }
 
@@ -79,5 +98,88 @@ public class HomeResults extends AppCompatActivity {
         startActivity(intent);
         finish();
 
+    }
+
+    private void loadDataAreaProject(){
+
+        Call<ResponseArea> responseProjects = connectInterface.GetAreaProject(TOKEN,ID_PROJECT);
+
+        responseProjects.enqueue(new Callback<ResponseArea>() {
+            @Override
+            public void onResponse(Call<ResponseArea> call, Response<ResponseArea> response) {
+                int statusCode = response.code();
+
+                if (statusCode==200){
+                    ResponseArea jsonResponse = response.body();
+
+                    SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = project.edit();
+                    editor.putString("ID_AREA", jsonResponse.getId().toString());
+                    editor.apply();
+                }
+                else{
+                    Log.d("PROJECT",response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseArea> call, Throwable t) {
+                Log.d("OnFail", t.getMessage());
+            }
+        });
+
+    }
+
+    private void loadDataProject(){
+
+        Call<ResponseProject> responseProjects = connectInterface.GetDataProject(TOKEN,ID_PROJECT);
+
+        responseProjects.enqueue(new Callback<ResponseProject>() {
+            @Override
+            public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
+                int statusCode = response.code();
+
+                if (statusCode==200){
+                    ResponseProject jsonResponse = response.body();
+
+                    SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = project.edit();
+                    editor.putString("NOMBRE", jsonResponse.getName().toString());
+                    editor.apply();
+
+                    changeNameToolbar(jsonResponse.getName().toString());
+                }
+                else{
+                    Log.d("PROJECT",response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseProject> call, Throwable t) {
+                Log.d("OnFail", t.getMessage());
+            }
+        });
+
+    }
+
+    public void StartConnectionDrone(){
+        SharedPreferences prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+        TOKEN = prefs.getString("Token", null);
+
+        SharedPreferences prefsProject = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
+        ID_AREA = prefs.getString("ID_AREA", null);
+
+        Intent intent = new Intent(HomeResults.this, ConnectionActivity.class);
+        intent.putExtra("ID_PROJECT", ID_PROJECT);
+        intent.putExtra("ID_AREA", ID_AREA);
+        intent.putExtra("TOKEN", TOKEN);
+        startActivity(intent);
+        //finish();
+    }
+
+    private void changeNameToolbar(String NOMBRE){
+        toolbar.setTitle(NOMBRE);
     }
 }
