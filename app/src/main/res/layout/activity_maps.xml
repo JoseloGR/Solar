@@ -45,7 +45,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:onClick="onClearMap"
-                android:text="Clear" />
+                android:text="Clear"
+                android:textColor="@color/white"
+                android:background="@color/yellow"/>
 
         </LinearLayout>
 
@@ -61,7 +63,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:onClick="send"
-                android:text="Send" />
+                android:text="Continue"
+                android:textColor="@color/white"
+                android:background="@color/colorGreen"/>
 
         </LinearLayout>
 
