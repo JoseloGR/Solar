@@ -119,7 +119,7 @@ public class SubstationActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 onResetMap();
-                Snackbar.make(view, "Subestaciones borradas", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Deleted Substations", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -179,9 +179,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        Toast.makeText(SubstationActivity.this,
-                "Ubicación:\n" + latLng.latitude + " : " + latLng.longitude,
-                Toast.LENGTH_LONG).show();
+        //Toast.makeText(SubstationActivity.this, "Ubicación:\n" + latLng.latitude + " : " + latLng.longitude, Toast.LENGTH_LONG).show();
 
         if(locationSE.latitude==0) {
             //Add marker
@@ -397,7 +395,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
                         createRoute(MapsActivityCurrentPlace.listPolygons.get(0), altitude);
 
-                        Intent intent = new Intent(SubstationActivity.this, CentralResults.class);
+                        Intent intent = new Intent(SubstationActivity.this, HomeResults.class);
 
                         intent.putExtra("ID_PROJECT", ID_PROJECT);
                         intent.putExtra("ID_AREA", ID_AREA);

@@ -1,12 +1,15 @@
 package com.itesm.digital.solar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+
+import com.itesm.digital.solar.Models.Project;
 
 public class HomeResults extends AppCompatActivity {
 
@@ -25,6 +28,8 @@ public class HomeResults extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ClearActiveProject();
+                Intent intent = new Intent(HomeResults.this, Projects.class);
+                startActivity(intent);
                 finish();
             }
         });
