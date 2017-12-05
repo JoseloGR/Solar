@@ -453,7 +453,7 @@ public class SubstationActivity extends AppCompatActivity implements
             }
 
             points.add(i+1, temp);
-            sendCoordinate(temp.latitude, temp.longitude, h);
+            //sendCoordinate(temp.latitude, temp.longitude, h);
             i++;
             //w+=w;
         }
@@ -528,7 +528,7 @@ public class SubstationActivity extends AppCompatActivity implements
         double y = ma*x+ba+da*Math.sqrt(1+Math.pow(ma,2));
 
         points.add(new LatLng(y,x));
-        sendCoordinate(y, x, h);
+        //sendCoordinate(y, x, h);
 
         return true;
     }
@@ -798,7 +798,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
             if (listVertices.size() == 1) {
                 points.add(listVertices.get(0));
-                sendCoordinate(listVertices.get(0).latitude, listVertices.get(0).longitude, height);
+                //sendCoordinate(listVertices.get(0).latitude, listVertices.get(0).longitude, height);
                 break;
             }
             else if (listVertices.size() < 1)
@@ -809,6 +809,11 @@ public class SubstationActivity extends AppCompatActivity implements
         }
 
         Log.d("points: ", points.toString());
+
+        for (int l=0; l<points.size(); l++)
+        {
+            sendCoordinate(points.get(l).latitude, points.get(l).longitude, height);
+        }
 
         //Log.d("Salio: ", listVertices.toString());
 

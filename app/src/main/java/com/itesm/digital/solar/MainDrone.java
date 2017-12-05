@@ -45,6 +45,7 @@ import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -125,6 +126,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
     private Handler handler;
     final File destDir = new File(Environment.getExternalStorageDirectory().getPath() + "/testing2/");
+    public File imgn;
 
     private MediaManager mediaManager;
     //private FileListAdapter mListAdapter;
@@ -277,7 +279,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
         registerReceiver(mReceiver, filter);
 
         //takePhoto = new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0);
-        stayDownload = new WaypointAction(WaypointActionType.STAY, 15000);
+        stayDownload = new WaypointAction(WaypointActionType.STAY, 25000);
 
         /*tListener = new Trigger.Listener() {
             @Override
@@ -607,6 +609,22 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                         switchCameraMode(SettingsDefinitions.CameraMode.SHOOT_PHOTO);
                     }
                 }, 15000);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        imgn = lastFileModified(destDir.toString());
+
+                        Bitmap bm = Bitmap.createScaledBitmap(BitmapFactory.decodeFile(imgn.toString()),426,240,true);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bm.compress(Bitmap.CompressFormat.JPEG, 0, baos); //bm is the bitmap object
+                        byte[] b = baos.toByteArray();
+
+                        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+                        sendPhoto(encodedImage);
+                    }
+                }, 20000);
             }
         }
 
@@ -665,7 +683,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
             Waypoint mWaypoint = new Waypoint(Double.parseDouble(data.get(i).getPosition().getLat()),
                     Double.parseDouble(data.get(i).getPosition().getLng()), altitude);
             //Add Waypoints to Waypoint arraylist;
-            Log.d("Waypoint: ", mWaypoint.toString());
+            //Log.d("Waypoint: ", mWaypoint.toString());
             if (waypointMissionBuilder != null) {
                 waypointList.add(mWaypoint);
                 waypointMissionBuilder.waypointList(waypointList).waypointCount(waypointList.size());
@@ -930,15 +948,6 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                     //HideDownloadProgressDialog();
                     setResultToToast("Download File Success" + ":" + filePath);
                     currentProgress = -1;
-
-                    Bitmap bm = BitmapFactory.decodeFile(filePath);
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos); //bm is the bitmap object
-                    byte[] b = baos.toByteArray();
-
-                    String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-
-                    sendPhoto(encodedImage);
                 }
             });
 
@@ -948,6 +957,24 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
             setResultToToast(e.getMessage());
         }
 
+    }
+
+    public static File lastFileModified(String dir) {
+        File fl = new File(dir);
+        File[] files = fl.listFiles(new FileFilter() {
+            public boolean accept(File file) {
+                return file.isFile();
+            }
+        });
+        long lastMod = Long.MIN_VALUE;
+        File choice = null;
+        for (File file : files) {
+            if (file.lastModified() > lastMod) {
+                choice = file;
+                lastMod = file.lastModified();
+            }
+        }
+        return choice;
     }
 
     private void markWaypoint(LatLng point){
@@ -1248,10 +1275,11 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                 ResponseBlobstore responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
                     //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    setResultToToast("Image uploaded");
                     Log.d("SUCCESS",response.toString());
                 }
                 else{
-                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
+                    showMessage("Proyecto Solar", "Hubo un problema al subir la imagen. Contacte al administrador.");
                     Log.d("PROJECT",response.toString());
                 }
             }
