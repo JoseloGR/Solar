@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.maps.android.SphericalUtil;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Center;
 import com.itesm.digital.solar.Models.Position;
@@ -225,6 +226,7 @@ public class SubstationActivity extends AppCompatActivity implements
     }
 
     private void SendDataProject(){
+        Double area = SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0));
 
         RequestProject projectRegister = new RequestProject();
         projectRegister.setName(NAME);
