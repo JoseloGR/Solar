@@ -230,6 +230,7 @@ public class SubstationActivity extends AppCompatActivity implements
     }
 
     private void SendDataProject(){
+        Double area = SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0));
 
         Double area = Double.valueOf(Math.round( SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0))));
         DATE = GenerateDateNowFormatted();
