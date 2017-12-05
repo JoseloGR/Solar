@@ -49,8 +49,12 @@ import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -83,7 +87,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
     public SharedPreferences prefs;
     public SharedPreferences prefs2;
-    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Hola",DATE="2017-12-05T09:25:13.106Z",SURFACE="100";
+    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Hola",DATE="",SURFACE="100";
     public int COST_VALUE=10, AREA_VALUE=20;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
@@ -227,7 +231,8 @@ public class SubstationActivity extends AppCompatActivity implements
 
     private void SendDataProject(){
 
-        Double area = SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0));
+        Double area = Double.valueOf(Math.round( SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0))));
+        DATE = GenerateDateNowFormatted();
 
         RequestProject projectRegister = new RequestProject();
         projectRegister.setName(NAME);
@@ -871,6 +876,22 @@ public class SubstationActivity extends AppCompatActivity implements
         });
 
         //Log.d("hola: ", "sale");
+
+    }
+
+    public String GenerateDateNowFormatted(){
+        Date now = new Date();
+        String format = "yyyy-MM-dd'T'HH:mm:ssZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
+        String formattedNow = simpleDateFormat.format(now);
+        Date dateConvertBack = null;
+        try {
+            dateConvertBack = simpleDateFormat.parse(formattedNow);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateConvertBack.toString();
 
     }
 
