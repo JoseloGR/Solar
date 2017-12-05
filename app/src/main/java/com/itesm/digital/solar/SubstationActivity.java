@@ -184,7 +184,6 @@ public class SubstationActivity extends AppCompatActivity implements
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        //Toast.makeText(SubstationActivity.this, "Ubicación:\n" + latLng.latitude + " : " + latLng.longitude, Toast.LENGTH_LONG).show();
 
         if(locationSE.latitude==0) {
             //Add marker
@@ -230,7 +229,6 @@ public class SubstationActivity extends AppCompatActivity implements
     }
 
     private void SendDataProject(){
-        Double area = SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0));
 
         Double area = Double.valueOf(Math.round( SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0))));
         DATE = GenerateDateNowFormatted();

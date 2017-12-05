@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -70,6 +71,9 @@ public class ResultsWithObstacles extends AppCompatActivity {
             ID_AREA = (String) savedInstanceState.getSerializable("ID_AREA");
             TOKEN = (String) savedInstanceState.getSerializable("TOKEN");
         }
+
+        Log.d("AREAA", ID_AREA);
+        Log.d("TOKEN", TOKEN);
 
 
         TextView roi = (TextView) findViewById(R.id.roi);

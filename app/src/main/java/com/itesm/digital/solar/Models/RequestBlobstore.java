@@ -1,9 +1,5 @@
 package com.itesm.digital.solar.Models;
 
-/**
- * Created by pabmacias28 on 27/10/17.
- */
-
 public class RequestBlobstore {
     private String image;
     private String id;

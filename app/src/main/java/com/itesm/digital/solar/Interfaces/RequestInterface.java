@@ -5,6 +5,7 @@ import com.itesm.digital.solar.Models.Project;
 import com.itesm.digital.solar.Models.RequestArea;
 import com.itesm.digital.solar.Models.RequestBlobstore;
 import com.itesm.digital.solar.Models.RequestCoordinate;
+import com.itesm.digital.solar.Models.RequestCreateAlternative;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
@@ -12,6 +13,7 @@ import com.itesm.digital.solar.Models.ResponseAllProjects;
 import com.itesm.digital.solar.Models.ResponseArea;
 import com.itesm.digital.solar.Models.ResponseBlobstore;
 import com.itesm.digital.solar.Models.ResponseCoordinate;
+import com.itesm.digital.solar.Models.ResponseCreateAlternatives;
 import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseLogin;
 import com.itesm.digital.solar.Models.ResponseProject;
@@ -66,8 +68,8 @@ public interface RequestInterface {
     @GET("Areas/{id}/limits")
     Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);
 
-    //@GET("Results/createAlternative")
-    //Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternative orderLimit);
+    @GET("Results/createAlternative")
+    Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternative createAlternative);
 
     //@GET("Alternatives/{id}/results")
     //Call<ResponseAlternatives> GetAlternatives(@Header("Authorization") String authToken, @Query("areaID") String id);
