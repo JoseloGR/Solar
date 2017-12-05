@@ -65,4 +65,10 @@ public interface RequestInterface {
 
     @GET("Areas/{id}/limits")
     Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);
+
+    //@GET("Results/createAlternative")
+    //Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternative orderLimit);
+
+    //@GET("Alternatives/{id}/results")
+    //Call<ResponseAlternatives> GetAlternatives(@Header("Authorization") String authToken, @Query("areaID") String id);
 }

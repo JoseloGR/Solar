@@ -15,15 +15,30 @@ import com.androidplot.xy.SimpleXYSeries;
 import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
+import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Arrays;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ResultsWithObstacles extends AppCompatActivity {
 
     private XYPlot plot;
+    public String ID_AREA, ID_PROJECT, TOKEN;
+
+    Retrofit.Builder builderR = new Retrofit.Builder()
+            .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
+            .addConverterFactory(GsonConverterFactory.create());
+
+    Retrofit retrofit = builderR.build();
+
+    RequestInterface connectInterface = retrofit.create(RequestInterface.class);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +57,21 @@ public class ResultsWithObstacles extends AppCompatActivity {
             }
         });
 
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                ID_AREA = "";
+                TOKEN = "";
+            } else {
+                ID_AREA = extras.getString("ID_AREA");
+                TOKEN = extras.getString("TOKEN");
+            }
+        } else {
+            ID_AREA = (String) savedInstanceState.getSerializable("ID_AREA");
+            TOKEN = (String) savedInstanceState.getSerializable("TOKEN");
+        }
+
+
         TextView roi = (TextView) findViewById(R.id.roi);
         TextView payback = (TextView) findViewById(R.id.payback);
         TextView earnings = (TextView) findViewById(R.id.earnings);
@@ -54,7 +84,7 @@ public class ResultsWithObstacles extends AppCompatActivity {
 
         // create a couple arrays of y-values to plot:
         final Number[] domainLabels = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-        Number[] series1Numbers = {0, 40792.571109475444,40396.52689832108,40004.32684439241,39615.93426247221,39231.31467261812,38850.42792272672,38473.23862362129,38099.7130701965,37729.81207534344,37363.50499430116,37000.75122683842,36641.52038157011,36285.7765723112,35933.487006507836,35584.61766500807,35239.13712870168,34897.0089346506,34558.202742572124,34222.686618991196,33890.42719558647};
+        Number[] series1Numbers = {0, 5150614.87,5100609.03,5051088.71,5002048.86,4953485.14,4905393.00,4857767.61,4810604.78,4763900.05,4717648.70,4671846.16,4626488.39,4581571.02,4537089.81,4493040.55,4449418.75,4406220.67,4363441.91,4321078.41,4279126.12};
         //Number[] series2Numbers = {5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
 
         // turn the above arrays into XYSeries':

@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeResults extends AppCompatActivity {
 
-    String ID_PROJECT="", ID_AREA="1", TOKEN="", NOMBRE="";
+    String ID_PROJECT="", ID_AREA="", TOKEN="", NOMBRE="";
     Toolbar toolbar;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
@@ -62,6 +62,14 @@ public class HomeResults extends AppCompatActivity {
             }
         });
 
+        CardView cardROI = (CardView) findViewById(R.id.roicardId);
+        cardROI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StartROIProcess();
+            }
+        });
+
         ID_PROJECT = getIntent().getExtras().getString("ID_PROJECT");
         ID_AREA = getIntent().getExtras().getString("ID_AREA");
         //TOKEN = getIntent().getExtras().getString("TOKEN");
@@ -94,8 +102,8 @@ public class HomeResults extends AppCompatActivity {
 
     public void backFlow(){
         ClearActiveProject();
-        Intent intent = new Intent(HomeResults.this, Projects.class);
-        startActivity(intent);
+        //Intent intent = new Intent(HomeResults.this, Projects.class);
+        //startActivity(intent);
         finish();
 
     }
@@ -169,7 +177,7 @@ public class HomeResults extends AppCompatActivity {
         TOKEN = prefs.getString("Token", null);
 
         SharedPreferences prefsProject = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
-        ID_AREA = prefs.getString("ID_AREA", null);
+        ID_AREA = prefsProject.getString("ID_AREA", null);
 
         Intent intent = new Intent(HomeResults.this, ConnectionActivity.class);
         intent.putExtra("ID_PROJECT", ID_PROJECT);
@@ -181,5 +189,21 @@ public class HomeResults extends AppCompatActivity {
 
     private void changeNameToolbar(String NOMBRE){
         toolbar.setTitle(NOMBRE);
+    }
+
+    private void StartROIProcess(){
+
+        SharedPreferences prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+        TOKEN = prefs.getString("Token", null);
+
+        SharedPreferences prefsProject = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
+        ID_AREA = prefsProject.getString("ID_AREA", null);
+
+        Intent intent = new Intent(HomeResults.this, ResultsWithObstacles.class);
+        intent.putExtra("ID_PROJECT", ID_PROJECT);
+        intent.putExtra("ID_AREA", ID_AREA);
+        intent.putExtra("TOKEN", TOKEN);
+        startActivity(intent);
+
     }
 }
