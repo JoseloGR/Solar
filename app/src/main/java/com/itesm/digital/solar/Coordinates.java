@@ -33,6 +33,7 @@ public class Coordinates extends AppCompatActivity {
     private String last;
     int index = 0;
     private String items;
+    private boolean firstVertex = true;
     ArrayAdapter<String> adapter;
     ArrayList<String> itemList;
 
@@ -77,31 +78,53 @@ public class Coordinates extends AppCompatActivity {
             lat.setError(getString(R.string.error_emp_lat));
             focusView = lat;
             cancel = true;
-        }else if(Validations.emptyLeng(latitude)){
-            lat.setError(getString(R.string.error_lat));
-            focusView = lat;
-            cancel = true;
         }else if(TextUtils.isEmpty(longitude)){
             lon.setError(getString(R.string.error_emp_lon));
             focusView = lon;
             cancel = true;
-        }else if(Validations.emptyLeng(longitude)){
-            lon.setError(getString(R.string.error_lon));
-            focusView = lon;
-            cancel = true;
-        }else{
+        }else {
+            latiD = Double.parseDouble(latitude);
+            latitude = String.format("%.6f", latiD);
             latiD = Double.parseDouble(latitude);
             longiD = Double.parseDouble(longitude);
-            LatLng coordinate = new LatLng(latiD, longiD);
-            prefav.add(coordinate);
-            index++;
-            last = (index + ". Lat: " + latitude + " Lon: " + longitude);
-            // add new item to arraylist
-            itemList.add(last);
-            // notify listview of data changed
-            adapter.notifyDataSetChanged();
-            lat.setText("");
-            lon.setText("");
+            longitude = String.format("%.6f", longiD);
+            longiD = Double.parseDouble(longitude);
+            if(longiD >= -180 && longiD <= 180 && latiD >= -90 && latiD <= 90){
+                if(firstVertex){
+                    LatLng coordinate = new LatLng(latiD, longiD);
+                    prefav.add(coordinate);
+                    index++;
+                    last = (index + ". Lat: " + latitude + " Lon: " + longitude);
+                    // add new item to arraylist
+                    itemList.add(last);
+                    // notify listview of data changed
+                    adapter.notifyDataSetChanged();
+                    lat.setText("");
+                    lon.setText("");
+                    firstVertex = false;
+                }
+                else if(prefav.get(prefav.size() - 1).latitude - latiD >= -0.001 &&
+                        prefav.get(prefav.size() - 1).latitude - latiD <= 0.001 &&
+                        prefav.get(prefav.size() - 1).longitude - longiD >= -0.001 &&
+                        prefav.get(prefav.size() - 1).longitude - longiD <= 0.001){
+                    LatLng coordinate = new LatLng(latiD, longiD);
+                    prefav.add(coordinate);
+                    index++;
+                    last = (index + ". Lat: " + latitude + " Lon: " + longitude);
+                    // add new item to arraylist
+                    itemList.add(last);
+                    // notify listview of data changed
+                    adapter.notifyDataSetChanged();
+                    lat.setText("");
+                    lon.setText("");
+                }
+                else{
+                    Toast.makeText(this, "Distances too large between points", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(this, "Values out of the range", Toast.LENGTH_SHORT).show();
+            }
         }
 
         if (cancel) {
@@ -113,8 +136,13 @@ public class Coordinates extends AppCompatActivity {
     }
 
     private void createArea(){
-        MapsActivityCurrentPlace.listPolygons.add(prefav);
-        Intent mainIntent = new Intent().setClass(Coordinates.this, AreaCoordinates.class);
-        startActivity(mainIntent);
+        if(prefav.size() >= 3){
+            MapsActivityCurrentPlace.listPolygons.add(prefav);
+            Intent mainIntent = new Intent().setClass(Coordinates.this, AreaCoordinates.class);
+            startActivity(mainIntent);
+        }
+        else{
+            Toast.makeText(this, "You need more amount of vertices", Toast.LENGTH_SHORT).show();
+        }
     }
 }
