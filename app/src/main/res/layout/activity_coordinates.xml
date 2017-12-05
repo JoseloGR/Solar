@@ -57,7 +57,9 @@
             android:id="@+id/add_new"
             android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:text="@string/add_new_coordinate" />
+            android:text="@string/add_new_coordinate"
+            android:background="@color/primary"
+            android:textColor="@color/white"/>
 
         <ListView
             android:id="@+id/list"
@@ -72,7 +74,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorGreen"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
