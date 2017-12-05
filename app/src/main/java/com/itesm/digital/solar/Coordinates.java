@@ -1,7 +1,9 @@
 package com.itesm.digital.solar;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -137,6 +139,13 @@ public class Coordinates extends AppCompatActivity {
 
     private void createArea(){
         if(prefav.size() >= 3){
+
+            SharedPreferences tokenUser = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = tokenUser.edit();
+            editor.putString("LATITUDE_USER", String.valueOf(prefav.get(0).latitude));
+            editor.putString("LONGITUDE_USER", String.valueOf(prefav.get(0).longitude));
+            editor.apply();
+
             MapsActivityCurrentPlace.listPolygons.add(prefav);
             Intent mainIntent = new Intent().setClass(Coordinates.this, AreaCoordinates.class);
             startActivity(mainIntent);
