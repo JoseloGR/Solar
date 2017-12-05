@@ -101,7 +101,8 @@
         <activity
             android:name=".Projects"
             android:label="@string/title_activity_projects"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".SetAltitude"></activity>
     </application>
 
 </manifest>

@@ -81,6 +81,7 @@ public class SubstationActivity extends AppCompatActivity implements
     public static List<LatLng> points = new ArrayList<LatLng>();
 
     public SharedPreferences prefs;
+    public SharedPreferences prefs2;
     public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Complemento a la ubicación",DATE="2017-10-10T17:45:13.106Z",SURFACE="30";
     public int COST_VALUE=10, AREA_VALUE=20;
 
@@ -388,7 +389,11 @@ public class SubstationActivity extends AppCompatActivity implements
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        createRoute(MapsActivityCurrentPlace.listPolygons.get(0), 23.0);
+                        prefs2 = getSharedPreferences("altitudeDrone", Context.MODE_PRIVATE);
+                        String stringAltitude = prefs2.getString("Altitude", null);
+                        Double altitude = Double.valueOf(stringAltitude);
+
+                        createRoute(MapsActivityCurrentPlace.listPolygons.get(0), altitude);
 
                         Intent intent = new Intent(SubstationActivity.this, ConnectionActivity.class);
 
