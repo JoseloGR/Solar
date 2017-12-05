@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.maps.android.SphericalUtil;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Center;
 import com.itesm.digital.solar.Models.Position;
@@ -82,7 +83,7 @@ public class SubstationActivity extends AppCompatActivity implements
 
     public SharedPreferences prefs;
     public SharedPreferences prefs2;
-    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Hola",DATE="2017-12-05T09:25:13.106Z",SURFACE="30";
+    public String ACTIVE_USERNAME = "", ID_PROJECT="", ID_AREA="", ID_USER="",TOKEN="",NAME="",COST="",ADDRESS="Hola",DATE="2017-12-05T09:25:13.106Z",SURFACE="100";
     public int COST_VALUE=10, AREA_VALUE=20;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
@@ -226,14 +227,14 @@ public class SubstationActivity extends AppCompatActivity implements
 
     private void SendDataProject(){
 
-        //SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0));
+        Double area = SphericalUtil.computeArea(MapsActivityCurrentPlace.listPolygons.get(0));
 
         RequestProject projectRegister = new RequestProject();
         projectRegister.setName(NAME);
         projectRegister.setAddress(ADDRESS);
         projectRegister.setCost(COST);
         projectRegister.setDate(DATE);
-        projectRegister.setSurface(SURFACE);
+        projectRegister.setSurface(area.toString().isEmpty() ? SURFACE : area.toString());
         projectRegister.setUserId(ID_USER);
 
         Call<ResponseProject> responseRegister = connectInterface.RegisterProject(TOKEN, projectRegister);
