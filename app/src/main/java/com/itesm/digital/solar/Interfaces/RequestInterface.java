@@ -6,6 +6,7 @@ import com.itesm.digital.solar.Models.RequestArea;
 import com.itesm.digital.solar.Models.RequestBlobstore;
 import com.itesm.digital.solar.Models.RequestCoordinate;
 import com.itesm.digital.solar.Models.RequestCreateAlternative;
+import com.itesm.digital.solar.Models.RequestCreateAlternatives;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
@@ -68,8 +69,8 @@ public interface RequestInterface {
     @GET("Areas/{id}/limits")
     Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);
 
-    @GET("Results/createAlternative")
-    Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternative createAlternative);
+    @POST("Results/createAlternative")
+    Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternatives createAlternative);
 
     //@GET("Alternatives/{id}/results")
     //Call<ResponseAlternatives> GetAlternatives(@Header("Authorization") String authToken, @Query("areaID") String id);

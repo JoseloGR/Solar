@@ -17,6 +17,8 @@ import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.RequestCreateAlternatives;
+import com.itesm.digital.solar.Models.ResponseCreateAlternatives;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.text.FieldPosition;
@@ -24,6 +26,9 @@ import java.text.Format;
 import java.text.ParsePosition;
 import java.util.Arrays;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -37,7 +42,6 @@ public class ResultsWithObstacles extends AppCompatActivity {
             .addConverterFactory(GsonConverterFactory.create());
 
     Retrofit retrofit = builderR.build();
-
     RequestInterface connectInterface = retrofit.create(RequestInterface.class);
 
 
@@ -123,6 +127,37 @@ public class ResultsWithObstacles extends AppCompatActivity {
                 return null;
             }
         });
+
+        GenerateResults();
+    }
+
+    private void GenerateResults(){
+
+        RequestCreateAlternatives requestProject = new RequestCreateAlternatives();
+        requestProject.setAreaID(ID_AREA);
+        Call<ResponseCreateAlternatives> responseProjects = connectInterface.CreateAlternative(TOKEN,requestProject);
+
+        responseProjects.enqueue(new Callback<ResponseCreateAlternatives>() {
+            @Override
+            public void onResponse(Call<ResponseCreateAlternatives> call, Response<ResponseCreateAlternatives> response) {
+                int statusCode = response.code();
+
+                if (statusCode==200){
+                    ResponseCreateAlternatives jsonResponse = response.body();
+                    Log.d("STATUS", jsonResponse.toString());
+                }
+                else{
+                    Log.d("PROJECT",response.toString());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCreateAlternatives> call, Throwable t) {
+                Log.d("OnFail", t.getMessage());
+            }
+        });
+
     }
 
 }
