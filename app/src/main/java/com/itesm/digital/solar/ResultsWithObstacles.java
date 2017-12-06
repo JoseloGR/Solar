@@ -134,7 +134,7 @@ public class ResultsWithObstacles extends AppCompatActivity {
     private void GenerateResults(){
 
         RequestCreateAlternatives requestProject = new RequestCreateAlternatives();
-        requestProject.setAreaID(ID_AREA);
+        requestProject.setAreaID(Integer.parseInt(ID_AREA));
         Call<ResponseCreateAlternatives> responseProjects = connectInterface.CreateAlternative(TOKEN,requestProject);
 
         responseProjects.enqueue(new Callback<ResponseCreateAlternatives>() {

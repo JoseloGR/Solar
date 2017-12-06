@@ -316,12 +316,15 @@ public class SubstationActivity extends AppCompatActivity implements
          */
     }
 
-    public void SendDataLimits(){
+
+
+
+    public void SendDataLimits(double lat, double lon){
 
         RequestLimit limitRegister = new RequestLimit();
         Position position = new Position();
-        position.setLat(String.valueOf(latitude));
-        position.setLng(String.valueOf(longitude));
+        position.setLat(String.valueOf(lat));
+        position.setLng(String.valueOf(lon));
         limitRegister.setPosition(position);
         limitRegister.setAltitude("0");
         limitRegister.setAreaId(ID_AREA);
@@ -331,11 +334,12 @@ public class SubstationActivity extends AppCompatActivity implements
         responseLimit.enqueue(new Callback<ResponseLimit>() {
             @Override
             public void onResponse(Call<ResponseLimit> call, Response<ResponseLimit> response) {
-                dialog.dismiss();
+                //dialog.dismiss();
                 int statusCode = response.code();
                 ResponseLimit responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
-                    SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+                    Log.d("SUCCESS LIMIT",response.toString());
                 }
                 else{
                     //showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
@@ -892,6 +896,15 @@ public class SubstationActivity extends AppCompatActivity implements
     }
 
     public void NextStepLimitRegister(){
-        SendDataLimits();
+
+        for (int l=0; l < MapsActivityCurrentPlace.listPolygons.size(); l++) {
+            SendDataLimits(MapsActivityCurrentPlace.listPolygons.get(0).get(l).latitude, MapsActivityCurrentPlace.listPolygons.get(0).get(l).longitude);
+
+            if(l==MapsActivityCurrentPlace.listPolygons.size()-1){
+                dialog.dismiss();
+                SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+            }
+        }
+
     }
 }

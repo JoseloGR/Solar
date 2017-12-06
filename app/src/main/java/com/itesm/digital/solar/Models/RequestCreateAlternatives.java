@@ -2,13 +2,13 @@ package com.itesm.digital.solar.Models;
 
 public class RequestCreateAlternatives {
 
-    private String areaID;
+    private int areaID;
 
-    public String getAreaID() {
+    public int getAreaID() {
         return areaID;
     }
 
-    public void setAreaID(String areaID) {
+    public void setAreaID(int areaID) {
         this.areaID = areaID;
     }
 }
