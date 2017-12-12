@@ -17,6 +17,9 @@ import com.androidplot.xy.XYGraphWidget;
 import com.androidplot.xy.XYPlot;
 import com.androidplot.xy.XYSeries;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
+import com.itesm.digital.solar.Models.Alternatives;
+import com.itesm.digital.solar.Models.DataAdapterProjects;
+import com.itesm.digital.solar.Models.Project;
 import com.itesm.digital.solar.Models.RequestCreateAlternatives;
 import com.itesm.digital.solar.Models.ResponseCreateAlternatives;
 import com.itesm.digital.solar.Utils.GlobalVariables;
@@ -24,7 +27,9 @@ import com.itesm.digital.solar.Utils.GlobalVariables;
 import java.text.FieldPosition;
 import java.text.Format;
 import java.text.ParsePosition;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -158,6 +163,8 @@ public class ResultsWithObstacles extends AppCompatActivity {
                 if (statusCode==200){
                     ResponseCreateAlternatives jsonResponse = response.body();
                     Log.d("STATUS", jsonResponse.toString());
+
+                    loadDataAlternatives();
                 }
                 else{
                     Log.d("PROJECT",response.toString());
@@ -167,6 +174,39 @@ public class ResultsWithObstacles extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseCreateAlternatives> call, Throwable t) {
+                Log.d("OnFail", t.getMessage());
+            }
+        });
+
+    }
+
+    private void loadDataAlternatives(){
+
+        Call<List<Alternatives>> responseAlternatives = connectInterface.GetAlternatives(TOKEN,ID_PROJECT);
+
+        responseAlternatives.enqueue(new Callback<List<Alternatives>>() {
+            @Override
+            public void onResponse(Call<List<Alternatives>> call, Response<List<Alternatives>> response) {
+                //dialog.dismiss();
+                int statusCode = response.code();
+
+                if (statusCode==200){
+                    List<Alternatives> jsonResponse = response.body();
+                    Log.d("ALL ALT", jsonResponse.toString());
+                    //data = new ArrayList<>(jsonResponse);
+                    //adapter = new DataAdapterProjects(data, getApplicationContext());
+                    //recyclerView.setAdapter(adapter);
+
+                }
+                else{
+                    Log.d("PROJECT",response.toString());
+                    //msg.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Alternatives>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
             }
         });

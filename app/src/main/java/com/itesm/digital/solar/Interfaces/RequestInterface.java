@@ -1,5 +1,6 @@
 package com.itesm.digital.solar.Interfaces;
 
+import com.itesm.digital.solar.Models.Alternatives;
 import com.itesm.digital.solar.Models.Coordinate;
 import com.itesm.digital.solar.Models.Project;
 import com.itesm.digital.solar.Models.RequestArea;
@@ -72,6 +73,6 @@ public interface RequestInterface {
     @POST("Results/createAlternative")
     Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternatives createAlternative);
 
-    //@GET("Alternatives/{id}/results")
-    //Call<ResponseAlternatives> GetAlternatives(@Header("Authorization") String authToken, @Query("areaID") String id);
+    @GET("Projects/{id}/alternatives")
+    Call<List<Alternatives>> GetAlternatives(@Header("Authorization") String authToken, @Path("id") String id);
 }
