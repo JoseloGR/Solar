@@ -3,12 +3,14 @@ package com.itesm.digital.solar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Project;
@@ -26,6 +28,7 @@ public class HomeResults extends AppCompatActivity {
 
     String ID_PROJECT="", ID_AREA="", TOKEN="", NOMBRE="";
     Toolbar toolbar;
+    //TextView titleProject;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
             .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
@@ -42,6 +45,10 @@ public class HomeResults extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null)
+            actionBar.setDisplayShowTitleEnabled(false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -118,6 +125,8 @@ public class HomeResults extends AppCompatActivity {
             public void onResponse(Call<ResponseArea> call, Response<ResponseArea> response) {
                 int statusCode = response.code();
 
+                Log.d("SUCCESS AREA", response.toString());
+
                 if (statusCode==200){
                     ResponseArea jsonResponse = response.body();
 
@@ -149,6 +158,8 @@ public class HomeResults extends AppCompatActivity {
             public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
                 int statusCode = response.code();
 
+                Log.d("SUCCESS PROJECT", response.toString());
+
                 if (statusCode==200){
                     ResponseProject jsonResponse = response.body();
 
@@ -157,7 +168,7 @@ public class HomeResults extends AppCompatActivity {
                     editor.putString("NOMBRE", jsonResponse.getName().toString());
                     editor.apply();
 
-                    changeNameToolbar(jsonResponse.getName().toString());
+                    //changeNameToolbar(jsonResponse.getName().toString());
                 }
                 else{
                     Log.d("PROJECT",response.toString());
@@ -189,7 +200,7 @@ public class HomeResults extends AppCompatActivity {
     }
 
     private void changeNameToolbar(String NOMBRE){
-        toolbar.setTitle(NOMBRE);
+        getSupportActionBar().setTitle(NOMBRE);
     }
 
     private void StartROIProcess(){
