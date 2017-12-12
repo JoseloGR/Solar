@@ -15,7 +15,7 @@ public class ResponseProject {
 
     @SerializedName("Cost")
     @Expose
-    private Integer Cost;
+    private String Cost;
 
     @SerializedName("Date")
     @Expose
@@ -41,7 +41,7 @@ public class ResponseProject {
         return Address;
     }
 
-    public Integer getCost() {
+    public String getCost() {
         return Cost;
     }
 
