@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Project;
 import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseDataArea;
 import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
@@ -26,9 +27,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeResults extends AppCompatActivity {
 
-    String ID_PROJECT="", ID_AREA="", TOKEN="", NOMBRE="";
+    String ID_PROJECT="", ID_AREA="", TOKEN="", NOMBRE="",ID_USER="";
     Toolbar toolbar;
-    //TextView titleProject;
+    public SharedPreferences prefs;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
             .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
@@ -81,6 +82,15 @@ public class HomeResults extends AppCompatActivity {
         ID_AREA = getIntent().getExtras().getString("ID_AREA");
         //TOKEN = getIntent().getExtras().getString("TOKEN");
         SetActiveProject(ID_PROJECT, ID_AREA);
+
+        initValues();
+    }
+
+    private void initValues(){
+        prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+        ID_USER = prefs.getString("IdUser", null);
+        TOKEN = prefs.getString("Token", null);
+
         loadDataAreaProject();
         loadDataProject();
     }
@@ -118,17 +128,17 @@ public class HomeResults extends AppCompatActivity {
 
     private void loadDataAreaProject(){
 
-        Call<ResponseArea> responseProjects = connectInterface.GetAreaProject(TOKEN,ID_PROJECT);
+        Call<ResponseDataArea> responseProjects = connectInterface.GetAreaProject(TOKEN,ID_PROJECT);
 
-        responseProjects.enqueue(new Callback<ResponseArea>() {
+        responseProjects.enqueue(new Callback<ResponseDataArea>() {
             @Override
-            public void onResponse(Call<ResponseArea> call, Response<ResponseArea> response) {
+            public void onResponse(Call<ResponseDataArea> call, Response<ResponseDataArea> response) {
                 int statusCode = response.code();
 
                 Log.d("SUCCESS AREA", response.toString());
 
                 if (statusCode==200){
-                    ResponseArea jsonResponse = response.body();
+                    ResponseDataArea jsonResponse = response.body();
 
                     SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = project.edit();
@@ -142,7 +152,7 @@ public class HomeResults extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseArea> call, Throwable t) {
+            public void onFailure(Call<ResponseDataArea> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
             }
         });
@@ -167,6 +177,8 @@ public class HomeResults extends AppCompatActivity {
                     SharedPreferences.Editor editor = project.edit();
                     editor.putString("NOMBRE", jsonResponse.getName().toString());
                     editor.apply();
+
+                    NOMBRE = jsonResponse.getName().toString();
 
                     //changeNameToolbar(jsonResponse.getName().toString());
                 }
