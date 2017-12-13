@@ -1,5 +1,8 @@
 package com.itesm.digital.solar;
 
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -7,11 +10,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.CycleInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class SplashActivity extends Activity {
 
-    ImageView ivLogo;
+    ImageView ivLogo, drone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +25,23 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         ivLogo = (ImageView) findViewById(R.id.iv_solar);
+        drone = (ImageView) findViewById(R.id.drone);
+
+        float propertyStart = drone.getX();
+        float propertyEnd = drone.getX() + 20;
+
+        ObjectAnimator xAnim = ObjectAnimator.ofFloat(drone, "translationX",
+                propertyStart,propertyEnd).setDuration(4000);
+        xAnim.setStartDelay(0);
+        xAnim.setRepeatCount(1);
+        xAnim.setRepeatMode(ValueAnimator.REVERSE);
+        xAnim.setInterpolator(new CycleInterpolator(2f));
+        xAnim.start();
 
         Thread timerThread = new Thread(){
             public void run(){
                 try{
-                    sleep(3000);
+                    sleep(5000);
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
