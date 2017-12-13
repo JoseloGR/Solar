@@ -34,7 +34,7 @@ public class SplashActivity extends Activity {
                 propertyStart,propertyEnd).setDuration(5000);
         xAnim.setStartDelay(0);
         xAnim.setRepeatCount(0);
-        //xAnim.setRepeatMode(ValueAnimator.REVERSE);
+        xAnim.setRepeatMode(ValueAnimator.REVERSE);
         xAnim.setInterpolator(new CycleInterpolator(2f));
         xAnim.start();
 

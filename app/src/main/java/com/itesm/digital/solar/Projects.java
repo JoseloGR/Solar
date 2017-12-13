@@ -88,7 +88,7 @@ public class Projects extends AppCompatActivity {
         dialog = builder.build();
 
         initValues();
-
+        ClearActiveProject();
     }
 
     private void initValues(){
@@ -111,6 +111,13 @@ public class Projects extends AppCompatActivity {
 
         dialog.show();
         loadDataProjects();
+    }
+
+    public void ClearActiveProject(){
+        SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = project.edit();
+        editor.clear();
+        editor.commit();
     }
 
     private void loadDataProjects(){

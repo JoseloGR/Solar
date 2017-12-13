@@ -18,6 +18,7 @@ public class DataAdapterAlternatives extends RecyclerView.Adapter<DataAdapterAlt
 
     private Context context;
     private ArrayList<Alternatives> alternatives;
+    private RecyclerViewClickListener clickListener;
 
     public DataAdapterAlternatives(ArrayList<Alternatives> alternatives, Context contexts){
         this.alternatives = alternatives;
@@ -37,12 +38,6 @@ public class DataAdapterAlternatives extends RecyclerView.Adapter<DataAdapterAlt
         viewHolder.alt_roi.setText(alternatives.get(i).getRoi());
         viewHolder.alt_payback.setText(alternatives.get(i).getPayback());
         viewHolder.alt_ganancias.setText(alternatives.get(i).getGanancias());
-        viewHolder.setClickListener(new RecyclerViewClickListener(){
-            @Override
-            public void onClick(View view, int position){
-            }
-        });
-
     }
 
     @Override
@@ -50,10 +45,13 @@ public class DataAdapterAlternatives extends RecyclerView.Adapter<DataAdapterAlt
         return alternatives.size();
     }
 
+    public void setClickListener(RecyclerViewClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
+    }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private RecyclerViewClickListener mListener;
         private TextView alt_gen_energy,alt_roi,alt_payback, alt_ganancias;
 
         public ViewHolder(View view) {
@@ -67,14 +65,9 @@ public class DataAdapterAlternatives extends RecyclerView.Adapter<DataAdapterAlt
 
         }
 
-        public void setClickListener(RecyclerViewClickListener itemClickListener){
-            this.mListener = itemClickListener;
-        }
-
-
         @Override
         public void onClick(View view) {
-            mListener.onClick(view, getAdapterPosition());
+            clickListener.onClick(view, getAdapterPosition());
         }
     }
 }

@@ -1,7 +1,9 @@
 package com.itesm.digital.solar;
 
 import android.os.Bundle;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,11 +19,14 @@ import com.itesm.digital.solar.Models.DataAdapterAlternatives;
 import com.itesm.digital.solar.Models.RequestCreateAlternatives;
 import com.itesm.digital.solar.Models.ResponseCreateAlternatives;
 import com.itesm.digital.solar.Utils.GlobalVariables;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,8 +34,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ResultsWithObstacles extends AppCompatActivity {
+public class ResultsWithObstacles extends AppCompatActivity implements RecyclerViewClickListener {
 
+    SlidingUpPanelLayout slidingUpPanelLayout;
     public String ID_AREA, ID_PROJECT, TOKEN;
 
     MaterialDialog.Builder builder;
@@ -39,7 +45,6 @@ public class ResultsWithObstacles extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<Alternatives> data;
     private DataAdapterAlternatives adapter;
-    RecyclerViewClickListener listener;
 
     OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(100, TimeUnit.SECONDS)
@@ -62,6 +67,8 @@ public class ResultsWithObstacles extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        ButterKnife.bind(this);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,10 +114,12 @@ public class ResultsWithObstacles extends AppCompatActivity {
     }
 
     private void initViews(){
+        slidingUpPanelLayout = (SlidingUpPanelLayout) findViewById(R.id.sliding_layout);
         recyclerView = (RecyclerView)findViewById(R.id.recycler_alternatives);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         showProgress(true);
         GenerateResults();
@@ -162,8 +171,8 @@ public class ResultsWithObstacles extends AppCompatActivity {
                     List<List<Alternatives>> jsonResponse = response.body();
                     data = new ArrayList<>(jsonResponse.get(0));
                     Log.d("ALL ALT", data.toString());
-                    adapter = new DataAdapterAlternatives(data, getApplicationContext());
-                    recyclerView.setAdapter(adapter);
+
+                    updateAdapter();
 
                 }
                 else{
@@ -188,4 +197,19 @@ public class ResultsWithObstacles extends AppCompatActivity {
             dialog.dismiss();
     }
 
+    private void updateAdapter(){
+        adapter = new DataAdapterAlternatives(data, getApplicationContext());
+        recyclerView.setAdapter(adapter);
+        adapter.setClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        SetAlternative(data.get(position));
+    }
+
+    public void SetAlternative(Alternatives alternative){
+        Log.d("Data", alternative.getSavings().toString());
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+    }
 }
