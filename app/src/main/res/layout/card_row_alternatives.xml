@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     card_view:cardCornerRadius="5dp">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,9 +15,9 @@
         android:orientation="vertical">
         <ImageView
             android:id="@+id/alt_logo_project"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/solar_energy"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/power_alt"
             android:padding="10dp"
             android:layout_alignParentStart="true"/>
         <TextView
@@ -26,26 +26,61 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/alt_logo_project"/>
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/alt_logo_project"/>
+        <TextView
+            android:id="@+id/alt_gen_energy_sub"
+            android:textSize="12sp"
+            android:text="@string/generated_energy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:layout_below="@+id/alt_gen_energy"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/alt_logo_project"/>
+
         <TextView
             android:id="@+id/alt_roi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alt_gen_energy"
-            android:layout_toRightOf="@+id/alt_logo_project"/>
+            android:layout_below="@+id/alt_gen_energy_sub"
+            android:layout_toEndOf="@+id/alt_logo_project"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/alt_payback"
             android:layout_below="@+id/alt_roi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/alt_logo_project"/>
+            android:layout_toEndOf="@+id/alt_logo_project"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/alt_ganancias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alt_payback"
-            android:layout_marginBottom="5dp"
-            android:layout_toRightOf="@+id/alt_logo_project"/>
+            android:layout_below="@+id/alt_gen_energy_sub"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/alt_logo_project"/>
+        <TextView
+            android:id="@+id/alt_ganancias_sub"
+            android:textSize="12sp"
+            android:text="@string/savings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="normal"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/alt_ganancias"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@+id/alt_logo_project"/>
+        <Button
+            android:id="@+id/alt_show_more"
+            android:text="@string/more"
+            android:background="@null"
+            android:textColor="@color/primary_dark"
+            android:textAllCaps="false"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/alt_gen_energy_sub"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

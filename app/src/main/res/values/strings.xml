@@ -92,4 +92,8 @@
     <string name="processing">Processing</string>
     <string name="please_wait_pro">Predix working...</string>
 
+    <string name="generated_energy">Generated Energy (kW)</string>
+    <string name="savings">Savings</string>
+    <string name="more">Show more</string>
+
 </resources>
