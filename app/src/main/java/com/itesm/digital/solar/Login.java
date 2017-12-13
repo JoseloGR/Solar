@@ -1,5 +1,6 @@
 package com.itesm.digital.solar;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -78,8 +79,9 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 //lleva a la pantalla de registro
                 Intent mainIntent = new Intent().setClass(Login.this, Register.class);
-                startActivity(mainIntent);
-                //SendDataProject();
+                ActivityOptions options = ActivityOptions.makeScaleUpAnimation(v, 0,
+                        0, v.getWidth(), v.getHeight());
+                startActivity(mainIntent, options.toBundle());
             }
         });
 
@@ -216,48 +218,6 @@ public class Login extends AppCompatActivity {
                 .content(message)
                 .positiveText("Ok")
                 .show();
-    }
-
-    public void SendDataProject(){
-        String DATE="2017-10-12T17:22:31.316Z", NAME="Solar", ADDRESS="CSF TEC", COST="10", SURFACE="10", ID_USER="1";
-
-
-        RequestProject projectRegister = new RequestProject();
-        projectRegister.setName(NAME);
-        projectRegister.setAddress(ADDRESS);
-        projectRegister.setCost(COST);
-        projectRegister.setDate(DATE);
-        projectRegister.setSurface(SURFACE);
-        projectRegister.setUserId(ID_USER);
-
-        Call<ResponseProject> responseRegister = connectInterface.RegisterProject(TOKEN, projectRegister);
-
-        responseRegister.enqueue(new Callback<ResponseProject>() {
-            @Override
-            public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
-                dialog.dismiss();
-                int statusCode = response.code();
-                ResponseProject responseBody = response.body();
-                if (statusCode==201 || statusCode==200){
-                    //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
-                    Log.d("SUCCESS",response.toString());
-                }
-                else{
-                    showMessage("Proyecto Solar", "Hubo un problema al crear el proyecto. Contacte al administrador.");
-                    Log.d("PROJECT",response.toString());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseProject> call, Throwable t) {
-                dialog.dismiss();
-                Log.d("OnFail", t.getMessage());
-                showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
-            }
-        });
-
-
     }
 
 }
