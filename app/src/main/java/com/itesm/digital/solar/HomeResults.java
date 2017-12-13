@@ -19,6 +19,9 @@ import com.itesm.digital.solar.Models.ResponseDataArea;
 import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -128,21 +131,23 @@ public class HomeResults extends AppCompatActivity {
 
     private void loadDataAreaProject(){
 
-        Call<ResponseDataArea> responseProjects = connectInterface.GetAreaProject(TOKEN,ID_PROJECT);
+        Call<List<ResponseDataArea>> responseProjects = connectInterface.GetAreaProject(TOKEN,ID_PROJECT);
 
-        responseProjects.enqueue(new Callback<ResponseDataArea>() {
+        responseProjects.enqueue(new Callback<List<ResponseDataArea>>() {
             @Override
-            public void onResponse(Call<ResponseDataArea> call, Response<ResponseDataArea> response) {
+            public void onResponse(Call<List<ResponseDataArea>> call, Response<List<ResponseDataArea>> response) {
                 int statusCode = response.code();
 
                 Log.d("SUCCESS AREA", response.toString());
 
                 if (statusCode==200){
-                    ResponseDataArea jsonResponse = response.body();
+                    List<ResponseDataArea> jsonResponse = response.body();
+
+                    ArrayList<ResponseDataArea> data = new ArrayList<>(jsonResponse);
 
                     SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = project.edit();
-                    editor.putString("ID_AREA", jsonResponse.getId().toString());
+                    editor.putString("ID_AREA", data.get(0).getId().toString());
                     editor.apply();
                 }
                 else{
@@ -152,7 +157,7 @@ public class HomeResults extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseDataArea> call, Throwable t) {
+            public void onFailure(Call<List<ResponseDataArea>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
             }
         });

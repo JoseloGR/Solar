@@ -57,6 +57,7 @@
             android:id="@+id/alt_ganancias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_below="@+id/alt_gen_energy_sub"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/alt_logo_project"/>
@@ -67,7 +68,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="normal"
-            android:layout_marginTop="25dp"
             android:layout_below="@+id/alt_ganancias"
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/alt_logo_project"/>

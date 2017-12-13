@@ -31,10 +31,10 @@ public class SplashActivity extends Activity {
         float propertyEnd = drone.getX() + 20;
 
         ObjectAnimator xAnim = ObjectAnimator.ofFloat(drone, "translationX",
-                propertyStart,propertyEnd).setDuration(4000);
+                propertyStart,propertyEnd).setDuration(5000);
         xAnim.setStartDelay(0);
-        xAnim.setRepeatCount(1);
-        xAnim.setRepeatMode(ValueAnimator.REVERSE);
+        xAnim.setRepeatCount(0);
+        //xAnim.setRepeatMode(ValueAnimator.REVERSE);
         xAnim.setInterpolator(new CycleInterpolator(2f));
         xAnim.start();
 
