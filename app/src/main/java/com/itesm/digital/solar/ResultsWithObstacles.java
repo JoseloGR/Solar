@@ -38,6 +38,7 @@ public class ResultsWithObstacles extends AppCompatActivity implements RecyclerV
 
     SlidingUpPanelLayout slidingUpPanelLayout;
     public String ID_AREA, ID_PROJECT, TOKEN;
+    TextView roi, payback, earnings, totalCost;
 
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
@@ -99,10 +100,10 @@ public class ResultsWithObstacles extends AppCompatActivity implements RecyclerV
         Log.d("PROJECT", ID_PROJECT);
 
 
-        TextView roi = (TextView) findViewById(R.id.roi);
-        TextView payback = (TextView) findViewById(R.id.payback);
-        TextView earnings = (TextView) findViewById(R.id.earnings);
-        TextView totalCost = (TextView) findViewById(R.id.total_cost);
+        roi = (TextView) findViewById(R.id.roi);
+        payback = (TextView) findViewById(R.id.payback);
+        earnings = (TextView) findViewById(R.id.earnings);
+        totalCost = (TextView) findViewById(R.id.total_cost);
 
         builder = new MaterialDialog.Builder(this)
                 .title(R.string.processing)
@@ -210,6 +211,11 @@ public class ResultsWithObstacles extends AppCompatActivity implements RecyclerV
 
     public void SetAlternative(Alternatives alternative){
         Log.d("Data", alternative.getSavings().toString());
+
+        roi.setText(alternative.getRoi());
+        payback.setText(alternative.getPayback());
+        earnings.setText(alternative.getGanancias());
+        totalCost.setText(alternative.getCostoInstalacion());
         slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
     }
 }

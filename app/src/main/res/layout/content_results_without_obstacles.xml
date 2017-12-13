@@ -11,13 +11,15 @@
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="368dp"
+        android:layout_height="495dp"
         android:gravity="bottom"
         sothree:umanoDragView="@+id/dragView"
         sothree:umanoOverlay="true"
         sothree:umanoPanelHeight="50dp"
-        sothree:umanoShadowHeight="4dp">
+        sothree:umanoShadowHeight="4dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <!-- MAIN CONTENT -->
 
@@ -44,8 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="vertical"
-                android:padding="@dimen/fab_margin">
-
+                android:gravity="center_horizontal">
                 <ImageView
                     android:src="@drawable/power_alt"
                     android:layout_width="45dp"
@@ -54,50 +55,146 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_below="@+id/check_project"
-                android:background="@color/colorPrimary">
+                android:background="@color/btn_login_bg">
 
-                <TextView
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="ROI 12738.56"
-                    android:textSize="25sp"
-                    android:textColor="@color/white"
-                    android:padding="15dp"
-                    android:id="@+id/roi"/>
+                    android:padding="10dp">
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:background="@color/white">
 
-                <TextView
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="12738.56"
+                            android:textSize="25sp"
+                            android:textColor="@color/input_login"
+                            android:padding="15dp"
+                            android:id="@+id/roi"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ROI"
+                            android:textSize="12sp"
+                            android:textColor="@color/input_login"
+                            android:id="@+id/roi_title"
+                            android:layout_above="@+id/roi"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1"
+                            android:textSize="25sp"
+                            android:textColor="@color/input_login"
+                            android:padding="15dp"
+                            android:id="@+id/payback"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PAYBACK"
+                            android:textSize="14sp"
+                            android:textColor="@color/input_login"
+                            android:id="@+id/payback_title"
+                            android:layout_above="@+id/payback"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Payback 1"
-                    android:textSize="25sp"
-                    android:textColor="@color/white"
-                    android:padding="15dp"
-                    android:id="@+id/payback"/>
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4dp"
+                        android:background="@color/white">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Savings 10198.7"
-                    android:textSize="25sp"
-                    android:textColor="@color/white"
-                    android:padding="15dp"
-                    android:id="@+id/earnings"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="10198.7"
+                            android:textSize="25sp"
+                            android:textColor="@color/input_login"
+                            android:padding="15dp"
+                            android:id="@+id/earnings"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Total Cost 732499.76"
-                    android:textSize="25sp"
-                    android:textColor="@color/white"
-                    android:padding="15dp"
-                    android:id="@+id/total_cost"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Savings"
+                            android:textSize="14sp"
+                            android:textColor="@color/input_login"
+                            android:id="@+id/earnings_title"
+                            android:layout_above="@+id/earnings"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="732499.76"
+                            android:textSize="25sp"
+                            android:textColor="@color/input_login"
+                            android:padding="15dp"
+                            android:id="@+id/total_cost"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="PAYBACK"
+                            android:textSize="14sp"
+                            android:textColor="@color/input_login"
+                            android:id="@+id/total_cost_title"
+                            android:layout_above="@+id/total_cost"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
-
+            
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
