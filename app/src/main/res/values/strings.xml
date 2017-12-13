@@ -89,4 +89,7 @@
     <string name="msg_records">There are still no registered projects</string>
     <string name="title_activity_results_without_obstacles">ResultsWithoutObstacles</string>
 
+    <string name="processing">Processing</string>
+    <string name="please_wait_pro">Predix working...</string>
+
 </resources>

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.androidplot.xy.CatmullRomInterpolator;
 import com.androidplot.xy.LineAndPointFormatter;
 import com.androidplot.xy.SimpleXYSeries;
@@ -43,6 +44,9 @@ public class ResultsWithObstacles extends AppCompatActivity {
 
     private XYPlot plot;
     public String ID_AREA, ID_PROJECT, TOKEN;
+
+    MaterialDialog.Builder builder;
+    MaterialDialog dialog;
 
     OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(100, TimeUnit.SECONDS)
@@ -144,6 +148,14 @@ public class ResultsWithObstacles extends AppCompatActivity {
             }
         });
 
+        builder = new MaterialDialog.Builder(this)
+                .title(R.string.processing)
+                .content(R.string.please_wait_pro)
+                .progress(true, 0);
+
+        dialog = builder.build();
+
+        showProgress(true);
         GenerateResults();
     }
 
@@ -157,7 +169,7 @@ public class ResultsWithObstacles extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseCreateAlternatives> call, Response<ResponseCreateAlternatives> response) {
                 int statusCode = response.code();
-
+                showProgress(false);
                 Log.d("CREATE ALT", response.toString());
 
                 if (statusCode==200){
@@ -175,6 +187,7 @@ public class ResultsWithObstacles extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseCreateAlternatives> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
+                showProgress(false);
             }
         });
 
@@ -182,16 +195,16 @@ public class ResultsWithObstacles extends AppCompatActivity {
 
     private void loadDataAlternatives(){
 
-        Call<List<Alternatives>> responseAlternatives = connectInterface.GetAlternatives(TOKEN,ID_PROJECT);
+        Call<List<List<Alternatives>>> responseAlternatives = connectInterface.GetAlternatives(TOKEN,ID_PROJECT);
 
-        responseAlternatives.enqueue(new Callback<List<Alternatives>>() {
+        responseAlternatives.enqueue(new Callback<List<List<Alternatives>>>() {
             @Override
-            public void onResponse(Call<List<Alternatives>> call, Response<List<Alternatives>> response) {
+            public void onResponse(Call<List<List<Alternatives>>> call, Response<List<List<Alternatives>>> response) {
                 //dialog.dismiss();
                 int statusCode = response.code();
 
                 if (statusCode==200){
-                    List<Alternatives> jsonResponse = response.body();
+                    List<List<Alternatives>> jsonResponse = response.body();
                     Log.d("ALL ALT", jsonResponse.toString());
                     //data = new ArrayList<>(jsonResponse);
                     //adapter = new DataAdapterProjects(data, getApplicationContext());
@@ -206,11 +219,18 @@ public class ResultsWithObstacles extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Alternatives>> call, Throwable t) {
+            public void onFailure(Call<List<List<Alternatives>>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
             }
         });
 
+    }
+
+    private void showProgress(boolean show) {
+        if (show)
+            dialog.show();
+        else
+            dialog.dismiss();
     }
 
 }

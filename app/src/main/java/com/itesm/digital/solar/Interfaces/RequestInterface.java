@@ -74,5 +74,5 @@ public interface RequestInterface {
     Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternatives createAlternative);
 
     @GET("Projects/{id}/alternatives")
-    Call<List<Alternatives>> GetAlternatives(@Header("Authorization") String authToken, @Path("id") String id);
+    Call<List<List<Alternatives>>> GetAlternatives(@Header("Authorization") String authToken, @Path("id") String id);
 }
