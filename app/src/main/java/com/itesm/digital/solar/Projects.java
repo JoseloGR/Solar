@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.itesm.digital.solar.Interfaces.RecyclerViewClickListener;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.DataAdapterProjects;
@@ -39,6 +40,9 @@ public class Projects extends AppCompatActivity {
     TextView msg;
     public SharedPreferences prefs;
     RecyclerViewClickListener listener;
+
+    MaterialDialog.Builder builder;
+    MaterialDialog dialog;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
             .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
@@ -76,6 +80,13 @@ public class Projects extends AppCompatActivity {
             }
         });
 
+        builder = new MaterialDialog.Builder(this)
+                .title(R.string.title_activity_projects)
+                .content(R.string.wait)
+                .progress(true, 0);
+
+        dialog = builder.build();
+
         initValues();
 
     }
@@ -98,6 +109,7 @@ public class Projects extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        dialog.show();
         loadDataProjects();
     }
 
@@ -108,7 +120,7 @@ public class Projects extends AppCompatActivity {
         responseProjects.enqueue(new Callback<List<Project>>() {
             @Override
             public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
-                //dialog.dismiss();
+                dialog.dismiss();
                 int statusCode = response.code();
 
                 if (statusCode==200){
@@ -130,6 +142,7 @@ public class Projects extends AppCompatActivity {
             public void onFailure(Call<List<Project>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
                 msg.setVisibility(View.VISIBLE);
+                dialog.dismiss();
             }
         });
 

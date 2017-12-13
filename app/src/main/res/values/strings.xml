@@ -95,5 +95,6 @@
     <string name="generated_energy">Generated Energy (kW)</string>
     <string name="savings">Savings</string>
     <string name="more">Show more</string>
+    <string name="wait">Please wait</string>
 
 </resources>
