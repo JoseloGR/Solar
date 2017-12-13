@@ -147,7 +147,11 @@ public class HomeResults extends AppCompatActivity {
 
                     SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = project.edit();
-                    editor.putString("ID_AREA", data.get(0).getId().toString());
+
+                    if(data.size()!=0){
+                        editor.putString("ID_AREA", data.get(0).getId().toString());
+                    }
+
                     editor.apply();
                 }
                 else{

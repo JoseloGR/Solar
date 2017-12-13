@@ -11,8 +11,8 @@
     <com.sothree.slidinguppanel.SlidingUpPanelLayout
         xmlns:sothree="http://schemas.android.com/apk/res-auto"
         android:id="@+id/sliding_layout"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="bottom"
         sothree:umanoDragView="@+id/dragView"
         sothree:umanoOverlay="true"
@@ -35,7 +35,7 @@
             android:id="@+id/dragView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ffffff"
+            android:background="#fcfcfc"
             android:clickable="true"
             android:focusable="false"
             android:orientation="vertical"
@@ -60,141 +60,168 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_below="@+id/check_project"
-                android:background="@color/btn_login_bg">
+                android:background="#fcfcfc">
 
                 <LinearLayout
+                    android:clipToPadding="false"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp">
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
-                        android:background="@color/white">
+                    android:layout_height="wrap_content">
+                    <android.support.v7.widget.CardView
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:layout_width="160dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/roi"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginTop="10dp"
+                                android:text=""/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightgray"
+                                android:layout_margin="10dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="ROI (%)"
+                                android:padding="5dp"
+                                android:textColor="@android:color/darker_gray"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="12738.56"
-                            android:textSize="25sp"
-                            android:textColor="@color/input_login"
-                            android:padding="15dp"
-                            android:id="@+id/roi"/>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:layout_width="160dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/payback"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginTop="10dp"
+                                android:text=""/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightgray"
+                                android:layout_margin="10dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Payback (years)"
+                                android:padding="5dp"
+                                android:textColor="@android:color/darker_gray"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ROI"
-                            android:textSize="12sp"
-                            android:textColor="@color/input_login"
-                            android:id="@+id/roi_title"
-                            android:layout_above="@+id/roi"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1"
-                            android:textSize="25sp"
-                            android:textColor="@color/input_login"
-                            android:padding="15dp"
-                            android:id="@+id/payback"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PAYBACK"
-                            android:textSize="14sp"
-                            android:textColor="@color/input_login"
-                            android:id="@+id/payback_title"
-                            android:layout_above="@+id/payback"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"/>
-
-                    </RelativeLayout>
-
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
                 </LinearLayout>
 
                 <LinearLayout
+                    android:clipToPadding="false"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="4dp"
-                        android:background="@color/white">
+                    android:layout_height="wrap_content">
+                    <android.support.v7.widget.CardView
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:layout_width="160dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/earnings"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginTop="10dp"
+                                android:text=""/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightgray"
+                                android:layout_margin="10dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Savings (USD)"
+                                android:padding="5dp"
+                                android:textColor="@android:color/darker_gray"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="10198.7"
-                            android:textSize="25sp"
-                            android:textColor="@color/input_login"
-                            android:padding="15dp"
-                            android:id="@+id/earnings"/>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:clickable="false"
+                        android:layout_width="160dp"
+                        android:layout_height="100dp"
+                        android:layout_margin="10dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <TextView
+                                android:id="@+id/total_cost"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:layout_marginTop="10dp"
+                                android:text=""/>
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightgray"
+                                android:layout_margin="10dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Investment (USD)"
+                                android:padding="5dp"
+                                android:textColor="@android:color/darker_gray"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Savings"
-                            android:textSize="14sp"
-                            android:textColor="@color/input_login"
-                            android:id="@+id/earnings_title"
-                            android:layout_above="@+id/earnings"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="4dp"
-                        android:background="@color/white">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="732499.76"
-                            android:textSize="25sp"
-                            android:textColor="@color/input_login"
-                            android:padding="15dp"
-                            android:id="@+id/total_cost"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="PAYBACK"
-                            android:textSize="14sp"
-                            android:textColor="@color/input_login"
-                            android:id="@+id/total_cost_title"
-                            android:layout_above="@+id/total_cost"
-                            android:layout_alignParentStart="true"
-                            android:layout_alignParentTop="true"/>
-
-                    </RelativeLayout>
-
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
                 </LinearLayout>
 
             </LinearLayout>
-            
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                tools:context=".ResultsWithObstacles"
+                android:layout_alignParentBottom="true"
+                tools:ignore="MergeRootFrame" />
+
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

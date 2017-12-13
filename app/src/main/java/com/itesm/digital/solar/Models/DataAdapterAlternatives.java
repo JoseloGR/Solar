@@ -34,10 +34,10 @@ public class DataAdapterAlternatives extends RecyclerView.Adapter<DataAdapterAlt
     @Override
     public void onBindViewHolder(final DataAdapterAlternatives.ViewHolder viewHolder, final int i) {
 
-        viewHolder.alt_gen_energy.setText(alternatives.get(i).getGeneratedEnergy());
-        viewHolder.alt_roi.setText(alternatives.get(i).getRoi());
+        viewHolder.alt_gen_energy.setText( String.valueOf( Math.round( Float.valueOf(alternatives.get(i).getGeneratedEnergy())) ));
+        viewHolder.alt_roi.setText(String.valueOf( Math.round(Float.valueOf(alternatives.get(i).getRoi())) ));
         viewHolder.alt_payback.setText(alternatives.get(i).getPayback());
-        viewHolder.alt_ganancias.setText(alternatives.get(i).getGanancias());
+        viewHolder.alt_ganancias.setText(String.valueOf( Math.round(Float.valueOf(alternatives.get(i).getGanancias())) ));
     }
 
     @Override
