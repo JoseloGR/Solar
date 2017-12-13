@@ -13,18 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.itesm.digital.solar.Interfaces.RecyclerViewClickListener;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.DataAdapterProjects;
 import com.itesm.digital.solar.Models.Project;
-import com.itesm.digital.solar.Models.ResponseAllProjects;
-import com.itesm.digital.solar.Models.SolarProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,8 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static dji.midware.data.manager.P3.ServiceManager.getContext;
 
 public class Projects extends AppCompatActivity {
 

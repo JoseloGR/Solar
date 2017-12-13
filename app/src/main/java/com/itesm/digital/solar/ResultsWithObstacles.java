@@ -1,35 +1,24 @@
 package com.itesm.digital.solar;
 
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.androidplot.xy.CatmullRomInterpolator;
-import com.androidplot.xy.LineAndPointFormatter;
-import com.androidplot.xy.SimpleXYSeries;
-import com.androidplot.xy.XYGraphWidget;
-import com.androidplot.xy.XYPlot;
-import com.androidplot.xy.XYSeries;
+import com.itesm.digital.solar.Interfaces.RecyclerViewClickListener;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Alternatives;
-import com.itesm.digital.solar.Models.DataAdapterProjects;
-import com.itesm.digital.solar.Models.Project;
+import com.itesm.digital.solar.Models.DataAdapterAlternatives;
 import com.itesm.digital.solar.Models.RequestCreateAlternatives;
 import com.itesm.digital.solar.Models.ResponseCreateAlternatives;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
-import java.text.FieldPosition;
-import java.text.Format;
-import java.text.ParsePosition;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,11 +31,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ResultsWithObstacles extends AppCompatActivity {
 
-    private XYPlot plot;
     public String ID_AREA, ID_PROJECT, TOKEN;
 
     MaterialDialog.Builder builder;
     MaterialDialog dialog;
+
+    private RecyclerView recyclerView;
+    private ArrayList<Alternatives> data;
+    private DataAdapterAlternatives adapter;
+    RecyclerViewClickListener listener;
 
     OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(100, TimeUnit.SECONDS)
@@ -59,7 +52,6 @@ public class ResultsWithObstacles extends AppCompatActivity {
 
     Retrofit retrofit = builderR.build();
     RequestInterface connectInterface = retrofit.create(RequestInterface.class);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,55 +97,20 @@ public class ResultsWithObstacles extends AppCompatActivity {
         TextView earnings = (TextView) findViewById(R.id.earnings);
         TextView totalCost = (TextView) findViewById(R.id.total_cost);
 
-        totalCost.setText("Total Cost xxx");
-
-        // initialize our XYPlot reference:
-        plot = (XYPlot) findViewById(R.id.plot);
-
-        // create a couple arrays of y-values to plot:
-        final Number[] domainLabels = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
-        Number[] series1Numbers = {0, 5150614.87,5100609.03,5051088.71,5002048.86,4953485.14,4905393.00,4857767.61,4810604.78,4763900.05,4717648.70,4671846.16,4626488.39,4581571.02,4537089.81,4493040.55,4449418.75,4406220.67,4363441.91,4321078.41,4279126.12};
-        //Number[] series2Numbers = {5, 2, 10, 5, 20, 10, 40, 20, 80, 40};
-
-        // turn the above arrays into XYSeries':
-        // (Y_VALS_ONLY means use the element index as the x value)
-        XYSeries series1 = new SimpleXYSeries(
-                Arrays.asList(series1Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series1");
-        /*XYSeries series2 = new SimpleXYSeries(
-                Arrays.asList(series2Numbers), SimpleXYSeries.ArrayFormat.Y_VALS_ONLY, "Series2");*/
-
-        // create formatters to use for drawing a series using LineAndPointRenderer
-        // and configure them from xml:
-        LineAndPointFormatter series1Format = new LineAndPointFormatter(Color.RED, Color.GREEN, Color.BLUE, null);
-
-        series1Format.setInterpolationParams(
-                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));
-
-        /*series2Format.setInterpolationParams(
-                new CatmullRomInterpolator.Params(10, CatmullRomInterpolator.Type.Centripetal));*/
-
-        // add a new series' to the xyplot:
-        plot.addSeries(series1, series1Format);
-        //plot.addSeries(series2, series2Format);
-
-        plot.getGraph().getLineLabelStyle(XYGraphWidget.Edge.BOTTOM).setFormat(new Format() {
-            @Override
-            public StringBuffer format(Object obj, StringBuffer toAppendTo, FieldPosition pos) {
-                int i = Math.round(((Number) obj).floatValue());
-                return toAppendTo.append(domainLabels[i]);
-            }
-            @Override
-            public Object parseObject(String source, ParsePosition pos) {
-                return null;
-            }
-        });
-
         builder = new MaterialDialog.Builder(this)
                 .title(R.string.processing)
                 .content(R.string.please_wait_pro)
                 .progress(true, 0);
 
         dialog = builder.build();
+        initViews();
+    }
+
+    private void initViews(){
+        recyclerView = (RecyclerView)findViewById(R.id.recycler_alternatives);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
 
         showProgress(true);
         GenerateResults();
@@ -169,7 +126,6 @@ public class ResultsWithObstacles extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponseCreateAlternatives> call, Response<ResponseCreateAlternatives> response) {
                 int statusCode = response.code();
-                showProgress(false);
                 Log.d("CREATE ALT", response.toString());
 
                 if (statusCode==200){
@@ -200,20 +156,18 @@ public class ResultsWithObstacles extends AppCompatActivity {
         responseAlternatives.enqueue(new Callback<List<List<Alternatives>>>() {
             @Override
             public void onResponse(Call<List<List<Alternatives>>> call, Response<List<List<Alternatives>>> response) {
-                //dialog.dismiss();
                 int statusCode = response.code();
-
+                showProgress(false);
                 if (statusCode==200){
                     List<List<Alternatives>> jsonResponse = response.body();
-                    Log.d("ALL ALT", jsonResponse.toString());
-                    //data = new ArrayList<>(jsonResponse);
-                    //adapter = new DataAdapterProjects(data, getApplicationContext());
-                    //recyclerView.setAdapter(adapter);
+                    data = new ArrayList<>(jsonResponse.get(0));
+                    Log.d("ALL ALT", data.toString());
+                    adapter = new DataAdapterAlternatives(data, getApplicationContext());
+                    recyclerView.setAdapter(adapter);
 
                 }
                 else{
                     Log.d("PROJECT",response.toString());
-                    //msg.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -221,6 +175,7 @@ public class ResultsWithObstacles extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<List<Alternatives>>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
+                showProgress(false);
             }
         });
 
