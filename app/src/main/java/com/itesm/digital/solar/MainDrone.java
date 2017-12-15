@@ -37,10 +37,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
-import com.itesm.digital.solar.Models.Coordinate;
 import com.itesm.digital.solar.Models.RequestBlobstore;
 import com.itesm.digital.solar.Models.ResponseBlobstore;
-import com.itesm.digital.solar.Models.ResponseCoordinate;
+import com.itesm.digital.solar.Models.Routes;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.io.ByteArrayOutputStream;
@@ -167,7 +166,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
 
     private int j=1;
 
-    private ArrayList<Coordinate> data;
+    private ArrayList<Routes> data;
 
     @Override
     protected void onResume(){
@@ -461,6 +460,9 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
                 .progress(true, 0);
 
         dialog = builder.build();
+
+        Log.d("AreaID:", ID_AREA);
+        Log.d("TOKEN:", TOKEN);
 
         getCoordinate();
 
@@ -1294,16 +1296,18 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
     }
 
     public void getCoordinate() {
-        Call<List<Coordinate>> responseLimits = connectInterface.GetLimits(TOKEN,ID_AREA);
 
-        responseLimits.enqueue(new Callback<List<Coordinate>>() {
+
+        Call<List<Routes>> responseLimits = connectInterface.GetRoutes(TOKEN,ID_AREA);
+
+        responseLimits.enqueue(new Callback<List<Routes>>() {
             @Override
-            public void onResponse(Call<List<Coordinate>> call, Response<List<Coordinate>> response) {
+            public void onResponse(Call<List<Routes>> call, Response<List<Routes>> response) {
                 int statusCode = response.code();
 
                 if (statusCode==200){
                     //msg.setVisibility(View.GONE);
-                    List<Coordinate> jsonResponse = response.body();
+                    List<Routes> jsonResponse = response.body();
                     data = new ArrayList<>(jsonResponse);
                     Log.d("Coordinates:", data.get(2).getId());
                     //adapter = new DataAdapterProjects(data);
@@ -1316,7 +1320,7 @@ public class MainDrone extends FragmentActivity implements View.OnClickListener,
             }
 
             @Override
-            public void onFailure(Call<List<Coordinate>> call, Throwable t) {
+            public void onFailure(Call<List<Routes>> call, Throwable t) {
 
             }
         });

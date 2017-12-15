@@ -11,6 +11,7 @@ import com.itesm.digital.solar.Models.RequestCreateAlternatives;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestLogin;
 import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.RequestRoute;
 import com.itesm.digital.solar.Models.ResponseAllProjects;
 import com.itesm.digital.solar.Models.ResponseArea;
 import com.itesm.digital.solar.Models.ResponseBlobstore;
@@ -20,6 +21,8 @@ import com.itesm.digital.solar.Models.ResponseDataArea;
 import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseLogin;
 import com.itesm.digital.solar.Models.ResponseProject;
+import com.itesm.digital.solar.Models.ResponseRoute;
+import com.itesm.digital.solar.Models.Routes;
 
 import java.util.List;
 
@@ -50,6 +53,9 @@ public interface RequestInterface {
     @POST("Coordinates")
     Call<ResponseCoordinate> RegisterCoordinate(@Header("Authorization") String authToken, @Body RequestCoordinate coordinateRequest);
 
+    @POST("Routes")
+    Call<ResponseRoute> RegisterRoute(@Header("Authorization") String authToken, @Body RequestRoute routeRequest);
+
     @POST("Photos")
     Call<ResponseBlobstore> RegisterPhoto(@Header("Authorization") String authToken, @Body RequestBlobstore photoRequest);
 
@@ -68,8 +74,11 @@ public interface RequestInterface {
     @GET("Projects/{id}")
     Call<ResponseProject> GetDataProject(@Header("Authorization") String authToken, @Path("id") String id);
 
-    @GET("Areas/{id}/limits")
-    Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);
+    //@GET("Areas/{id}/limits")
+    //Call<List<Coordinate>> GetLimits(@Header("Authorization") String authToken, @Path("id") String id);
+
+    @GET("Areas/{id}/pointsRoute")
+    Call<List<Routes>> GetRoutes(@Header("Authorization") String authToken, @Path("id") String id);
 
     @POST("Results/createAlternative")
     Call<ResponseCreateAlternatives> CreateAlternative(@Header("Authorization") String authToken, @Body RequestCreateAlternatives createAlternative);

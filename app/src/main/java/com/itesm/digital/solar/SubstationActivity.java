@@ -39,13 +39,13 @@ import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Center;
 import com.itesm.digital.solar.Models.Position;
 import com.itesm.digital.solar.Models.RequestArea;
-import com.itesm.digital.solar.Models.RequestCoordinate;
 import com.itesm.digital.solar.Models.RequestLimit;
 import com.itesm.digital.solar.Models.RequestProject;
+import com.itesm.digital.solar.Models.RequestRoute;
 import com.itesm.digital.solar.Models.ResponseArea;
-import com.itesm.digital.solar.Models.ResponseCoordinate;
 import com.itesm.digital.solar.Models.ResponseLimit;
 import com.itesm.digital.solar.Models.ResponseProject;
+import com.itesm.digital.solar.Models.ResponseRoute;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.io.IOException;
@@ -240,6 +240,7 @@ public class SubstationActivity extends AppCompatActivity implements
         projectRegister.setDate(DATE);
         projectRegister.setSurface(area.toString().isEmpty() ? SURFACE : area.toString());
         projectRegister.setUserId(ID_USER);
+        //projectRegister.setSubstationCoordinate();
 
         Call<ResponseProject> responseRegister = connectInterface.RegisterProject(TOKEN, projectRegister);
 
@@ -417,6 +418,41 @@ public class SubstationActivity extends AppCompatActivity implements
                     }
                 })
                 .show();
+    }
+
+    public String GenerateDateNowFormatted(){
+        Date now = new Date();
+        String format = "yyyy-MM-dd'T'HH:mm:ssZ";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
+        String formattedNow = simpleDateFormat.format(now);
+        Date dateConvertBack = null;
+        try {
+            dateConvertBack = simpleDateFormat.parse(formattedNow);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return dateConvertBack.toString();
+
+    }
+
+    public void NextStepAreaRegister(){
+        SendDataArea();
+    }
+
+    public void NextStepLimitRegister(){
+        Log.d("limits: ", MapsActivityCurrentPlace.listPolygons.get(0).toString());
+
+        for (int l=0; l < MapsActivityCurrentPlace.listPolygons.get(0).size(); l++) {
+            SendDataLimits(MapsActivityCurrentPlace.listPolygons.get(0).get(l).latitude, MapsActivityCurrentPlace.listPolygons.get(0).get(l).longitude);
+
+            /*if(l==MapsActivityCurrentPlace.listPolygons.get(0).size()-1){
+                dialog.dismiss();
+                SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+            }*/
+        }
+        SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
+
     }
 
     private LatLng findPoint(double x1, double y1, double angle, double w)
@@ -826,6 +862,7 @@ public class SubstationActivity extends AppCompatActivity implements
         }
 
         Log.d("points: ", points.toString());
+        Log.d("idArea: ", ID_AREA);
 
         for (int l=0; l<points.size(); l++)
         {
@@ -835,25 +872,25 @@ public class SubstationActivity extends AppCompatActivity implements
 
     public void sendCoordinate(double lat, double lon, double al) {
 
-        RequestCoordinate coordinateRegister = new RequestCoordinate();
+        RequestRoute routeRegister = new RequestRoute();
         Position pos = new Position();
 
         pos.setLat(Double.toString(lat));
         pos.setLng(Double.toString(lon));
 
-        coordinateRegister.setPosition(pos);
-        coordinateRegister.setAltitude(al);
-        coordinateRegister.setAreaId(ID_AREA); //Por ahora
-        coordinateRegister.setResultId(""); //Por ahora
+        routeRegister.setPosition(pos);
+        routeRegister.setAltitude(al);
+        routeRegister.setAreaId(ID_AREA);
+        routeRegister.setResultId("");
 
-        Call<ResponseCoordinate> responseCoordinate = connectInterface.RegisterCoordinate(TOKEN, coordinateRegister);
+        Call<ResponseRoute> responseCoordinate = connectInterface.RegisterRoute(TOKEN, routeRegister);
 
-        responseCoordinate.enqueue(new Callback<ResponseCoordinate>() {
+        responseCoordinate.enqueue(new Callback<ResponseRoute>() {
             @Override
-            public void onResponse(Call<ResponseCoordinate> call, Response<ResponseCoordinate> response) {
+            public void onResponse(Call<ResponseRoute> call, Response<ResponseRoute> response) {
                 dialog.dismiss();
                 int statusCode = response.code();
-                ResponseCoordinate responseBody = response.body();
+                ResponseRoute responseBody = response.body();
                 if (statusCode==201 || statusCode==200){
                     //SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
                     Log.d("SUCCESS",response.toString());
@@ -866,45 +903,12 @@ public class SubstationActivity extends AppCompatActivity implements
             }
 
             @Override
-            public void onFailure(Call<ResponseCoordinate> call, Throwable t) {
+            public void onFailure(Call<ResponseRoute> call, Throwable t) {
                 dialog.dismiss();
                 Log.d("OnFail", t.getMessage());
                 showMessage("Error en la comunicación", "No es posible conectar con el servidor. Intente de nuevo por favor");
             }
         });
-
-    }
-
-    public String GenerateDateNowFormatted(){
-        Date now = new Date();
-        String format = "yyyy-MM-dd'T'HH:mm:ssZ";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
-        String formattedNow = simpleDateFormat.format(now);
-        Date dateConvertBack = null;
-        try {
-            dateConvertBack = simpleDateFormat.parse(formattedNow);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return dateConvertBack.toString();
-
-    }
-
-    public void NextStepAreaRegister(){
-        SendDataArea();
-    }
-
-    public void NextStepLimitRegister(){
-
-        for (int l=0; l < MapsActivityCurrentPlace.listPolygons.size(); l++) {
-            SendDataLimits(MapsActivityCurrentPlace.listPolygons.get(0).get(l).latitude, MapsActivityCurrentPlace.listPolygons.get(0).get(l).longitude);
-
-            if(l==MapsActivityCurrentPlace.listPolygons.size()-1){
-                dialog.dismiss();
-                SuccessProject("Proyecto Solar", "Tu proyecto ha sido registrado exitosamente.");
-            }
-        }
 
     }
 }

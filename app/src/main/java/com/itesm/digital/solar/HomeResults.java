@@ -212,7 +212,7 @@ public class HomeResults extends AppCompatActivity {
         SharedPreferences prefsProject = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
         ID_AREA = prefsProject.getString("ID_AREA", null);
 
-        Intent intent = new Intent(HomeResults.this, ConnectionActivity.class);
+        Intent intent = new Intent(HomeResults.this, MainDrone.class);
         intent.putExtra("ID_PROJECT", ID_PROJECT);
         intent.putExtra("ID_AREA", ID_AREA);
         intent.putExtra("TOKEN", TOKEN);
