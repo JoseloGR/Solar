@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/accent"
-    tools:context=".SplashActivity">
+    tools:context=".SplashActivity"
+    android:id="@+id/playground">
 
     <ImageView
         android:id="@+id/iv_solar"
@@ -14,5 +15,14 @@
         android:layout_centerInParent="true"
         android:background="@drawable/solar_logo"
         android:transitionName="logo"/>
+
+    <ImageView
+        android:id="@+id/drone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/drone_128"
+        android:layout_above="@id/iv_solar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-40dp"/>
 
 </RelativeLayout>

@@ -4,9 +4,10 @@
 
     <!-- activity_login  -->
     <string name="user_text_hint">Email</string>
+    <string name="username_text_hint">Username</string>
     <string name="password_text_hint">Password</string>
-    <string name="login_button_text">Log in</string>
-    <string name="register_button_text">Register</string>
+    <string name="login_button_text">Log In</string>
+    <string name="register_button_text">Sign Up</string>
 
     <!-- activity_register -->
     <string name="name_user_hint_textbox">Name</string>
@@ -87,6 +88,14 @@
     <string name="title_activity_projects">Solar Projects</string>
 
     <string name="msg_records">There are still no registered projects</string>
-    <string name="title_activity_results_without_obstacles">ResultsWithoutObstacles</string>
+    <string name="title_activity_results_without_obstacles">Alternatives</string>
+
+    <string name="processing">Processing</string>
+    <string name="please_wait_pro">Predix working...</string>
+
+    <string name="generated_energy">Generated Energy (kW)</string>
+    <string name="savings">Savings</string>
+    <string name="more">Show more</string>
+    <string name="wait">Please wait</string>
 
 </resources>

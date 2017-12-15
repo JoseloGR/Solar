@@ -13,18 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.itesm.digital.solar.Interfaces.RecyclerViewClickListener;
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.DataAdapterProjects;
 import com.itesm.digital.solar.Models.Project;
-import com.itesm.digital.solar.Models.ResponseAllProjects;
-import com.itesm.digital.solar.Models.SolarProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,8 +29,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static dji.midware.data.manager.P3.ServiceManager.getContext;
 
 public class Projects extends AppCompatActivity {
 
@@ -45,6 +40,9 @@ public class Projects extends AppCompatActivity {
     TextView msg;
     public SharedPreferences prefs;
     RecyclerViewClickListener listener;
+
+    MaterialDialog.Builder builder;
+    MaterialDialog dialog;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
             .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
@@ -82,8 +80,15 @@ public class Projects extends AppCompatActivity {
             }
         });
 
-        initValues();
+        builder = new MaterialDialog.Builder(this)
+                .title(R.string.title_activity_projects)
+                .content(R.string.wait)
+                .progress(true, 0);
 
+        dialog = builder.build();
+
+        initValues();
+        ClearActiveProject();
     }
 
     private void initValues(){
@@ -104,7 +109,15 @@ public class Projects extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        dialog.show();
         loadDataProjects();
+    }
+
+    public void ClearActiveProject(){
+        SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = project.edit();
+        editor.clear();
+        editor.commit();
     }
 
     private void loadDataProjects(){
@@ -114,7 +127,7 @@ public class Projects extends AppCompatActivity {
         responseProjects.enqueue(new Callback<List<Project>>() {
             @Override
             public void onResponse(Call<List<Project>> call, Response<List<Project>> response) {
-                //dialog.dismiss();
+                dialog.dismiss();
                 int statusCode = response.code();
 
                 if (statusCode==200){
@@ -136,6 +149,7 @@ public class Projects extends AppCompatActivity {
             public void onFailure(Call<List<Project>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
                 msg.setVisibility(View.VISIBLE);
+                dialog.dismiss();
             }
         });
 

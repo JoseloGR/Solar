@@ -78,37 +78,42 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConnectionActivity" />
-        <activity android:name=".ChooseAddress" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".MapsActivity" />
-        <activity android:name=".Register" />
-        <activity android:name=".CreateProject" />
-        <activity android:name=".Proyects" />
-        <activity android:name=".MapsActivityCurrentPlace" />
-        <activity android:name=".ShowMapByAddress" />
+        <activity android:name=".ConnectionActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ChooseAddress" android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MapsActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".Register" android:screenOrientation="portrait"/>
+        <activity android:name=".CreateProject" android:screenOrientation="portrait"/>
+        <activity android:name=".Proyects" android:screenOrientation="portrait"/>
+        <activity android:name=".MapsActivityCurrentPlace" android:screenOrientation="portrait"/>
+        <activity android:name=".ShowMapByAddress" android:screenOrientation="portrait"/>
         <activity
             android:name=".SubstationActivity"
-            android:label="@string/title_activity_substation" />
-        <activity android:name=".Login" />
-        <activity android:name=".MainDrone" />
-        <activity android:name=".SelectStartPointDron" />
-        <activity android:name=".CreateRoute" />
-        <activity android:name=".Coordinates" />
-        <activity android:name=".AreaCoordinates" />
-        <activity android:name=".SetObstaclesActivity" />
-        <activity android:name=".ResultsWithObstacles" />
-        <activity android:name=".CentralResults" />
+            android:label="@string/title_activity_substation" android:screenOrientation="portrait"/>
+        <activity android:name=".Login" android:screenOrientation="portrait"/>
+        <activity android:name=".MainDrone" android:screenOrientation="portrait"/>
+        <activity android:name=".SelectStartPointDron" android:screenOrientation="portrait"/>
+        <activity android:name=".CreateRoute" android:screenOrientation="portrait"/>
+        <activity android:name=".Coordinates" android:screenOrientation="portrait"/>
+        <activity android:name=".AreaCoordinates" android:screenOrientation="portrait"/>
+        <activity android:name=".SetObstaclesActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ResultsWithObstacles"
+            android:label="@string/title_activity_results_without_obstacles"
+            android:screenOrientation="portrait" />
+        <activity android:name=".CentralResults" android:screenOrientation="portrait" />
         <activity
             android:name=".Projects"
             android:label="@string/title_activity_projects"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".SetAltitude" />
+        <activity android:name=".SetAltitude" android:screenOrientation="portrait"/>
         <activity
             android:name=".ResultsWithoutObstacles"
             android:label="@string/title_activity_results_without_obstacles"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".HomeResults"></activity>
+        <activity android:name=".HomeResults" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

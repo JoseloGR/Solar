@@ -3,18 +3,24 @@ package com.itesm.digital.solar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.itesm.digital.solar.Interfaces.RequestInterface;
 import com.itesm.digital.solar.Models.Project;
 import com.itesm.digital.solar.Models.ResponseArea;
+import com.itesm.digital.solar.Models.ResponseDataArea;
 import com.itesm.digital.solar.Models.ResponseProject;
 import com.itesm.digital.solar.Utils.GlobalVariables;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,8 +30,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeResults extends AppCompatActivity {
 
-    String ID_PROJECT="", ID_AREA="", TOKEN="", NOMBRE="";
+    String ID_PROJECT="", ID_AREA="", TOKEN="", NOMBRE="",ID_USER="";
     Toolbar toolbar;
+    public SharedPreferences prefs;
 
     Retrofit.Builder builderR = new Retrofit.Builder()
             .baseUrl(GlobalVariables.API_BASE+GlobalVariables.API_VERSION)
@@ -42,6 +49,10 @@ public class HomeResults extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null)
+            actionBar.setDisplayShowTitleEnabled(false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -74,6 +85,15 @@ public class HomeResults extends AppCompatActivity {
         ID_AREA = getIntent().getExtras().getString("ID_AREA");
         //TOKEN = getIntent().getExtras().getString("TOKEN");
         SetActiveProject(ID_PROJECT, ID_AREA);
+
+        initValues();
+    }
+
+    private void initValues(){
+        prefs = getSharedPreferences("AccessUser", Context.MODE_PRIVATE);
+        ID_USER = prefs.getString("IdUser", null);
+        TOKEN = prefs.getString("Token", null);
+
         loadDataAreaProject();
         loadDataProject();
     }
@@ -111,19 +131,27 @@ public class HomeResults extends AppCompatActivity {
 
     private void loadDataAreaProject(){
 
-        Call<ResponseArea> responseProjects = connectInterface.GetAreaProject(TOKEN,ID_PROJECT);
+        Call<List<ResponseDataArea>> responseProjects = connectInterface.GetAreaProject(TOKEN,ID_PROJECT);
 
-        responseProjects.enqueue(new Callback<ResponseArea>() {
+        responseProjects.enqueue(new Callback<List<ResponseDataArea>>() {
             @Override
-            public void onResponse(Call<ResponseArea> call, Response<ResponseArea> response) {
+            public void onResponse(Call<List<ResponseDataArea>> call, Response<List<ResponseDataArea>> response) {
                 int statusCode = response.code();
 
+                Log.d("SUCCESS AREA", response.toString());
+
                 if (statusCode==200){
-                    ResponseArea jsonResponse = response.body();
+                    List<ResponseDataArea> jsonResponse = response.body();
+
+                    ArrayList<ResponseDataArea> data = new ArrayList<>(jsonResponse);
 
                     SharedPreferences project = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = project.edit();
-                    editor.putString("ID_AREA", jsonResponse.getId().toString());
+
+                    if(data.size()!=0){
+                        editor.putString("ID_AREA", data.get(0).getId().toString());
+                    }
+
                     editor.apply();
                 }
                 else{
@@ -133,7 +161,7 @@ public class HomeResults extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseArea> call, Throwable t) {
+            public void onFailure(Call<List<ResponseDataArea>> call, Throwable t) {
                 Log.d("OnFail", t.getMessage());
             }
         });
@@ -149,6 +177,8 @@ public class HomeResults extends AppCompatActivity {
             public void onResponse(Call<ResponseProject> call, Response<ResponseProject> response) {
                 int statusCode = response.code();
 
+                Log.d("SUCCESS PROJECT", response.toString());
+
                 if (statusCode==200){
                     ResponseProject jsonResponse = response.body();
 
@@ -157,7 +187,9 @@ public class HomeResults extends AppCompatActivity {
                     editor.putString("NOMBRE", jsonResponse.getName().toString());
                     editor.apply();
 
-                    changeNameToolbar(jsonResponse.getName().toString());
+                    NOMBRE = jsonResponse.getName().toString();
+
+                    //changeNameToolbar(jsonResponse.getName().toString());
                 }
                 else{
                     Log.d("PROJECT",response.toString());
@@ -180,7 +212,7 @@ public class HomeResults extends AppCompatActivity {
         SharedPreferences prefsProject = getSharedPreferences("ActiveProject", Context.MODE_PRIVATE);
         ID_AREA = prefsProject.getString("ID_AREA", null);
 
-        Intent intent = new Intent(HomeResults.this, ConnectionActivity.class);
+        Intent intent = new Intent(HomeResults.this, MainDrone.class);
         intent.putExtra("ID_PROJECT", ID_PROJECT);
         intent.putExtra("ID_AREA", ID_AREA);
         intent.putExtra("TOKEN", TOKEN);
@@ -189,7 +221,7 @@ public class HomeResults extends AppCompatActivity {
     }
 
     private void changeNameToolbar(String NOMBRE){
-        toolbar.setTitle(NOMBRE);
+        getSupportActionBar().setTitle(NOMBRE);
     }
 
     private void StartROIProcess(){
