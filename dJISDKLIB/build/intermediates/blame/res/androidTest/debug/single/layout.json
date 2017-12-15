@@ -4,6 +4,10 @@
         "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\layout\\dialog_login.xml"
     },
     {
+        "merged": "/home/pabmacias28/Desktop/nuevoSolar/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/layout/dialog_login.xml",
+        "source": "/home/pabmacias28/Desktop/nuevoSolar/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/layout/dialog_login.xml"
+    },
+    {
         "merged": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\log_dialog_view.xml",
         "source": "/home/jacke310/AndroidStudioProjects/Solar/C:\\Users\\hugo\\Desktop\\Solar\\dJISDKLIB\\build\\intermediates\\bundles\\debug\\res\\layout\\log_dialog_view.xml"
     },
@@ -14,6 +18,10 @@
     {
         "merged": "/home/joselo/StudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/layout/log_dialog_view.xml",
         "source": "/home/joselo/StudioProjects/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/layout/log_dialog_view.xml"
+    },
+    {
+        "merged": "/home/pabmacias28/Desktop/nuevoSolar/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/layout/log_dialog_view.xml",
+        "source": "/home/pabmacias28/Desktop/nuevoSolar/Solar/dJISDKLIB/build/intermediates/bundles/debug/res/layout/log_dialog_view.xml"
     },
     {
         "merged": "/home/joselo/StudioProjects/Solar/dJISDKLIB/build/intermediates/res/merged/androidTest/debug/layout/dialog_login.xml",
